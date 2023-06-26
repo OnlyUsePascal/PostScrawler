@@ -6,6 +6,7 @@ import time
 import csv
 
 fileName = 'test.csv'
+outputDateFormat = '%Y-%m-%d'
 
 # all of functions for scraping here
 
@@ -13,8 +14,62 @@ fileName = 'test.csv'
 
 def scrapeZkblab(targetNumWeek):
     print('getting zkblab')    
-    url = ''
-    # some code here
+    # targetNumWeek = 2
+    pageUrl = 'https://zkplabs.network/blog?page='
+    stopSign = 'Nothing here'
+    page = 1
+    delay = 1.5
+    dateFormat = "%d %B %Y"
+
+    driver = webdriver.Chrome()
+
+    dataList = [] 
+    isEnough = False
+    while (page <= 6):
+        driver.get(pageUrl + str(page))
+        time.sleep(delay)
+
+        body = driver.find_element(By.TAG_NAME, 'body')        
+        if (stopSign in body.text):
+            print('* Dead end')
+            break
+        
+        pathLink = "//a[contains(@class,'chakra-link css-spn4bz') and h2]"
+        linkList = body.find_elements(By.XPATH, pathLink)
+
+        for link in linkList:
+            publishedTime = datetime.strptime(link.find_element(By.TAG_NAME, 'div').text, dateFormat)
+            title = link.find_element(By.TAG_NAME, 'h2').text
+            url = link.get_attribute('href')
+
+            # print(publishedTime.strftime(outputDateFormat))
+            # print(datetime.now() - publishedTime)
+            # print(title)
+            # print(url)
+            # print('====')
+
+            timeDiff = datetime.now() - publishedTime
+            if (timeDiff > timedelta(weeks=targetNumWeek)):
+                print('* enough posts')
+                isEnough = True
+                break
+            
+            dataList.append([publishedTime.strftime(outputDateFormat), title, url])
+        
+        if (isEnough):
+            break
+        page += 1
+    
+    # write to file
+    with open(fileName, 'a', encoding='UTF8') as  file:
+        writer = csv.writer(file)
+
+        writer.writerow(['=== FKPLAB ==='])
+        for data in dataList:
+            writer.writerow(data)
+
+    print('> done')
+    driver.quit()
 
 
 def scrapeGfi(targetNumWeek):
@@ -29,7 +84,7 @@ def scrapeGfi(targetNumWeek):
     driver.get(url)
 
     body = driver.find_element(By.TAG_NAME, "body")
-    for _ in range(numScroll):
+    while True:
         pathHeader = "//h3[@class='jeg_post_title']"
         headers = driver.find_elements(By.XPATH, pathHeader)
 
@@ -47,8 +102,8 @@ def scrapeGfi(targetNumWeek):
             publishedTime = datetime.strptime(dates[i].text, dateFormat)
             timeDiff = datetime.now() - publishedTime
 
-            timeRow = publishedTime.strftime('%Y-%m-%d')
-            headerRow = headers[i].text
+            timeRow = publishedTime.strftime(outputDateFormat)
+            title = headers[i].text
             urlRow = headers[i].find_element(By.TAG_NAME, 'a').get_attribute('href')
             
             # print(timeRow, headerRow)
@@ -58,7 +113,7 @@ def scrapeGfi(targetNumWeek):
                 isEnough = True
                 break
             
-            dataList.append([timeRow, headerRow, urlRow])
+            dataList.append([timeRow, title, urlRow])
 
 
         if (isEnough):
