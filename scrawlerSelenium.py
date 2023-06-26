@@ -91,6 +91,6 @@ def webscrape(targetNumWeek = 1):
     #gfi   
     scrapeGfi(targetNumWeek)
 
-webscrape(1)
+webscrape(2)
 
 
