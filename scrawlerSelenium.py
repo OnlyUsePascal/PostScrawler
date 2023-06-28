@@ -2,6 +2,7 @@ from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from datetime import datetime, timedelta
+from xvfbwrapper import Xvfb
 import time
 import csv
 
@@ -325,12 +326,13 @@ def webscrape(targetNumWeek = 1):
 
 
     scrapeZkblab(targetNumWeek)
-    scrapeGoogleLab(targetNumWeek)
-    scrapeApple(targetNumWeek)
-    scrapeForteLab(targetNumWeek)
-    scrapeGfi(targetNumWeek)
+    # scrapeGoogleLab(targetNumWeek)
+    # scrapeApple(targetNumWeek)
+    # scrapeForteLab(targetNumWeek)
+    # scrapeGfi(targetNumWeek)
 
-
+display = Xvfb()
+display.start()
 webscrape(5)
-
+display.stop()
 
