@@ -6,11 +6,22 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
 from datetime import datetime, timedelta
+from xvfbwrapper import Xvfb
+import sys
 import time
 import csv
 
 fileName = 'test.csv'
 outputDateFormat = '%Y-%m-%d'
+
+# check time
+def correctTimeOffset(inputDate, dateFormat, targetNumWeek):
+    publishedTime = datetime.strptime(inputDate, dateFormat)
+    timeDiff = datetime.now() - publishedTime
+    # print(timeDiff.days)
+    return timeDiff <= timedelta(weeks=targetNumWeek)
+
+# Prevent Selenium from opening browser
 
 # Selenium driver options
 options = Options()
@@ -18,6 +29,7 @@ options.add_argument('--headless')  # No window opened
 options.add_experimental_option("excludeSwitches", ["enable-logging"])  # Disable logging
 # options.add_argument("--log-level=3")
 options.page_load_strategy = 'eager'
+
 
 # Write data function
 
@@ -171,6 +183,7 @@ def scrapeOpenAI(targetNumWeek):
         next_page_btn.send_keys(Keys.ENTER)
 
     # Write data into file
+
     writeScrapedData('OpenAI', fileName, blogs_list, targetNumWeek)
     print('Scraping OpenAI Finished')
     driver.quit()
@@ -472,19 +485,20 @@ def scrapeCoinDesk(targetNumWeek):
 
 
 def scrapeZkblab(targetNumWeek):
-    print('getting zkblab')
-    # targetNumWeek = 2
-    pageUrl = 'https://zkplabs.network/blog?page='
+    print('@zkblab')    
     stopSign = 'Nothing here'
     page = 1
     delay = 1.5
     dateFormat = "%d %B %Y"
+    
+    pageUrl = 'https://zkplabs.network/blog?page='
+    pathLink = "//a[contains(@class,'chakra-link css-spn4bz') and h2]"
 
     driver = webdriver.Chrome()
 
     dataList = []
     isEnough = False
-    while (page <= 6):
+    while True:
         driver.get(pageUrl + str(page))
         time.sleep(delay)
 
@@ -497,26 +511,25 @@ def scrapeZkblab(targetNumWeek):
         linkList = body.find_elements(By.XPATH, pathLink)
 
         for link in linkList:
-            publishedTime = datetime.strptime(link.find_element(By.TAG_NAME, 'div').text, dateFormat)
+            date = link.find_element(By.TAG_NAME, 'div').text
             title = link.find_element(By.TAG_NAME, 'h2').text
             url = link.get_attribute('href')
 
-            # print(publishedTime.strftime(outputDateFormat))
-            # print(datetime.now() - publishedTime)
-            # print(title)
-            # print(url)
-            # print('====')
+            dateTxt = datetime.strftime(datetime.strptime(date, dateFormat), outputDateFormat)
+            dataRow = [dateTxt, title, url]
 
-            timeDiff = datetime.now() - publishedTime
-            if (timeDiff > timedelta(weeks=targetNumWeek)):
+            status = correctTimeOffset(date, dateFormat, targetNumWeek)
+            if (not status):
                 print('* enough posts')
                 isEnough = True
                 break
 
-            dataList.append([publishedTime.strftime(outputDateFormat), title, url])
+            dataList.append(dataRow)
 
         if (isEnough):
             break
+
+        print('* still searching')
         page += 1
 
     # write to file
@@ -526,13 +539,243 @@ def scrapeZkblab(targetNumWeek):
         writer.writerow(['=== FKPLAB ==='])
         for data in dataList:
             writer.writerow(data)
+        writer.writerow([])
+        
+    print('> done')
+    driver.quit()
+
+
+def scrapeGoogleLab(targetNumWeek):
+    print('@google lab')
+    delay = 1.5
+    url = 'https://blog.google/technology/developers/'
+    dateFormat = '%Y-%m-%d'
+    isEnough = False
+
+    btnPath = "//button[@class='article-list__load-more--cards js-load-more-button']" 
+    path2 = "//span[@class='article-list__loader-text']"
+    postPath = "//div[@class='feed-article ng-scope']"
+    datePath = "//span[@class='eyebrow__date]"
+
+    driver = webdriver.Chrome() 
+    site = driver.get(url)
+    time.sleep(delay)
+
+    try:
+        dataList = []
+
+        btn = driver.find_element(By.XPATH, btnPath)
+        while True:
+            newPosts = driver.find_elements(By.XPATH, postPath)
+
+            for post in newPosts[-6:]:
+                date = post.find_element(By.TAG_NAME, 'time').get_attribute('datetime')[:10]
+                title = post.find_element(By.TAG_NAME, 'h3').text
+                url = post.find_element(By.TAG_NAME, 'a').get_attribute('href')
+
+                dataRow = [date,title,url]
+
+                status = correctTimeOffset(str(date), dateFormat, targetNumWeek)
+                if (not status):
+                    print('* enough post')
+                    isEnough = True
+                    break
+                    
+                dataList.append(dataRow)
+
+            if (isEnough):
+                break
+
+            print('* still searching')
+            # reset btn
+            btn = driver.find_element(By.XPATH, btnPath)
+            driver.execute_script("arguments[0].click();", btn)
+            time.sleep(delay)
+
+        with open(fileName, 'a', encoding='UTF8') as  file:
+            writer = csv.writer(file)
+
+            writer.writerow(['=== GoogleLab ==='])
+            for data in dataList:
+                writer.writerow(data)
+            writer.writerow([])
+
+    except Exception as err:
+        print(err)
 
     print('> done')
     driver.quit()
 
 
+def scrapeApple(targetNumWeek):
+    print('@apple')
+    pageUrl = 'https://www.apple.com/au/newsroom/archive/?page='
+    page = 1
+    delay = 1.2
+    dateFormat = "%d %B %Y"
+    
+    postPath = "//a[@class='result__item row-anchor']"
+
+    driver = webdriver.Chrome()
+    
+    dataList = []
+    isEnough = False
+    while True:
+        driver.get(pageUrl + str(page))
+        time.sleep(delay)
+
+        posts = driver.find_elements(By.XPATH, postPath)
+        for post in posts:
+            url = post.get_attribute('href')
+            metadata = post.get_attribute('aria-label').split(' - ')
+            date = metadata[0]
+            title = metadata[2]
+
+            dateTxt = datetime.strftime(datetime.strptime(date, dateFormat), outputDateFormat)
+            dataRow = [dateTxt, title, url]
+            # print(dataRow)
+
+            if not correctTimeOffset(date, dateFormat, targetNumWeek):
+                print('* enough post')
+                isEnough = True
+                break 
+
+            dataList.append(dataRow)
+        
+        if isEnough:
+            break
+
+        print('* keep searching')
+        page += 1
+    
+    with open(fileName, 'a', encoding='UTF8') as  file:
+        writer = csv.writer(file)
+
+        writer.writerow(['=== Apple ==='])
+        for data in dataList:
+            writer.writerow(data)
+        writer.writerow([])
+
+    print('> done')
+    driver.quit()
+    
+
+def scrapeForteLab(targetNumWeek):
+    print('@fortelab')
+    pageUrl = 'https://fortelabs.com/blog/?page='
+    page = 1
+    delay = 1.2
+    dateFormat = "%B %d, %Y"
+    
+    postPath = "//h3[@class='elementor-post__title']"
+
+    driver = webdriver.Chrome()
+    
+    dataList = []
+    isEnough = False
+    while True:
+        driver.get(pageUrl + str(page))
+        time.sleep(delay)
+
+        postUrls = driver.find_elements(By.XPATH, postPath)
+        postPageList = []
+
+        # get post url list
+        for post in postUrls:
+            postUrl = post.find_element(By.TAG_NAME, 'a').get_attribute('href')
+            postPageList.append(postUrl)
+
+        # retrieve data by each post page
+        for postUrl in postPageList:
+            driver.get(postUrl)
+            timePath = "//span[@class='elementor-icon-list-text elementor-post-info__item elementor-post-info__item--type-custom']"
+            titlePath = "//h1[@class='elementor-heading-title elementor-size-default']"
+            
+            date = driver.find_elements(By.XPATH, timePath)[-1].text
+            title = driver.find_element(By.XPATH, titlePath).text
+
+            dateTxt = datetime.strftime(datetime.strptime(date, dateFormat), outputDateFormat)
+            dataRow = [dateTxt, title, postUrl]
+            # print(dataRow)
+
+            if not correctTimeOffset(date, dateFormat, targetNumWeek):
+                print('* enough post')
+                isEnough = True
+                break 
+
+            dataList.append(dataRow)
+        
+        if isEnough:
+            break
+
+        print('* keep searching')
+        page += 1
+    
+    with open(fileName, 'a', encoding='UTF8') as  file:
+        writer = csv.writer(file)
+
+        writer.writerow(['=== ForteLab ==='])
+        for data in dataList:
+            writer.writerow(data)
+        writer.writerow([])
+
+    print('> done')
+    driver.quit()
+
+
+def scrapeAliAbdaal(targetNumWeek):
+    print('@Ali Abdaal')
+    url = "https://aliabdaal.com/articles/page/"
+    page = 1
+    delay = 1.2
+    dateFormat = '%B %d, %Y'
+    isEnough = False
+
+    postPath = '//div[@style="box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;"]'
+
+    driver = webdriver.Chrome()
+
+    dataList = []
+    while page <= 3:
+        driver.get(url + str(page) + '/')
+        time.sleep(delay)
+
+        posts = driver.find_elements(By.XPATH, postPath)
+        for post in posts:
+            postUrl = post.find_element(By.TAG_NAME, 'a').get_attribute('href')
+            postTitle = post.find_element(By.TAG_NAME, 'h3').text
+            postTime = post.find_elements(By.TAG_NAME, 'h4')[1].text
+
+            timeTxt = datetime.strftime(datetime.strptime(postTime, dateFormat), outputDateFormat)
+            dataRow = [timeTxt, postTitle, postUrl]
+            # print(dataRow)
+
+            if not correctTimeOffset(postTime, dateFormat, targetNumWeek):
+                print('* enough post')
+                isEnough = True
+                break
+                
+            dataList.append(dataRow)
+            
+        if isEnough:
+            break
+
+        page += 1
+        print('* still searching')
+    
+    with open(fileName, 'a', encoding='UTF8') as file:
+        writer = csv.writer(file)
+
+        writer.writerow(['=== Ali Bdaal ==='])
+        for data in dataList:
+            writer.writerow(data)
+        writer.writerow([])
+    
+    print('> done')
+
+
 def scrapeGfi(targetNumWeek):
-    print('getting gfi blockchain')
+    print('@getting gfi blockchain')    
     url = 'https://gfiblockchain.com/bai-viet-moi-nhat-tu-gfs.html'
     # numScroll = 5
     delayScroll = 1.2
@@ -568,7 +811,7 @@ def scrapeGfi(targetNumWeek):
             # print(timeRow, headerRow)
 
             if (timeDiff > timedelta(weeks=targetNumWeek)):
-                print('enough posts')
+                print('* enough posts')
                 isEnough = True
                 break
 
@@ -582,10 +825,11 @@ def scrapeGfi(targetNumWeek):
                 writer.writerow(['=== GFI ==='])
                 for data in dataList:
                     writer.writerow(data)
+                writer.writerow([])
             break
 
         body.send_keys(Keys.PAGE_DOWN)
-        print('scrolled =====')
+        print('* still searching')
         time.sleep(delayScroll)
 
     print('> done')
@@ -598,6 +842,7 @@ def webscrape(targetNumWeek=1):
     with open(fileName, 'w') as file:
         file.flush()
 
+    print(f'scraping weeks: {targetNumWeek}')
     # Academy Binance
     # scrapeAcademyBinance(targetNumWeek)
 
@@ -625,11 +870,23 @@ def webscrape(targetNumWeek=1):
     # Coin Desk
     # scrapeCoinDesk(targetNumWeek)
 
-    # zkplab
     # scrapeZkblab(targetNumWeek)
-
-    # gfi
+    # scrapeGoogleLab(targetNumWeek)
+    scrapeApple(targetNumWeek)
+    # scrapeForteLab(targetNumWeek)
+    # scrapeAliAbdaal(targetNumWeek)
     # scrapeGfi(targetNumWeek)
+    print('** done')
 
+# virtual desktop to prevent opening sites
+display = Xvfb()
+display.start()
 
-webscrape(3)
+#start scraping
+inputWeek = 1
+if (len(sys.argv) > 1):
+    inputWeek = int(sys.argv[1])
+
+webscrape(inputWeek)
+
+display.stop()
