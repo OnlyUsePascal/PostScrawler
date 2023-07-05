@@ -6,7 +6,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
 from datetime import datetime, timedelta
-# from xvfbwrapper import Xvfb
+from xvfbwrapper import Xvfb
 import sys
 import time
 import csv
@@ -864,14 +864,15 @@ def scrapeBankless(targetNumWeek):
                 postDate[1] = '0' + postDate[1]
             postDate = ' '.join(postDate)
             
-            dataRow = [postDate, postTitle, postUrl]
-            print(dataRow)
+            # print(dataRow)
 
             if not correctTimeOffset(postDate, dateFormat, targetNumWeek):
                 print("* enough posts")
                 isEnough = True
                 break
 
+            postDate = datetime.strftime(datetime.strptime(postDate, dateFormat), outputDateFormat)
+            dataRow = [postDate, postTitle, postUrl]
             dataList.append(dataRow)
 
             # close tab + switch to base 
@@ -900,6 +901,104 @@ def scrapeBankless(targetNumWeek):
     print('> done')
     driver.quit()
 
+def scrapeCoin98(targetNumWeek):
+    print('@Coin98')
+    pageUrlBase = 'https://coin98.net/posts/title/'
+    pageUrlEnds = [
+        'buidl'
+        ,'research'
+        ,'invest'
+        ,'he-sinh-thai'
+        ,'regulation']
+    dateFormat = '%d %b, %Y'
+
+    postPath = 'div.style_cardInsight__F9av_'
+    postUrlPath = 'a.style_no-underline__FM_LN'
+    postTitlePath = 'div.card-post-title'
+    postDatePath = 'div.card-time span'
+    driver = webdriver.Chrome()
+
+    with open(fileName, 'a', encoding='UTF8') as file:
+        writer = csv.writer(file)
+        writer.writerow(['=== Coin98 ==='])
+
+    # for each endpoint
+    for pageUrlEnd in pageUrlEnds:
+        print(f'> {pageUrlEnd}')
+        pageUrl = pageUrlBase + pageUrlEnd
+        driver.get(pageUrl)
+        time.sleep(2)
+
+        # start scan
+        dataList = []
+        isEnough = False
+        while True:
+            posts = driver.find_elements(By.CSS_SELECTOR, postPath)
+            for post in posts:
+                postUrl = post.find_element(By.CSS_SELECTOR, postUrlPath).get_attribute('href')
+                postTitle = post.find_element(By.CSS_SELECTOR, postTitlePath).text
+                postDate = post.find_element(By.CSS_SELECTOR, postDatePath).text
+
+
+                if not correctTimeOffset(postDate, dateFormat, targetNumWeek):
+                    print('* enough post')
+                    isEnough = True
+                    break
+
+                postDate = datetime.strftime(datetime.strptime(postDate, dateFormat), outputDateFormat)
+                dataRow = [postDate, postTitle, postUrl]
+                dataList.append(dataRow)
+        
+            if (isEnough):
+                break
+
+            driver.find_element(By.TAG_NAME, 'body').send_keys(Keys.PAGE_DOWN)
+            time.sleep(2)
+
+        # write to file
+        with open(fileName, 'a', encoding='UTF8') as file:
+            writer = csv.writer(file)
+
+            writer.writerow([f'> {pageUrlEnd}'])
+            for data in dataList:
+                writer.writerow(data)
+            writer.writerow([])
+
+    print('> done')
+    driver.quit()
+
+def scrapeVitalik(targetNumWeek):
+    print('@Vitalik')
+    pageUrl = 'https://vitalik.ca/'
+    dateFormat = '%Y %b %d'
+
+    driver = webdriver.Chrome()
+    driver.get(pageUrl)
+
+    posts = driver.find_elements(By.TAG_NAME, 'li')
+    dataList = []
+    for post in posts:
+        postDate = post.find_element(By.TAG_NAME, 'span').text
+        postTitle = post.find_element(By.TAG_NAME, 'a').text
+        postUrl = post.find_element(By.TAG_NAME, 'a').get_attribute('href')
+
+        if not correctTimeOffset(postDate, dateFormat, targetNumWeek):
+            print('* enough post')
+            break
+
+        postDate = datetime.strftime(datetime.strptime(postDate, dateFormat), outputDateFormat)
+        dataRow = [postDate, postTitle, postUrl]
+        # print(dataRow)
+        dataList.append(dataRow)
+    
+    with open(fileName, 'a', encoding='UTF8') as file:
+        writer = csv.writer(file)
+
+        writer.writerow(['=== vitalik ==='])
+        for data in dataList:
+            writer.writerow(data)
+        writer.writerow([])
+    dataList = []
 
 
 # everything start here
@@ -922,7 +1021,7 @@ def webscrape(targetNumWeek=1):
     # scrapeGoogleBlogAI(targetNumWeek)
 
     # Developers Archives
-    scrapeDevelopersArchives(targetNumWeek)
+    # scrapeDevelopersArchives(targetNumWeek)
 
     # Alchemy Blog
     # scrapeAlchemyBlog(targetNumWeek)
@@ -942,19 +1041,21 @@ def webscrape(targetNumWeek=1):
     # scrapeForteLab(targetNumWeek)
     # scrapeAliAbdaal(targetNumWeek)
     # scrapeGfi(targetNumWeek)
-    scrapeBankless(targetNumWeek)
+    # scrapeBankless(targetNumWeek)
+    # scrapeCoin98(targetNumWeek)
+    # scrapeVitalik(targetNumWeek)
     print('** done')
 
 
 # virtual desktop to prevent opening sites
-# display = Xvfb()
-# display.start()
+display = Xvfb()
+display.start()
 
 # start scraping
-inputWeek = 4
+inputWeek = 1
 if (len(sys.argv) > 1):
     inputWeek = int(sys.argv[1])
 
 webscrape(inputWeek)
 
-# display.stop()
+display.stop()
