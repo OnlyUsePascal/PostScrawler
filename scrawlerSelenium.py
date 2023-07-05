@@ -6,13 +6,14 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
 from datetime import datetime, timedelta
-from xvfbwrapper import Xvfb
+# from xvfbwrapper import Xvfb
 import sys
 import time
 import csv
 
 fileName = 'test.csv'
 outputDateFormat = '%Y-%m-%d'
+
 
 # check time
 def correctTimeOffset(inputDate, dateFormat, targetNumWeek):
@@ -21,8 +22,8 @@ def correctTimeOffset(inputDate, dateFormat, targetNumWeek):
     # print(timeDiff.days)
     return timeDiff <= timedelta(weeks=targetNumWeek)
 
-# Prevent Selenium from opening browser
 
+# Prevent Selenium from opening browser
 # Selenium driver options
 options = Options()
 options.add_argument('--headless')  # No window opened
@@ -251,8 +252,8 @@ def scrapeDevelopersArchives(targetNumWeek):
             break
 
         for blog in blogs:
-            title = blog.find_element(By.CSS_SELECTOR, 'p > a').text
-            date = datetime.strptime(blog.find_element(By.CSS_SELECTOR, 'div:first-child > div:nth-child(2)').text, '%B %d, %Y')
+            title = blog.find_element(By.CSS_SELECTOR, 'p > a').get_attribute('innerText')
+            date = datetime.strptime(blog.find_element(By.CSS_SELECTOR, 'div:first-child > div:nth-child(2)').get_attribute('innerText'), '%B %d, %Y')
             link = blog.find_element(By.CSS_SELECTOR, 'p > a').get_attribute('href')
             if (datetime.now() - date) > timedelta(weeks=targetNumWeek):
                 isWithinSearchWeek = False
@@ -485,12 +486,12 @@ def scrapeCoinDesk(targetNumWeek):
 
 
 def scrapeZkblab(targetNumWeek):
-    print('@zkblab')    
+    print('@zkblab')
     stopSign = 'Nothing here'
     page = 1
     delay = 1.5
     dateFormat = "%d %B %Y"
-    
+
     pageUrl = 'https://zkplabs.network/blog?page='
     pathLink = "//a[contains(@class,'chakra-link css-spn4bz') and h2]"
 
@@ -540,7 +541,7 @@ def scrapeZkblab(targetNumWeek):
         for data in dataList:
             writer.writerow(data)
         writer.writerow([])
-        
+
     print('> done')
     driver.quit()
 
@@ -552,12 +553,12 @@ def scrapeGoogleLab(targetNumWeek):
     dateFormat = '%Y-%m-%d'
     isEnough = False
 
-    btnPath = "//button[@class='article-list__load-more--cards js-load-more-button']" 
+    btnPath = "//button[@class='article-list__load-more--cards js-load-more-button']"
     path2 = "//span[@class='article-list__loader-text']"
     postPath = "//div[@class='feed-article ng-scope']"
     datePath = "//span[@class='eyebrow__date]"
 
-    driver = webdriver.Chrome() 
+    driver = webdriver.Chrome()
     site = driver.get(url)
     time.sleep(delay)
 
@@ -580,7 +581,7 @@ def scrapeGoogleLab(targetNumWeek):
                     print('* enough post')
                     isEnough = True
                     break
-                    
+
                 dataList.append(dataRow)
 
             if (isEnough):
@@ -613,11 +614,11 @@ def scrapeApple(targetNumWeek):
     page = 1
     delay = 1.2
     dateFormat = "%d %B %Y"
-    
+
     postPath = "//a[@class='result__item row-anchor']"
 
     driver = webdriver.Chrome()
-    
+
     dataList = []
     isEnough = False
     while True:
@@ -638,17 +639,17 @@ def scrapeApple(targetNumWeek):
             if not correctTimeOffset(date, dateFormat, targetNumWeek):
                 print('* enough post')
                 isEnough = True
-                break 
+                break
 
             dataList.append(dataRow)
-        
+
         if isEnough:
             break
 
         print('* keep searching')
         page += 1
-    
-    with open(fileName, 'a', encoding='UTF8') as  file:
+
+    with open(fileName, 'a', encoding='UTF8') as file:
         writer = csv.writer(file)
 
         writer.writerow(['=== Apple ==='])
@@ -658,7 +659,7 @@ def scrapeApple(targetNumWeek):
 
     print('> done')
     driver.quit()
-    
+
 
 def scrapeForteLab(targetNumWeek):
     print('@fortelab')
@@ -666,11 +667,11 @@ def scrapeForteLab(targetNumWeek):
     page = 1
     delay = 1.2
     dateFormat = "%B %d, %Y"
-    
+
     postPath = "//h3[@class='elementor-post__title']"
 
     driver = webdriver.Chrome()
-    
+
     dataList = []
     isEnough = False
     while True:
@@ -690,7 +691,7 @@ def scrapeForteLab(targetNumWeek):
             driver.get(postUrl)
             timePath = "//span[@class='elementor-icon-list-text elementor-post-info__item elementor-post-info__item--type-custom']"
             titlePath = "//h1[@class='elementor-heading-title elementor-size-default']"
-            
+
             date = driver.find_elements(By.XPATH, timePath)[-1].text
             title = driver.find_element(By.XPATH, titlePath).text
 
@@ -701,16 +702,16 @@ def scrapeForteLab(targetNumWeek):
             if not correctTimeOffset(date, dateFormat, targetNumWeek):
                 print('* enough post')
                 isEnough = True
-                break 
+                break
 
             dataList.append(dataRow)
-        
+
         if isEnough:
             break
 
         print('* keep searching')
         page += 1
-    
+
     with open(fileName, 'a', encoding='UTF8') as  file:
         writer = csv.writer(file)
 
@@ -754,15 +755,15 @@ def scrapeAliAbdaal(targetNumWeek):
                 print('* enough post')
                 isEnough = True
                 break
-                
+
             dataList.append(dataRow)
-            
+
         if isEnough:
             break
 
         page += 1
         print('* still searching')
-    
+
     with open(fileName, 'a', encoding='UTF8') as file:
         writer = csv.writer(file)
 
@@ -770,12 +771,12 @@ def scrapeAliAbdaal(targetNumWeek):
         for data in dataList:
             writer.writerow(data)
         writer.writerow([])
-    
+
     print('> done')
 
 
 def scrapeGfi(targetNumWeek):
-    print('@getting gfi blockchain')    
+    print('@getting gfi blockchain')
     url = 'https://gfiblockchain.com/bai-viet-moi-nhat-tu-gfs.html'
     # numScroll = 5
     delayScroll = 1.2
@@ -856,7 +857,7 @@ def webscrape(targetNumWeek=1):
     # scrapeGoogleBlogAI(targetNumWeek)
 
     # Developers Archives
-    # scrapeDevelopersArchives(targetNumWeek)
+    scrapeDevelopersArchives(targetNumWeek)
 
     # Alchemy Blog
     # scrapeAlchemyBlog(targetNumWeek)
@@ -872,21 +873,22 @@ def webscrape(targetNumWeek=1):
 
     # scrapeZkblab(targetNumWeek)
     # scrapeGoogleLab(targetNumWeek)
-    scrapeApple(targetNumWeek)
+    # scrapeApple(targetNumWeek)
     # scrapeForteLab(targetNumWeek)
     # scrapeAliAbdaal(targetNumWeek)
     # scrapeGfi(targetNumWeek)
     print('** done')
 
-# virtual desktop to prevent opening sites
-display = Xvfb()
-display.start()
 
-#start scraping
-inputWeek = 1
+# virtual desktop to prevent opening sites
+# display = Xvfb()
+# display.start()
+
+# start scraping
+inputWeek = 4
 if (len(sys.argv) > 1):
     inputWeek = int(sys.argv[1])
 
 webscrape(inputWeek)
 
-display.stop()
+# display.stop()
