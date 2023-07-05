@@ -14,14 +14,6 @@ import csv
 fileName = 'test.csv'
 outputDateFormat = '%Y-%m-%d'
 
-# check time
-def correctTimeOffset(inputDate, dateFormat, targetNumWeek):
-    publishedTime = datetime.strptime(inputDate, dateFormat)
-    timeDiff = datetime.now() - publishedTime
-    # print(timeDiff.days)
-    return timeDiff <= timedelta(weeks=targetNumWeek)
-
-# Prevent Selenium from opening browser
 
 # Selenium driver options
 options = Options()
@@ -31,9 +23,15 @@ options.add_experimental_option("excludeSwitches", ["enable-logging"])  # Disabl
 options.page_load_strategy = 'eager'
 
 
-# Write data function
+# Ultilities funtion
+# check time correctness
+def correctTimeOffset(inputDate, dateFormat, targetNumWeek):
+    publishedTime = datetime.strptime(inputDate, dateFormat)
+    timeDiff = datetime.now() - publishedTime
+    # print(timeDiff.days)
+    return timeDiff <= timedelta(weeks=targetNumWeek)
 
-
+# write to list
 def writeScrapedData(data_title: str, file, data_list: list, target_weeks):
     with open(file, 'a', encoding="utf-8") as file:
         writer = csv.writer(file)
@@ -44,11 +42,11 @@ def writeScrapedData(data_title: str, file, data_list: list, target_weeks):
             return
         for data in data_list:
             writer.writerow(data)
+        
+        #blank separator
+        writer.writerow([]) 
 
-# Ultilities funtion
 # Error handler
-
-
 def handle_scrape_errors(func):
     """In cases where a website change their layout, it might break the code,
     this is used to prevent any errors that might break the whole program and instead keep running.
@@ -67,8 +65,6 @@ def handle_scrape_errors(func):
 
 
 # all of functions for scraping here
-
-
 @handle_scrape_errors
 def scrapeAcademyBinance(targetNumWeek):
     print('Starting scraping Academy Binance...')
@@ -835,6 +831,75 @@ def scrapeGfi(targetNumWeek):
     print('> done')
     driver.quit()
 
+def scrapeBankless(targetNumWeek):
+    print('@Bankless')
+    pageUrl = 'https://www.bankless.com/read'
+    dateFormat = "%b %d, %Y"
+    page = 1
+
+    driver = webdriver.Chrome()
+    driver.get(pageUrl)
+
+    postPath = "//a[@class='item articleBlockSmall']"
+    postTitlePath = "h1[class='wow fadeInUp']"
+    postDatePath = "div[class='meta wow fadeInUp'] span"
+
+    dataList = []
+    isEnough = False
+    while True:
+        posts = driver.find_elements(By.XPATH, postPath)
+        for post in posts:
+            postUrl = post.get_attribute('href')
+
+            # open in new tab
+            driver.execute_script(f'window.open("{postUrl}","_blank");')
+            driver.switch_to.window(driver.window_handles[1])
+            time.sleep(3)
+
+            # process post date
+            postTitle = driver.find_element(By.CSS_SELECTOR, postTitlePath).text
+            postDate = driver.find_elements(By.CSS_SELECTOR, postDatePath)[1].text.split(' ')
+            if len(postDate[1]) == 2:
+                postDate[1] = '0' + postDate[1]
+            postDate = ' '.join(postDate)
+            
+            dataRow = [postDate, postTitle, postUrl]
+            print(dataRow)
+
+            if not correctTimeOffset(postDate, dateFormat, targetNumWeek):
+                print("* enough posts")
+                isEnough = True
+                break
+
+            dataList.append(dataRow)
+
+            # close tab + switch to base 
+            driver.close()
+            driver.switch_to.window(driver.window_handles[0])
+
+        if (isEnough):
+            break
+        
+        print("* still searching")
+
+        # load more btn
+        btnPath = "a[class='loadMoreFilterBtn']"
+        btn = driver.find_element(By.CSS_SELECTOR, btnPath)
+        driver.execute_script("arguments[0].click();", btn)
+        time.sleep(2)
+
+    with open(fileName, 'a', encoding='UTF8') as file:
+        writer = csv.writer(file)
+
+        writer.writerow(['=== Bankless ==='])
+        for data in dataList:
+            writer.writerow(data)
+        writer.writerow([])
+
+    print('> done')
+    driver.quit()
+
+
 
 # everything start here
 def webscrape(targetNumWeek=1):
@@ -872,10 +937,11 @@ def webscrape(targetNumWeek=1):
 
     # scrapeZkblab(targetNumWeek)
     # scrapeGoogleLab(targetNumWeek)
-    scrapeApple(targetNumWeek)
+    # scrapeApple(targetNumWeek)
     # scrapeForteLab(targetNumWeek)
     # scrapeAliAbdaal(targetNumWeek)
     # scrapeGfi(targetNumWeek)
+    scrapeBankless(targetNumWeek)
     print('** done')
 
 # virtual desktop to prevent opening sites
