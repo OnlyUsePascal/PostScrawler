@@ -4,7 +4,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import TimeoutException
+from selenium.common.exceptions import TimeoutException, StaleElementReferenceException
 from datetime import datetime, timedelta
 # from xvfbwrapper import Xvfb
 import sys
@@ -26,7 +26,7 @@ def correctTimeOffset(inputDate, dateFormat, targetNumWeek):
 # Prevent Selenium from opening browser
 # Selenium driver options
 options = Options()
-options.add_argument('--headless')  # No window opened
+# options.add_argument('--headless')  # No window opened
 options.add_experimental_option("excludeSwitches", ["enable-logging"])  # Disable logging
 # options.add_argument("--log-level=3")
 options.page_load_strategy = 'eager'
@@ -395,14 +395,16 @@ def scrapeCointelegraph(targetNumWeek):
     while (isWithinSearchWeek):
         # Wait until all blogs are presented on the web
         try:
-            articles = WebDriverWait(driver, 5).until(EC.presence_of_all_elements_located((By.CSS_SELECTOR, 'ul.posts-listing__list > li.posts-listing__item')))
+            articles = WebDriverWait(driver, 10).until(EC.visibility_of_all_elements_located((By.CSS_SELECTOR, 'ul.posts-listing__list > li.posts-listing__item')))
         except TimeoutException:
             print('Loading take too long')
             break
         # Get last post's date
-        last_article_date = articles[-1].find_element(By.CSS_SELECTOR, 'div time').text
         try:
+            last_article_date = articles[-1].find_element(By.CSS_SELECTOR, 'div time').get_attribute('innerText')
             last_article_date = datetime.strptime(last_article_date, '%b %d, %Y')
+        except StaleElementReferenceException:
+            continue
         except Exception:
             last_article_date = datetime.now()
         # print(last_article_date)
@@ -414,15 +416,16 @@ def scrapeCointelegraph(targetNumWeek):
                 if 'posts-listing__item_triple' in article.get_attribute('class').split():
                     continue
 
-                # Some posts are empty, this is to prevent it
+                # Some posts are empty thus causing bugs
                 try:
-                    title = article.find_element(By.CSS_SELECTOR, 'header.post-card__header span.post-card__title').text
+                    title = article.find_element(By.CSS_SELECTOR, 'header.post-card__header span.post-card__title').get_attribute('innerText')
                     link = article.find_element(By.CSS_SELECTOR, 'header.post-card__header > a.post-card__title-link').get_attribute('href')
                 except Exception:
                     continue
+
                 # Get date, return today if it was posted n times ago
                 try:
-                    date = datetime.strptime(article.find_element(By.CSS_SELECTOR, 'div time').text, '%b %d, %Y')
+                    date = datetime.strptime(article.find_element(By.CSS_SELECTOR, 'div time').get_attribute('innerText'), '%b %d, %Y')
                 except Exception:
                     date = datetime.now()
 
@@ -433,7 +436,7 @@ def scrapeCointelegraph(targetNumWeek):
             break
 
         # Scroll down to bottom to load more articles
-        driver.execute_script("window.scrollTo(0, document.body.scrollHeight - 100);")
+        driver.execute_script("window.scrollTo(0, document.body.scrollHeight-100);")
         driver.find_element(By.TAG_NAME, 'body').send_keys(Keys.PAGE_UP)
 
     # Write data into file
@@ -857,7 +860,7 @@ def webscrape(targetNumWeek=1):
     # scrapeGoogleBlogAI(targetNumWeek)
 
     # Developers Archives
-    scrapeDevelopersArchives(targetNumWeek)
+    # scrapeDevelopersArchives(targetNumWeek)
 
     # Alchemy Blog
     # scrapeAlchemyBlog(targetNumWeek)
@@ -866,7 +869,7 @@ def webscrape(targetNumWeek=1):
     # scrapeDecrypt(targetNumWeek)
 
     # Cointelegraph
-    # scrapeCointelegraph(targetNumWeek)
+    scrapeCointelegraph(targetNumWeek)
 
     # Coin Desk
     # scrapeCoinDesk(targetNumWeek)
@@ -885,7 +888,7 @@ def webscrape(targetNumWeek=1):
 # display.start()
 
 # start scraping
-inputWeek = 4
+inputWeek = 1
 if (len(sys.argv) > 1):
     inputWeek = int(sys.argv[1])
 
