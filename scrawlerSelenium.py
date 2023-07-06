@@ -6,21 +6,13 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException, StaleElementReferenceException
 from datetime import datetime, timedelta
-# from xvfbwrapper import Xvfb
+from xvfbwrapper import Xvfb
 import sys
 import time
 import csv
 
 fileName = 'test.csv'
 outputDateFormat = '%Y-%m-%d'
-
-
-# check time
-def correctTimeOffset(inputDate, dateFormat, targetNumWeek):
-    publishedTime = datetime.strptime(inputDate, dateFormat)
-    timeDiff = datetime.now() - publishedTime
-    # print(timeDiff.days)
-    return timeDiff <= timedelta(weeks=targetNumWeek)
 
 
 # Prevent Selenium from opening browser
@@ -32,9 +24,15 @@ options.add_experimental_option("excludeSwitches", ["enable-logging"])  # Disabl
 options.page_load_strategy = 'eager'
 
 
-# Write data function
+# Ultilities funtion
+# check time correctness
+def correctTimeOffset(inputDate, dateFormat, targetNumWeek):
+    publishedTime = datetime.strptime(inputDate, dateFormat)
+    timeDiff = datetime.now() - publishedTime
+    # print(timeDiff.days)
+    return timeDiff <= timedelta(weeks=targetNumWeek)
 
-
+# write to list
 def writeScrapedData(data_title: str, file, data_list: list, target_weeks):
     with open(file, 'a', encoding="utf-8") as file:
         writer = csv.writer(file)
@@ -45,11 +43,11 @@ def writeScrapedData(data_title: str, file, data_list: list, target_weeks):
             return
         for data in data_list:
             writer.writerow(data)
+        
+        #blank separator
+        writer.writerow([]) 
 
-# Ultilities funtion
 # Error handler
-
-
 def handle_scrape_errors(func):
     """In cases where a website change their layout, it might break the code,
     this is used to prevent any errors that might break the whole program and instead keep running.
@@ -68,8 +66,6 @@ def handle_scrape_errors(func):
 
 
 # all of functions for scraping here
-
-
 @handle_scrape_errors
 def scrapeAcademyBinance(targetNumWeek):
     print('Starting scraping Academy Binance...')
@@ -839,6 +835,174 @@ def scrapeGfi(targetNumWeek):
     print('> done')
     driver.quit()
 
+def scrapeBankless(targetNumWeek):
+    print('@Bankless')
+    pageUrl = 'https://www.bankless.com/read'
+    dateFormat = "%b %d, %Y"
+    page = 1
+
+    driver = webdriver.Chrome()
+    driver.get(pageUrl)
+
+    postPath = "//a[@class='item articleBlockSmall']"
+    postTitlePath = "h1[class='wow fadeInUp']"
+    postDatePath = "div[class='meta wow fadeInUp'] span"
+
+    dataList = []
+    isEnough = False
+    while True:
+        posts = driver.find_elements(By.XPATH, postPath)
+        for post in posts:
+            postUrl = post.get_attribute('href')
+
+            # open in new tab
+            driver.execute_script(f'window.open("{postUrl}","_blank");')
+            driver.switch_to.window(driver.window_handles[1])
+            time.sleep(3)
+
+            # process post date
+            postTitle = driver.find_element(By.CSS_SELECTOR, postTitlePath).text
+            postDate = driver.find_elements(By.CSS_SELECTOR, postDatePath)[1].text.split(' ')
+            if len(postDate[1]) == 2:
+                postDate[1] = '0' + postDate[1]
+            postDate = ' '.join(postDate)
+            
+            # print(dataRow)
+
+            if not correctTimeOffset(postDate, dateFormat, targetNumWeek):
+                print("* enough posts")
+                isEnough = True
+                break
+
+            postDate = datetime.strftime(datetime.strptime(postDate, dateFormat), outputDateFormat)
+            dataRow = [postDate, postTitle, postUrl]
+            dataList.append(dataRow)
+
+            # close tab + switch to base 
+            driver.close()
+            driver.switch_to.window(driver.window_handles[0])
+
+        if (isEnough):
+            break
+        
+        print("* still searching")
+
+        # load more btn
+        btnPath = "a[class='loadMoreFilterBtn']"
+        btn = driver.find_element(By.CSS_SELECTOR, btnPath)
+        driver.execute_script("arguments[0].click();", btn)
+        time.sleep(2)
+
+    with open(fileName, 'a', encoding='UTF8') as file:
+        writer = csv.writer(file)
+
+        writer.writerow(['=== Bankless ==='])
+        for data in dataList:
+            writer.writerow(data)
+        writer.writerow([])
+
+    print('> done')
+    driver.quit()
+
+def scrapeCoin98(targetNumWeek):
+    print('@Coin98')
+    pageUrlBase = 'https://coin98.net/posts/title/'
+    pageUrlEnds = [
+        'buidl'
+        ,'research'
+        ,'invest'
+        ,'he-sinh-thai'
+        ,'regulation']
+    dateFormat = '%d %b, %Y'
+
+    postPath = 'div.style_cardInsight__F9av_'
+    postUrlPath = 'a.style_no-underline__FM_LN'
+    postTitlePath = 'div.card-post-title'
+    postDatePath = 'div.card-time span'
+    driver = webdriver.Chrome()
+
+    with open(fileName, 'a', encoding='UTF8') as file:
+        writer = csv.writer(file)
+        writer.writerow(['=== Coin98 ==='])
+
+    # for each endpoint
+    for pageUrlEnd in pageUrlEnds:
+        print(f'> {pageUrlEnd}')
+        pageUrl = pageUrlBase + pageUrlEnd
+        driver.get(pageUrl)
+        time.sleep(2)
+
+        # start scan
+        dataList = []
+        isEnough = False
+        while True:
+            posts = driver.find_elements(By.CSS_SELECTOR, postPath)
+            for post in posts:
+                postUrl = post.find_element(By.CSS_SELECTOR, postUrlPath).get_attribute('href')
+                postTitle = post.find_element(By.CSS_SELECTOR, postTitlePath).text
+                postDate = post.find_element(By.CSS_SELECTOR, postDatePath).text
+
+
+                if not correctTimeOffset(postDate, dateFormat, targetNumWeek):
+                    print('* enough post')
+                    isEnough = True
+                    break
+
+                postDate = datetime.strftime(datetime.strptime(postDate, dateFormat), outputDateFormat)
+                dataRow = [postDate, postTitle, postUrl]
+                dataList.append(dataRow)
+        
+            if (isEnough):
+                break
+
+            driver.find_element(By.TAG_NAME, 'body').send_keys(Keys.PAGE_DOWN)
+            time.sleep(2)
+
+        # write to file
+        with open(fileName, 'a', encoding='UTF8') as file:
+            writer = csv.writer(file)
+
+            writer.writerow([f'> {pageUrlEnd}'])
+            for data in dataList:
+                writer.writerow(data)
+            writer.writerow([])
+
+    print('> done')
+    driver.quit()
+
+def scrapeVitalik(targetNumWeek):
+    print('@Vitalik')
+    pageUrl = 'https://vitalik.ca/'
+    dateFormat = '%Y %b %d'
+
+    driver = webdriver.Chrome()
+    driver.get(pageUrl)
+
+    posts = driver.find_elements(By.TAG_NAME, 'li')
+    dataList = []
+    for post in posts:
+        postDate = post.find_element(By.TAG_NAME, 'span').text
+        postTitle = post.find_element(By.TAG_NAME, 'a').text
+        postUrl = post.find_element(By.TAG_NAME, 'a').get_attribute('href')
+
+        if not correctTimeOffset(postDate, dateFormat, targetNumWeek):
+            print('* enough post')
+            break
+
+        postDate = datetime.strftime(datetime.strptime(postDate, dateFormat), outputDateFormat)
+        dataRow = [postDate, postTitle, postUrl]
+        # print(dataRow)
+        dataList.append(dataRow)
+    
+    with open(fileName, 'a', encoding='UTF8') as file:
+        writer = csv.writer(file)
+
+        writer.writerow(['=== vitalik ==='])
+        for data in dataList:
+            writer.writerow(data)
+        writer.writerow([])
+    dataList = []
+
 
 # everything start here
 def webscrape(targetNumWeek=1):
@@ -880,12 +1044,15 @@ def webscrape(targetNumWeek=1):
     # scrapeForteLab(targetNumWeek)
     # scrapeAliAbdaal(targetNumWeek)
     # scrapeGfi(targetNumWeek)
+    # scrapeBankless(targetNumWeek)
+    # scrapeCoin98(targetNumWeek)
+    # scrapeVitalik(targetNumWeek)
     print('** done')
 
 
 # virtual desktop to prevent opening sites
-# display = Xvfb()
-# display.start()
+display = Xvfb()
+display.start()
 
 # start scraping
 inputWeek = 1
@@ -894,4 +1061,4 @@ if (len(sys.argv) > 1):
 
 webscrape(inputWeek)
 
-# display.stop()
+display.stop()
