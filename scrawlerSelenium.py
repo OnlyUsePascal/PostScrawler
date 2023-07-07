@@ -910,9 +910,9 @@ def scrapeCoin98(targetNumWeek):
     pageUrlEnds = [
         'buidl'
         ,'research'
-        ,'invest'
-        ,'he-sinh-thai'
-        ,'regulation']
+        ,'invest']
+        # ,'he-sinh-thai'
+        # ,'regulation']
     dateFormat = '%d %b, %Y'
 
     postPath = 'div.style_cardInsight__F9av_'
@@ -942,6 +942,10 @@ def scrapeCoin98(targetNumWeek):
                 postTitle = post.find_element(By.CSS_SELECTOR, postTitlePath).text
                 postDate = post.find_element(By.CSS_SELECTOR, postDatePath).text
 
+                # ignore very recent post
+                # print(postDate)
+                if ('ago' in postDate): 
+                    continue
 
                 if not correctTimeOffset(postDate, dateFormat, targetNumWeek):
                     print('* enough post')
@@ -1011,42 +1015,24 @@ def webscrape(targetNumWeek=1):
         file.flush()
 
     print(f'scraping weeks: {targetNumWeek}')
-    # Academy Binance
-    # scrapeAcademyBinance(targetNumWeek)
-
-    # Chainlink
-    # scrapeChainlink(targetNumWeek)
-
-    # OpenAI
-    # scrapeOpenAI(targetNumWeek)
-
-    # Google Blog AI
-    # scrapeGoogleBlogAI(targetNumWeek)
-
-    # Developers Archives
-    # scrapeDevelopersArchives(targetNumWeek)
-
-    # Alchemy Blog
-    # scrapeAlchemyBlog(targetNumWeek)
-
-    # Decrypt
-    # scrapeDecrypt(targetNumWeek)
-
-    # Cointelegraph
+    scrapeAcademyBinance(targetNumWeek)
+    scrapeChainlink(targetNumWeek)
+    scrapeOpenAI(targetNumWeek)
+    scrapeGoogleBlogAI(targetNumWeek)
+    scrapeDevelopersArchives(targetNumWeek)
+    scrapeAlchemyBlog(targetNumWeek)
+    scrapeDecrypt(targetNumWeek)
     scrapeCointelegraph(targetNumWeek)
-
-    # Coin Desk
-    # scrapeCoinDesk(targetNumWeek)
-
-    # scrapeZkblab(targetNumWeek)
-    # scrapeGoogleLab(targetNumWeek)
-    # scrapeApple(targetNumWeek)
-    # scrapeForteLab(targetNumWeek)
-    # scrapeAliAbdaal(targetNumWeek)
-    # scrapeGfi(targetNumWeek)
-    # scrapeBankless(targetNumWeek)
-    # scrapeCoin98(targetNumWeek)
-    # scrapeVitalik(targetNumWeek)
+    scrapeCoinDesk(targetNumWeek)
+    scrapeZkblab(targetNumWeek)
+    scrapeGoogleLab(targetNumWeek)
+    scrapeApple(targetNumWeek)
+    scrapeForteLab(targetNumWeek)
+    scrapeAliAbdaal(targetNumWeek)
+    scrapeGfi(targetNumWeek)
+    scrapeBankless(targetNumWeek)
+    scrapeCoin98(targetNumWeek)
+    scrapeVitalik(targetNumWeek)
     print('** done')
 
 
