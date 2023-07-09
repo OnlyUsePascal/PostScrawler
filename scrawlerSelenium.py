@@ -34,11 +34,14 @@ def correctTimeOffset(inputDate, dateFormat, targetNumWeek):
 
 # write to list
 def writeScrapedData(data_title: str, file, data_list: list, target_weeks):
+    print(data_list)
+    print(data_title)
+
     with open(file, 'a', encoding="utf-8") as file:
         writer = csv.writer(file)
 
         writer.writerow([f'=== {data_title} ==='])
-        if not data_list:
+        if not data_list or len(data_list) == 0:
             writer.writerow([f'No articles/blogs were found within {target_weeks} weeks'])
             # return
         else:
@@ -598,13 +601,14 @@ def scrapeGoogleLab(targetNumWeek):
             driver.execute_script("arguments[0].click();", btn)
             time.sleep(delay)
 
-        with open(fileName, 'a', encoding='UTF8') as  file:
-            writer = csv.writer(file)
+        writeScrapedData('Ali Abdaal', fileName, dataList, targetNumWeek)
+        # with open(fileName, 'a', encoding='UTF8') as  file:
+        #     writer = csv.writer(file)
 
-            writer.writerow(['=== GoogleLab ==='])
-            for data in dataList:
-                writer.writerow(data)
-            writer.writerow([])
+        #     writer.writerow(['=== GoogleLab ==='])
+        #     for data in dataList:
+        #         writer.writerow(data)
+        #     writer.writerow([])
 
     except Exception as err:
         print(err)
@@ -776,13 +780,14 @@ def scrapeAliAbdaal(targetNumWeek):
         page += 1
         print('* still searching')
 
-    with open(fileName, 'a', encoding='UTF8') as file:
-        writer = csv.writer(file)
+    # writeScrapedData('=== Ali Abdaal ===', fileName, dataList, targetNumWeek)
+    # with open(fileName, 'a', encoding='UTF8') as file:
+    #     writer = csv.writer(file)
 
-        writer.writerow(['=== Ali Abdaal ==='])
-        for data in dataList:
-            writer.writerow(data)
-        writer.writerow([])
+    #     writer.writerow(['=== Ali Abdaal ==='])
+    #     for data in dataList:
+    #         writer.writerow(data)
+    #     writer.writerow([])
 
     print('> done')
 
@@ -1048,7 +1053,7 @@ def webscrape(targetNumWeek=1):
     # scrapeCoinDesk(targetNumWeek)
 
     # scrapeZkblab(targetNumWeek)
-    # scrapeGoogleLab(targetNumWeek)
+    scrapeGoogleLab(targetNumWeek)
     # scrapeApple(targetNumWeek)
     # scrapeForteLab(targetNumWeek)
     # scrapeAliAbdaal(targetNumWeek)
