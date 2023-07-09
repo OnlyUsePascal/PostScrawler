@@ -6,7 +6,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException, StaleElementReferenceException
 from datetime import datetime, timedelta
-from xvfbwrapper import Xvfb
+# from xvfbwrapper import Xvfb
 import sys
 import time
 import csv
@@ -18,9 +18,9 @@ outputDateFormat = '%Y-%m-%d'
 # Prevent Selenium from opening browser
 # Selenium driver options
 options = Options()
-# options.add_argument('--headless')  # No window opened
+options.add_argument('--headless')  # No window opened
 options.add_experimental_option("excludeSwitches", ["enable-logging"])  # Disable logging
-# options.add_argument("--log-level=3")
+options.add_argument("--log-level=3")
 options.page_load_strategy = 'eager'
 
 
@@ -40,9 +40,10 @@ def writeScrapedData(data_title: str, file, data_list: list, target_weeks):
         writer.writerow([f'=== {data_title} ==='])
         if not data_list:
             writer.writerow([f'No articles/blogs were found within {target_weeks} weeks'])
-            return
-        for data in data_list:
-            writer.writerow(data)
+            # return
+        else:
+            for data in data_list:
+                writer.writerow(data)
         
         #blank separator
         writer.writerow([]) 
@@ -544,7 +545,9 @@ def scrapeZkblab(targetNumWeek):
     pageUrl = 'https://zkplabs.network/blog?page='
     pathLink = "//a[contains(@class,'chakra-link css-spn4bz') and h2]"
 
-    driver = webdriver.Chrome()
+    # driver = webdriver.Chrome()
+    options.page_load_strategy = 'eager'
+    driver = webdriver.Chrome(options=options)
 
     dataList = []
     isEnough = False
@@ -586,7 +589,7 @@ def scrapeZkblab(targetNumWeek):
     with open(fileName, 'a', encoding='UTF8') as file:
         writer = csv.writer(file)
 
-        writer.writerow(['=== FKPLAB ==='])
+        writer.writerow(['=== ZKP LAB ==='])
         for data in dataList:
             writer.writerow(data)
         writer.writerow([])
@@ -607,7 +610,10 @@ def scrapeGoogleLab(targetNumWeek):
     postPath = "//div[@class='feed-article ng-scope']"
     datePath = "//span[@class='eyebrow__date]"
 
-    driver = webdriver.Chrome()
+    # driver = webdriver.Chrome()
+    options.page_load_strategy = 'eager'
+    driver = webdriver.Chrome(options=options)
+
     site = driver.get(url)
     time.sleep(delay)
 
@@ -666,7 +672,9 @@ def scrapeApple(targetNumWeek):
 
     postPath = "//a[@class='result__item row-anchor']"
 
-    driver = webdriver.Chrome()
+    # driver = webdriver.Chrome()
+    options.page_load_strategy = 'eager'
+    driver = webdriver.Chrome(options=options)
 
     dataList = []
     isEnough = False
@@ -719,7 +727,9 @@ def scrapeForteLab(targetNumWeek):
 
     postPath = "//h3[@class='elementor-post__title']"
 
-    driver = webdriver.Chrome()
+    # driver = webdriver.Chrome()
+    options.page_load_strategy = 'eager'
+    driver = webdriver.Chrome(options=options)
 
     dataList = []
     isEnough = False
@@ -783,7 +793,10 @@ def scrapeAliAbdaal(targetNumWeek):
 
     postPath = '//div[@style="box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;"]'
 
-    driver = webdriver.Chrome()
+    # driver = webdriver.Chrome()
+    options.page_load_strategy = 'eager'
+    driver = webdriver.Chrome(options=options)
+
 
     dataList = []
     while page <= 3:
@@ -816,7 +829,7 @@ def scrapeAliAbdaal(targetNumWeek):
     with open(fileName, 'a', encoding='UTF8') as file:
         writer = csv.writer(file)
 
-        writer.writerow(['=== Ali Bdaal ==='])
+        writer.writerow(['=== Ali Abdaal ==='])
         for data in dataList:
             writer.writerow(data)
         writer.writerow([])
@@ -832,7 +845,10 @@ def scrapeGfi(targetNumWeek):
     dateFormat = "%d/%m/%Y"
     curLen = 0
 
-    driver = webdriver.Chrome()
+    # driver = webdriver.Chrome()
+    options.page_load_strategy = 'eager'
+    driver = webdriver.Chrome(options=options)
+    
     driver.get(url)
 
     body = driver.find_element(By.TAG_NAME, "body")
@@ -891,7 +907,9 @@ def scrapeBankless(targetNumWeek):
     dateFormat = "%b %d, %Y"
     page = 1
 
-    driver = webdriver.Chrome()
+    # driver = webdriver.Chrome()
+    options.page_load_strategy = 'eager'
+    driver = webdriver.Chrome(options=options)
     driver.get(pageUrl)
 
     postPath = "//a[@class='item articleBlockSmall']"
@@ -960,16 +978,18 @@ def scrapeCoin98(targetNumWeek):
     pageUrlEnds = [
         'buidl'
         ,'research'
-        ,'invest'
-        ,'he-sinh-thai'
-        ,'regulation']
+        ,'invest']
+        # ,'he-sinh-thai'
+        # ,'regulation']
     dateFormat = '%d %b, %Y'
 
     postPath = 'div.style_cardInsight__F9av_'
     postUrlPath = 'a.style_no-underline__FM_LN'
     postTitlePath = 'div.card-post-title'
     postDatePath = 'div.card-time span'
-    driver = webdriver.Chrome()
+    # driver = webdriver.Chrome()
+    options.page_load_strategy = 'eager'
+    driver = webdriver.Chrome(options=options)
 
     with open(fileName, 'a', encoding='UTF8') as file:
         writer = csv.writer(file)
@@ -992,6 +1012,10 @@ def scrapeCoin98(targetNumWeek):
                 postTitle = post.find_element(By.CSS_SELECTOR, postTitlePath).text
                 postDate = post.find_element(By.CSS_SELECTOR, postDatePath).text
 
+                # ignore very recent post
+                # print(postDate)
+                if ('ago' in postDate): 
+                    continue
 
                 if not correctTimeOffset(postDate, dateFormat, targetNumWeek):
                     print('* enough post')
@@ -1025,7 +1049,9 @@ def scrapeVitalik(targetNumWeek):
     pageUrl = 'https://vitalik.ca/'
     dateFormat = '%Y %b %d'
 
-    driver = webdriver.Chrome()
+    # driver = webdriver.Chrome()
+    options.page_load_strategy = 'eager'
+    driver = webdriver.Chrome(options=options)
     driver.get(pageUrl)
 
     posts = driver.find_elements(By.TAG_NAME, 'li')
@@ -1061,31 +1087,15 @@ def webscrape(targetNumWeek=1):
         file.flush()
 
     print(f'scraping weeks: {targetNumWeek}')
-    # Academy Binance
-    scrapeAcademyBinance(targetNumWeek)
 
-    # Chainlink
+    # scrapeAcademyBinance(targetNumWeek)
     # scrapeChainlink(targetNumWeek)
-
-    # OpenAI
     # scrapeOpenAI(targetNumWeek)
-
-    # Google Blog AI
     # scrapeGoogleBlogAI(targetNumWeek)
-
-    # Developers Archives
     # scrapeDevelopersArchives(targetNumWeek)
-
-    # Alchemy Blog
     # scrapeAlchemyBlog(targetNumWeek)
-
-    # Decrypt
-    scrapeDecrypt(targetNumWeek)
-
-    # Cointelegraph
+    # scrapeDecrypt(targetNumWeek)
     # scrapeCointelegraph(targetNumWeek)
-
-    # Coin Desk
     # scrapeCoinDesk(targetNumWeek)
 
     # scrapeZkblab(targetNumWeek)
@@ -1101,8 +1111,8 @@ def webscrape(targetNumWeek=1):
 
 
 # virtual desktop to prevent opening sites
-display = Xvfb()
-display.start()
+# display = Xvfb()
+# display.start()
 
 # start scraping
 inputWeek = 5
@@ -1111,4 +1121,4 @@ if (len(sys.argv) > 1):
 
 webscrape(inputWeek)
 
-display.stop()
+# display.stop()
