@@ -362,14 +362,64 @@ def scrapeDecrypt(targetNumWeek):
 
         # Check for the last post's published date, if within the target week, keep loading more contents
         if (datetime.now() - last_article_date) > timedelta(weeks=targetNumWeek):
-            for article in articles:
-                title = article.find_element(By.CSS_SELECTOR, 'div:last-child article h3 span').text
-                date = datetime.strptime(article.find_element(By.CSS_SELECTOR, 'div:first-child > h4').text, '%b %d, %Y')
-                link = article.find_element(By.CSS_SELECTOR, 'div:last-child article h3 a').get_attribute('href')
+            # First article session
+            def scrapeFirstSession():
+                try:
+                    first_article = driver.find_element(By.CSS_SELECTOR, 'main > div > article > div > div > div:first-child > article > div:last-child')
+                except Exception:
+                    print("First article session not avaiable")
+                    return
+                # print(first_article.text)
+                title = first_article.find_element(By.CSS_SELECTOR, 'div a.linkbox__overlay').get_attribute('innerText')
+                date = first_article.find_element(By.CSS_SELECTOR, 'div footer > div:first-child time:first-child').text
+                date = datetime.strptime(date, '%b %d, %Y')
+                link = first_article.find_element(By.CSS_SELECTOR, 'div a.linkbox__overlay').get_attribute('href')
                 if (datetime.now() - date) > timedelta(weeks=targetNumWeek):
-                    isWithinSearchWeek = False
-                    break
+                    # Return True when enough post so that it can stop the loop
+                    return True
                 blogs_list.append([date.strftime(outputDateFormat), title, link])
+
+            if scrapeFirstSession():
+                break
+
+            # Second article session
+            def scrapeSecondSession():
+                try:
+                    second_articles = driver.find_elements(By.CSS_SELECTOR, 'main > div > article > div > div > div:not(:first-child) div.grow')
+                except Exception:
+                    print("Second article session not avaiable")
+                    return
+                for article in second_articles:
+                    title = article.find_element(By.CSS_SELECTOR, 'div a.linkbox__overlay').get_attribute('innerText')
+                    date = article.find_element(By.CSS_SELECTOR, 'div footer > div:first-child time:first-child').text
+                    date = datetime.strptime(date, '%b %d, %Y')
+                    link = article.find_element(By.CSS_SELECTOR, 'div a.linkbox__overlay').get_attribute('href')
+                    if (datetime.now() - date) > timedelta(weeks=targetNumWeek):
+                        # Return True when enough post so that it can stop the loop
+                        return True
+                    blogs_list.append([date.strftime(outputDateFormat), title, link])
+
+            if scrapeSecondSession():
+                break
+
+            # Third article session
+            def scrapeThirdSession():
+                if not articles:
+                    print("Third article session not avaiable")
+                    return
+
+                for article in articles:
+                    title = article.find_element(By.CSS_SELECTOR, 'div:last-child article h3 span').text
+                    date = datetime.strptime(article.find_element(By.CSS_SELECTOR, 'div:first-child > h4').text, '%b %d, %Y')
+                    link = article.find_element(By.CSS_SELECTOR, 'div:last-child article h3 a').get_attribute('href')
+                    if (datetime.now() - date) > timedelta(weeks=targetNumWeek):
+                        # Return True when enough post so that it can stop the loop
+                        return True
+                    blogs_list.append([date.strftime(outputDateFormat), title, link])
+
+            if scrapeThirdSession():
+                break
+
             break
 
         # Load more stories
@@ -1042,6 +1092,7 @@ def webscrape(targetNumWeek=1):
         file.flush()
 
     print(f'scraping weeks: {targetNumWeek}')
+
     # scrapeAcademyBinance(targetNumWeek)
     # scrapeChainlink(targetNumWeek)
     # scrapeOpenAI(targetNumWeek)
@@ -1069,7 +1120,7 @@ def webscrape(targetNumWeek=1):
 # display.start()
 
 # start scraping
-inputWeek = 1
+inputWeek = 5
 if (len(sys.argv) > 1):
     inputWeek = int(sys.argv[1])
 
