@@ -32,6 +32,7 @@ def correctTimeOffset(inputDate, dateFormat, targetNumWeek):
     # print(timeDiff.days)
     return timeDiff <= timedelta(weeks=targetNumWeek)
 
+
 # write to list
 def writeScrapedData(data_title: str, file, data_list: list, target_weeks):
     with open(file, 'a', encoding="utf-8") as file:
@@ -43,9 +44,10 @@ def writeScrapedData(data_title: str, file, data_list: list, target_weeks):
             return
         for data in data_list:
             writer.writerow(data)
-        
-        #blank separator
-        writer.writerow([]) 
+
+        # blank separator
+        writer.writerow([])
+
 
 # Error handler
 def handle_scrape_errors(func):
