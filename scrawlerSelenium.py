@@ -6,7 +6,6 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException, StaleElementReferenceException
 from datetime import datetime, timedelta
-# from xvfbwrapper import Xvfb
 import sys
 import time
 import csv
@@ -15,7 +14,8 @@ fileName = 'test.csv'
 outputDateFormat = '%Y-%m-%d'
 
 
-# Prevent Selenium from opening browser
+
+# Ultilities funtion
 # Selenium driver options
 options = Options()
 options.add_argument('--headless')  # No window opened
@@ -23,8 +23,6 @@ options.add_experimental_option("excludeSwitches", ["enable-logging"])  # Disabl
 options.add_argument("--log-level=3")
 options.page_load_strategy = 'eager'
 
-
-# Ultilities funtion
 # check time correctness
 def correctTimeOffset(inputDate, dateFormat, targetNumWeek):
     publishedTime = datetime.strptime(inputDate, dateFormat)
@@ -34,8 +32,8 @@ def correctTimeOffset(inputDate, dateFormat, targetNumWeek):
 
 # write to list
 def writeScrapedData(data_title: str, file, data_list: list, target_weeks):
-    print(data_list)
-    print(data_title)
+    # print(data_list)
+    # print(data_title)
 
     with open(file, 'a', encoding="utf-8") as file:
         writer = csv.writer(file)
@@ -589,13 +587,14 @@ def scrapeZkblab(targetNumWeek):
         page += 1
 
     # write to file
-    with open(fileName, 'a', encoding='UTF8') as file:
-        writer = csv.writer(file)
+    writeScrapedData('ZKP Lab', fileName, dataList, targetNumWeek)
+    # with open(fileName, 'a', encoding='UTF8') as file:
+    #     writer = csv.writer(file)
 
-        writer.writerow(['=== ZKP LAB ==='])
-        for data in dataList:
-            writer.writerow(data)
-        writer.writerow([])
+    #     writer.writerow(['=== ZKP LAB ==='])
+    #     for data in dataList:
+    #         writer.writerow(data)
+    #     writer.writerow([])
 
     print('> done')
     driver.quit()
@@ -710,13 +709,14 @@ def scrapeApple(targetNumWeek):
         print('* keep searching')
         page += 1
 
-    with open(fileName, 'a', encoding='UTF8') as file:
-        writer = csv.writer(file)
+    writeScrapedData('Apple', fileName, dataList, targetNumWeek)
+    # with open(fileName, 'a', encoding='UTF8') as file:
+    #     writer = csv.writer(file)
 
-        writer.writerow(['=== Apple ==='])
-        for data in dataList:
-            writer.writerow(data)
-        writer.writerow([])
+    #     writer.writerow(['=== Apple ==='])
+    #     for data in dataList:
+    #         writer.writerow(data)
+    #     writer.writerow([])
 
     print('> done')
     driver.quit()
@@ -775,13 +775,14 @@ def scrapeForteLab(targetNumWeek):
         print('* keep searching')
         page += 1
 
-    with open(fileName, 'a', encoding='UTF8') as  file:
-        writer = csv.writer(file)
+    writeScrapedData('Forte Lab', fileName, dataList, targetNumWeek)
+    # with open(fileName, 'a', encoding='UTF8') as  file:
+    #     writer = csv.writer(file)
 
-        writer.writerow(['=== ForteLab ==='])
-        for data in dataList:
-            writer.writerow(data)
-        writer.writerow([])
+    #     writer.writerow(['=== ForteLab ==='])
+    #     for data in dataList:
+    #         writer.writerow(data)
+    #     writer.writerow([])
 
     print('> done')
     driver.quit()
@@ -830,6 +831,7 @@ def scrapeAliAbdaal(targetNumWeek):
         page += 1
         print('* still searching')
 
+    writeScrapedData('Ali Abdaal', fileName, dataList, targetNumWeek)
     # writeScrapedData('=== Ali Abdaal ===', fileName, dataList, targetNumWeek)
     # with open(fileName, 'a', encoding='UTF8') as file:
     #     writer = csv.writer(file)
@@ -838,7 +840,6 @@ def scrapeAliAbdaal(targetNumWeek):
     #     for data in dataList:
     #         writer.writerow(data)
     #     writer.writerow([])
-
     print('> done')
 
 
@@ -890,13 +891,7 @@ def scrapeGfi(targetNumWeek):
 
         if (isEnough):
             # start listing
-            with open(fileName, 'a', encoding='UTF8') as file:
-                writer = csv.writer(file)
-
-                writer.writerow(['=== GFI ==='])
-                for data in dataList:
-                    writer.writerow(data)
-                writer.writerow([])
+            writeScrapedData('GFI', fileName, dataList, targetNumWeek)
             break
 
         body.send_keys(Keys.PAGE_DOWN)
@@ -966,13 +961,14 @@ def scrapeBankless(targetNumWeek):
         driver.execute_script("arguments[0].click();", btn)
         time.sleep(2)
 
-    with open(fileName, 'a', encoding='UTF8') as file:
-        writer = csv.writer(file)
+    writeScrapedData('Bankless', fileName, dataList, targetNumWeek)
+    # with open(fileName, 'a', encoding='UTF8') as file:
+    #     writer = csv.writer(file)
 
-        writer.writerow(['=== Bankless ==='])
-        for data in dataList:
-            writer.writerow(data)
-        writer.writerow([])
+    #     writer.writerow(['=== Bankless ==='])
+    #     for data in dataList:
+    #         writer.writerow(data)
+    #     writer.writerow([])
 
     print('> done')
     driver.quit()
@@ -1042,8 +1038,11 @@ def scrapeCoin98(targetNumWeek):
             writer = csv.writer(file)
 
             writer.writerow([f'> {pageUrlEnd}'])
-            for data in dataList:
-                writer.writerow(data)
+            if len(dataList) == 0:
+                writer.writerow([f'No articles/blogs were found within {targetNumWeek} weeks'])
+            else:
+                for data in dataList:
+                    writer.writerow(data)
             writer.writerow([])
 
     print('> done')
@@ -1075,14 +1074,8 @@ def scrapeVitalik(targetNumWeek):
         # print(dataRow)
         dataList.append(dataRow)
     
-    with open(fileName, 'a', encoding='UTF8') as file:
-        writer = csv.writer(file)
-
-        writer.writerow(['=== vitalik ==='])
-        for data in dataList:
-            writer.writerow(data)
-        writer.writerow([])
-    dataList = []
+    writeScrapedData('Vitalik', fileName, dataList, targetNumWeek)
+    print('> done')
 
 
 # everything start here
@@ -1103,27 +1096,20 @@ def webscrape(targetNumWeek=1):
     # scrapeCointelegraph(targetNumWeek)
     # scrapeCoinDesk(targetNumWeek)
 
-    # scrapeZkblab(targetNumWeek)
+    scrapeZkblab(targetNumWeek)
     scrapeGoogleLab(targetNumWeek)
-    # scrapeApple(targetNumWeek)
-    # scrapeForteLab(targetNumWeek)
-    # scrapeAliAbdaal(targetNumWeek)
-    # scrapeGfi(targetNumWeek)
-    # scrapeBankless(targetNumWeek)
-    # scrapeCoin98(targetNumWeek)
-    # scrapeVitalik(targetNumWeek)
+    scrapeApple(targetNumWeek)
+    scrapeForteLab(targetNumWeek)
+    scrapeAliAbdaal(targetNumWeek)
+    scrapeGfi(targetNumWeek)
+    scrapeBankless(targetNumWeek)
+    scrapeCoin98(targetNumWeek)
+    scrapeVitalik(targetNumWeek)
     print('** done')
 
-
-# virtual desktop to prevent opening sites
-# display = Xvfb()
-# display.start()
-
 # start scraping
-inputWeek = 5
+inputWeek = 1
 if (len(sys.argv) > 1):
     inputWeek = int(sys.argv[1])
 
 webscrape(inputWeek)
-
-# display.stop()
