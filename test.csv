@@ -1,7 +1,114 @@
-=== ZKP Lab ===
-2023-07-03,SuperNova: Revolutionizing Cryptographic Proof Systems for Program Executions,https://zkplabs.network/blog/supernova-revolutionizing-cryptographic-proof-systems-for-program-executions
-2023-06-25,Explore zk-SNARKs: An Introduction and Diverse Applications in Web3 Space,https://zkplabs.network/blog/explore-zksnarks-an-introduction-and-diverse-applications-in-web3-space
+=== Hak Research 2 ===
+>>> series
+> Real Builder in Winter
+2023-05-03,Series 10: Real Builder in Winter | JPEG’d – Tham Vọng Quá Lớn Liệu Có Thành Công?,https://hakresearch.com/series-10-real-builder-in-winter-jpegd/
+2023-04-13,Series 9: Real Builder in Winter | Dopex – Phát Triển Giữa Trùng Điệp Khó Khăn,https://hakresearch.com/real-builder-in-winter-dopex/
+2022-11-23,Series 8: Real Builder in Winter | Lido Finance – Cô Đơn Trên Đỉnh Thành Công,https://hakresearch.com/real-builder-in-winter-lido-finance/
+2022-11-21,Series 7: Real Builder in Winter | Solana – Hành Trình Xây Dựng Đầy Gian Truân,https://hakresearch.com/real-builder-in-winter-solana/
+2022-11-13,Series 6: Real Builder in Winter | Stader Labs – Gượng Dậy Sau Cú Sập Kinh Hoàng Luna UST,https://hakresearch.com/real-builder-in-winter-stader-labs/
+2022-11-12,Series 5: Real Builder in Winter | PancakeSwap – Đứa Con Ngoan Của Changpeng Zhao,https://hakresearch.com/real-builder-in-winter-pancakeswap/
+2022-11-12,Series 4: Real Builder in Winter | Trader Joe – Từ Kẻ Đi Sau Trở Thành Vị Thế Người Dẫn Đầu,https://hakresearch.com/real-builder-in-winter-trader-joe/
+2022-11-11,Series 3: Real Builder in Winter | Uniswap – Kì Lân Thực Sự Của Crypto Từng Sản Sinh,https://hakresearch.com/series-2-real-builder-in-winter-uniswap-ki-lan-thuc-su-cua-crypto-tung-san-sinh/
+2022-11-05,Series 2: Real Builder in Winter | AAVE – Thành Cát Tư Hãn xứ DeFi,https://hakresearch.com/real-builder-in-winnter-aave/
+2022-11-04,Series 1: Real Builder in Winter | Orca – AMM Khác Biệt Bậc Nhất Trên Solana,https://hakresearch.com/real-builder-in-winter-orca/
 
-=== Ali Abdaal ===
-No articles/blogs were found within 3 weeks
+> Phân Tích On-Chain
+2023-04-20,Phân Tích On-chain Dự Án BitDAO (BIT),https://hakresearch.com/on-chain-bitdao/
+2023-04-15,Phân Tích On-chain Dự Án Biconomy #2 (BICO),https://hakresearch.com/on-chain-biconomy-2/
+2023-04-13,Phân Tích On-chain Dự Án 1inch (1INCH),https://hakresearch.com/on-chain-1inch/
+2023-04-12,Phân Tích On-chain Dự Án Curve Finance (CRV),https://hakresearch.com/on-chain-curve/
+2023-04-10,Phân Tích On-chain Dự Án Blur (BLUR),https://hakresearch.com/on-chain-blur/
+2023-04-06,Phân Tích On-chain Dự Án Radiant Capital (RDNT),https://hakresearch.com/on-chain-radiant-capital-rdnt/
+2023-03-28,Phân Tích On-chain Dự Án Arbitrum (ARB),https://hakresearch.com/on-chain-arbitrum/
+2023-03-05,"Phân Tích On-chain Dự Án Dopex (DPX, rDPX)",https://hakresearch.com/on-chain-dopex/
+2023-03-01,Phân Tích On-chain Dự Án Camelot (GRAIL),https://hakresearch.com/on-chain-camelot-grail/
+2023-02-28,Phân Tích On-chain Dự Án X2Y2 (X2Y2),https://hakresearch.com/on-chain-x2y2/
+2023-02-23,Phân Tích On-chain JPEG’d (JPEG),https://hakresearch.com/on-chain-jpeg/
+2023-02-13,Phân Tích On-chain Dự Án Rocket Pool (RPL),https://hakresearch.com/on-chain-rocket-pool/
+2023-01-09,"Phân tích On-chain dự án MakerDAO (MKR, DAI)",https://hakresearch.com/on-chain-maker/
+2023-01-09,Phân tích On-chain dự án AAVE (AAVE),https://hakresearch.com/on-chain-aave/
+2023-01-03,Phân tích On-chain dự án Shiba Inu (SHIB),https://hakresearch.com/onchain-shib/
+2022-12-28,Phân Tích On-chain Dự Án Immutable X (IMX),https://hakresearch.com/on-chain-immutablex/
+2022-12-27,Phân Tích On-chain Dự Án Radio Caca (RACA),https://hakresearch.com/on-chain-radio-caca/
+2022-12-22,Phân tích On-chain dự án Biconomy (BICO),https://hakresearch.com/on-chain-biconomy/
+2022-12-18,Phân tích On-chain dự án Galxe (GAL),https://hakresearch.com/on-chain-galxe/
+2022-12-16,Phân tích On-chain dự án Optimism (OP),https://hakresearch.com/on-chain-optimism/
+2022-12-14,Phân Tích On-chain Dự Án dYdX (DYDX),https://hakresearch.com/on-chain-dydx/
+2022-12-13,Phân tích On-chain dự án Uniswap (UNI),https://hakresearch.com/on-chain-uniswap/
+2022-12-05,Phân tích On-chain dự án Coin98 (C98),https://hakresearch.com/on-chain-coin98/
+2022-11-29,Phân Tích On-chain Dự Án Lido Finance (LDO),https://hakresearch.com/on-chain-lido-finance/
+2022-11-23,Phân Tích On-chain Dự Án GMX (GMX),https://hakresearch.com/onchain-gmx/
+2022-11-19,Phân Tích On-chain Dự Án Hashflow (HFT),https://hakresearch.com/onchain-hashflow/
+
+> Macro Flow
+2023-03-08,Macro Flow #9: “Trần Lãi Suất Có Thể Tăng Nếu Dữ Liệu Cho Phép” – Chủ Tịch FED Jerome Powell,https://hakresearch.com/macro-flow-9-lai-suat-co-the-tang-neu-du-lieu-lam-phat-cho-phep/
+2023-02-14,Macro Flow #8: Số Lượng Việc Làm Mới Hoa Kỳ Bùng Nổ – Đẩy Lùi Suy Thoái Nhưng Rủi Ro Lạm Phát Tăng Cao,https://hakresearch.com/macro-flow-8-so-luong-viec-lam-moi-hoa-ky-bung-no-day-lui-suy-thoai-nhung-rui-ro-lam-phat-tang-cao/
+2023-01-03,Macro Flow #7: Ngân Hàng Trung Ương Nhật Bản Có Dấu Hiệu Giảm Kích Thích Kinh Tế,https://hakresearch.com/macro-flow-7-ngan-hang-trung-uong-nhat-ban-co-dau-hieu-giam-kich-thich-kinh-te/
+2022-12-19,Macro Flow #6: Các Ngân Hàng Trung Ương “Diều Hâu” Hơn!!! 2023 Vẫn Là Một Năm Kinh Tế Buồn?,https://hakresearch.com/macro-flow-6-cung-fed-ban-ve-kinh-te-vi-mo-trong-tuong-lai/
+2022-12-13,Macro Flow #5: Hướng Về Dữ Liệu Lạm Phát Tháng 11 Và Cuộc Họp FOMC Cuối Năm 2022,https://hakresearch.com/macro-flow-5-du-lieu-lam-phat-thang-11-cua-hoa-ky/
+2022-12-06,Macro Flow #4: FED Trì Hoãn Tăng Lãi Suất Từ Tháng 12?,https://hakresearch.com/macro-flow-4/
+2022-11-30,Macro Flow #3: Nín Thở Chờ Đợi Tuần Lễ Đầy Biến Động Cuối Tháng 11,https://hakresearch.com/macro-flow-3-nin-tho-cho-doi-tuan-le-day-bien-dong-cuoi-thang-11/
+2022-11-23,Macro Flow #2: Lạm Phát Khu Vực Châu Âu Không Ngừng Nóng Lên,https://hakresearch.com/macro-flow-2-chi-so-lam-phat-khu-vuc-chau-au/
+2022-11-17,Macro Flow #1: Diễn Biến Cuộc Bầu Cử Tổng Thống Giữa Nhiệm Kỳ,https://hakresearch.com/macro-flow-1-dien-bien-cuoc-bau-cu-tong-thong-giua-nhiem-ky/
+
+> Report
+2023-01-16,Toàn Cảnh Hệ Sinh Thái Polygon Năm 2022,https://hakresearch.com/toan-canh-he-sinh-thai-polygon-nam-2022/
+2023-01-15,Tổng Quan Hệ Sinh Thái Near Protocol Năm 2022,https://hakresearch.com/report-he-sinh-thai-near-protocol-nam-2022/
+2023-01-12,Toàn Cảnh Hệ Sinh Thái Solana Năm 2022,https://hakresearch.com/solana-report-2022/
+2023-01-09,Toàn Cảnh Hệ Sinh Thái Aleo Năm 2022,https://hakresearch.com/toan-canh-he-sinh-thai-aleo-nam-2022/
+2023-01-08,Toàn Cảnh Hệ Sinh Thái Sui Blockchain Năm 2022,https://hakresearch.com/toan-canh-he-sinh-thai-sui-blockchain-nam-2022/
+2023-01-07,Toàn Cảnh Hệ Sinh Thái ZkSync Năm 2022,https://hakresearch.com/toan-canh-he-sinh-thai-zksync-nam-2022/
+2023-01-06,Toàn Cảnh Hệ Sinh Thái Ethereum Năm 2022,https://hakresearch.com/toan-canh-he-sinh-thai-ethereum-nam-2022/
+2023-01-05,Report hệ sinh thái Aptos năm 2022,https://hakresearch.com/report-aptos-2022/
+2023-01-04,Toàn Cảnh Hệ Sinh Thái StarkNet Năm 2022,https://hakresearch.com/toan-canh-he-sinh-thai-starknet-nam-2022/
+2022-12-30,Toàn Cảnh Hệ Sinh Thái Arbitrum Năm 2022,https://hakresearch.com/toan-canh-he-sinh-thai-arbitrum-nam-2022/
+2022-12-29,Toàn Cảnh Hệ Sinh Thái Celestia Năm 2022,https://hakresearch.com/toan-canh-he-sinh-thai-celestia-nam-2022/
+2022-12-28,Toàn Cảnh Hệ Sinh Thái Optimism Năm 2022,https://hakresearch.com/toan-canh-he-sinh-thai-optimism-nam-2022/
+2022-12-22,Tổng Hợp Report Của Thị Trường Crypto & Macro 2022 – 2023,https://hakresearch.com/tong-hop-report-cua-thi-truong-crypto-macro-2022-2023/
+2022-12-18,Crypto Market Report: Toàn Cảnh Thị Trường Crypto Năm 2022,https://hakresearch.com/toan-canh-thi-truong-crypto-2022/
+
+>>> kiem-tien
+> Retroactive
+2023-06-19,Hướng Dẫn Săn Retroactive Slingshot,https://hakresearch.com/retroactive-slingshot/
+2023-06-10,Hướng Dẫn Tham Gia Testnet Altitude (Hệ Sinh Thái LayerZero),https://hakresearch.com/testnet-altitude/
+2023-06-08,Hướng Dẫn Tham Gia Testnet Taiko Alpha-3 (Grímsvötn),https://hakresearch.com/huong-dan-tham-gia-testnet-taiko-alpha-3/
+2023-04-06,Hướng Dẫn Săn Retroactive Dự Án Polyhedra Network,https://hakresearch.com/retroactive-polyhedra-network/
+2023-03-29,Hướng Dẫn Săn Retroactive LayerZero,https://hakresearch.com/retroactive-layer-zero/
+2023-03-25,Hướng Dẫn Săn Retroactive Dự Án zkSync Era,https://hakresearch.com/retroactive-zksync-era/
+2023-03-19,Những Dự Án Có Khả Năng Retroactive Trên Arbitrum,https://hakresearch.com/du-an-retroactive-tren-arbitrum/
+2023-02-26,Hướng Dẫn Săn Retroactive Dự Án Olive Finance,https://hakresearch.com/retroactive-olive/
+2023-02-11,Hướng Dẫn Tham Gia Testnet Sui Network Wave 2,https://hakresearch.com/huong-dan-testnet-sui/
+2023-01-16,Hướng Dẫn Tham Gia Testnet Mantle Network,https://hakresearch.com/airdrop-mantle-network/
+2022-11-18,Hướng Dẫn Săn Retroactive Defillama,https://hakresearch.com/retroactive-defillama/
+2022-10-20,Hướng dẫn săn retroactive các dự án trên Aptos,https://hakresearch.com/aptos-retroactive/
+2022-10-11,Hướng dẫn săn retroactive dự án Katana,https://hakresearch.com/huong-dan-san-retroactive-du-an-katana/
+2022-10-11,Hướng dẫn săn retroactive dự án LiFi Bridge,https://hakresearch.com/huong-dan-san-retroactive-du-an-lifi-bridge/
+2022-10-11,Hướng dẫn săn retroactive dự án Genie,https://hakresearch.com/huong-dan-san-retroactive-du-an-genie/
+2022-10-11,Hướng dẫn săn retroactive dự án Zapper,https://hakresearch.com/huong-dan-san-retroactive-du-an-zapper/
+2022-10-11,Hướng dẫn săn retroactive dự án Matcha,https://hakresearch.com/huong-dan-san-retroactive-du-an-matcha/
+
+> Airdrop
+2023-07-10,Hướng Dẫn Tham Gia Testnet Public Goods Network (Gitcoin),https://hakresearch.com/testnet-public-goods-network/
+2023-06-27,Hướng Dẫn Tham Gia Testnet Caldera,https://hakresearch.com/testnet-caldera/
+2023-06-26,Hướng Dẫn Tham Gia Testnet Tapio Finance (100% Airdrop),https://hakresearch.com/testnet-tapio-finance/
+2023-06-23,Hướng Dẫn Tham Gia Testnet Omni Network,https://hakresearch.com/testnet-omni-network/
+2023-06-22,Hướng Dẫn Tham Gia Testnet Opside Network,https://hakresearch.com/testnet-opside-network/
+2023-06-10,Hướng Dẫn Tham Gia Testnet Altitude (Hệ Sinh Thái LayerZero),https://hakresearch.com/testnet-altitude/
+2023-05-16,Hướng Dẫn Tham Gia Testnet AltLayer,https://hakresearch.com/testnet-altlayer/
+2023-05-06,Hướng Dẫn Tham Gia Linea Voyage,https://hakresearch.com/huong-dan-tham-gia-linea-voyage/
+2023-04-26,Hướng Dẫn Tham Gia Testnet Venom Blockchain,https://hakresearch.com/testnet-venom/
+2023-04-11,Hướng Dẫn Tham Gia Nhận $50.000 Từ Space3,https://hakresearch.com/huong-dan-tham-gia-turning-your-gaming-adventures-into-epic-rewards/
+2023-03-29,Hướng Dẫn Tham Gia Testnet Linea (ConsenSys zkEVM),https://hakresearch.com/testnet-linea/
+2023-03-23,Hướng Dẫn Tham Gia Taiko Alpha-2 Testnet (Askja),https://hakresearch.com/taiko-alpha-2-testnet/
+2023-03-20,Space ID Airdrop Và Hướng Dẫn Tham Gia Voyage Season 2,https://hakresearch.com/space-id-airdrop-voyage-season-2/
+2023-03-19,Nên Chuẩn Bị Gì Trước Và Sau Khi Nhận Được Airdrop Arbitrum,https://hakresearch.com/nen-chuan-bi-gi-truoc-va-sau-khi-nhan-duoc-airdrop-arbitrum/
+2023-03-17,Phân Tích Airdrop Và Tokenomics Của Arbitrum,https://hakresearch.com/airdrop-va-tokenomics-arbitrum/
+2023-03-16,Hướng Dẫn Tham Gia Testnet Dự Án Base – Layer 2 Được Phát Triển Bởi Coinbase,https://hakresearch.com/testnet-base/
+2023-02-26,Hướng Dẫn Tham Gia Testnet Thala Labs,https://hakresearch.com/huong-dan-tham-gia-testnet-thala-labs/
+2023-02-21,Hướng Dẫn Tham Gia Testnet Dự Án Coral,https://hakresearch.com/huong-dan-testnet-coral/
+2023-02-18,Hướng Dẫn Săn Airdrop Vela Exchange,https://hakresearch.com/airdrop-vela-exchange/
+2023-01-16,Hướng Dẫn Tham Gia Testnet Mantle Network,https://hakresearch.com/airdrop-mantle-network/
+2023-01-06,Cơ Hội Nhận Airdrop Khủng Khi Tham Gia Testnet Taiko Layer 2,https://hakresearch.com/airdrop-taiko/
+2022-12-31,Tham gia Testnet tìm kiếm cơ hội airdrop với Scroll,https://hakresearch.com/airdrop-scroll/
+2022-11-23,Nhận Airdrop Khủng Từ Hooked Protocol,https://hakresearch.com/airdrop-hooked/
 
