@@ -4,7 +4,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import TimeoutException, StaleElementReferenceException
+from selenium.common.exceptions import TimeoutException, StaleElementReferenceException, WebDriverException
 from datetime import datetime, timedelta
 import sys
 import time
@@ -21,18 +21,16 @@ options.add_experimental_option("excludeSwitches", ["enable-logging"])  # Disabl
 options.add_argument("--log-level=3")
 options.page_load_strategy = 'eager'
 
+
 # check time correctness
-
-
 def correctTimeOffset(inputDate, dateFormat, targetNumWeek):
     publishedTime = datetime.strptime(inputDate, dateFormat)
     timeDiff = datetime.now() - publishedTime
     # print(timeDiff.days)
     return timeDiff <= timedelta(weeks=targetNumWeek)
 
+
 # write to list
-
-
 def writeScrapedData(data_title: str, file, data_list: list, target_weeks):
     # print(data_list)
     # print(data_title)
@@ -51,9 +49,8 @@ def writeScrapedData(data_title: str, file, data_list: list, target_weeks):
         # blank separator
         writer.writerow([])
 
+
 # Error handler
-
-
 def handle_scrape_errors(func):
     """In cases where a website change their layout, it might break the code,
     this is used to prevent any errors that might break the whole program and instead keep running.
@@ -69,6 +66,22 @@ def handle_scrape_errors(func):
             print(f'{func.__name__} aborted')
         print('')  # Extra white space for readability
     return wrapper
+
+
+# Open website with retries
+def open_with_retries(driver, url, max_retries=5):
+    retries_count = 0
+    while retries_count < max_retries:
+        try:
+            driver.get(url)
+            return driver
+        except WebDriverException:
+            print('An error occured while opening the website')
+            retries_count += 1
+            print(f'Retrying... Attempt {retries_count}')
+
+    print(f'Scrape aborted due to website could not be opened properly after {retries_count} attempts')
+    return None
 
 
 # all of functions for scraping here
@@ -537,6 +550,92 @@ def scrapeCoinDesk(targetNumWeek):
     # Write data into file
     writeScrapedData('Coin Desk', fileName, blogs_list, targetNumWeek)
     print('Scraping Coin Desk Finished')
+    driver.quit()
+
+
+@handle_scrape_errors
+def scrapeHakResearchKienThuc(targetNumWeek):
+    print('Starting scraping Hakresearch: Kien thuc Crypto...')
+    pageUrl = 'https://hakresearch.com/kien-thuc-crypto/'
+    isWithinSearchWeek = True
+    options.page_load_strategy = 'eager'
+    driver = webdriver.Chrome(options=options)
+    if not open_with_retries(driver, pageUrl):
+        return
+    blogs_list = []
+    time.sleep(10)
+
+    while (isWithinSearchWeek):
+        # Wait until all blogs are presented on the web
+        try:
+            blogs = WebDriverWait(driver, 5).until(EC.presence_of_all_elements_located((By.CSS_SELECTOR, 'section[data-id="5c805d7c"] div.block-content:not(.loading) article div.content')))
+        except TimeoutException:
+            print('Loading take too long')
+            break
+        for blog in blogs:
+            # print(blog.get_attribute('innerHTML'))
+            title = blog.find_element(By.CSS_SELECTOR, 'h2.post-title a').get_attribute('textContent')
+            date = datetime.strptime(blog.find_element(By.CSS_SELECTOR, 'div.post-meta-items > span.meta-item.date').get_attribute('textContent'), '%B %d, %Y')
+            link = blog.find_element(By.CSS_SELECTOR, 'h2.post-title a').get_attribute('href')
+            if (datetime.now() - date) > timedelta(weeks=targetNumWeek):
+                isWithinSearchWeek = False
+                break
+            blogs_list.append([date.strftime(outputDateFormat), title, link])
+
+        next_page_btn = driver.find_element(By.CSS_SELECTOR, 'a.next.page-numbers')
+        next_page_btn.send_keys(Keys.ENTER)
+
+    # Write data into file
+    writeScrapedData('Hakresearch: Kien thuc Crypto', fileName, blogs_list, targetNumWeek)
+    print('Scraping Hakresearch: Kien thuc Crypto Finished')
+    driver.quit()
+
+
+@handle_scrape_errors
+def scrapeHakResearchHeSinhThai(targetNumWeek):
+    print('Starting scraping Hakresearch: He sinh thai...')
+    pageUrlBase = 'https://hakresearch.com/he-sinh-thai/page/'
+    isWithinSearchWeek = True
+    curPage = 1
+    stopSign = 'Page Not Found!'
+    
+    options.page_load_strategy = 'eager'
+    driver = webdriver.Chrome(options=options)
+    # driver = webdriver.Chrome()
+    
+    blogs_list = []
+    
+    while True:
+        pageUrl = pageUrlBase + str(curPage)
+        driver.get(pageUrl)
+        time.sleep(2)
+        
+        # terminate
+        if (stopSign in driver.find_element(By.TAG_NAME, 'body').text):
+            print("* the end reached")
+            break
+        
+        for blog in driver.find_elements(By.CSS_SELECTOR, 'div.loop-grid-base.loop-grid article div.content'):
+            date = datetime.strptime(blog.find_element(By.CSS_SELECTOR, 'span.date span.date-link').get_attribute('textContent'), '%B %d, %Y')
+            title = blog.find_element(By.CSS_SELECTOR, 'h2.post-title a').get_attribute('textContent')
+            link = blog.find_element(By.CSS_SELECTOR, 'h2.post-title a').get_attribute('href')
+            
+            if (datetime.now() - date) > timedelta(weeks=targetNumWeek):
+                isWithinSearchWeek = False
+                break
+            
+            blogs_list.append([date.strftime(outputDateFormat), title, link])
+        
+        if not isWithinSearchWeek:
+            print('* enough post')
+            break
+            
+        print('* next page')
+        curPage += 1
+
+    # Write data into file
+    writeScrapedData('Hakresearch: He sinh thai', fileName, blogs_list, targetNumWeek)
+    print('Scraping Hakresearch: He sinh thai Finished')
     driver.quit()
 
 
@@ -1183,6 +1282,8 @@ def webscrape(targetNumWeek=1):
     # scrapeDecrypt(targetNumWeek)
     # scrapeCointelegraph(targetNumWeek)
     # scrapeCoinDesk(targetNumWeek)
+    # scrapeHakResearchKienThuc(targetNumWeek)
+    scrapeHakResearchHeSinhThai(targetNumWeek)
 
     # scrapeZkblab(targetNumWeek)
     # scrapeGoogleLab(targetNumWeek)
@@ -1193,12 +1294,12 @@ def webscrape(targetNumWeek=1):
     # scrapeBankless(targetNumWeek)
     # scrapeCoin98(targetNumWeek)
     # scrapeVitalik(targetNumWeek)
-    scrapeHakResearch2(targetNumWeek)
+    # scrapeHakResearch2(targetNumWeek)
     print('** done')
 
 
 # start scraping
-inputWeek = 1
+inputWeek = 4
 if (len(sys.argv) > 1):
     inputWeek = int(sys.argv[1])
 
