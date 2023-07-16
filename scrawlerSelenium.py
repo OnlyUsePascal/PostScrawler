@@ -113,7 +113,7 @@ def scrapeAcademyBinance(targetNumWeek):
                 isWithinSearchWeek = False
                 break
             date = datetime.strptime(blogs_date[i].text, '%b %d, %Y')
-            blogs_list.append([date.strftime(outputDateFormat), blogs_title[i].text, blogs_link[i].get_attribute('href')])
+            blogs_list.append([date.strftime(outputDateFormat), blogs_title[i].get_attribute('title') , blogs_link[i].get_attribute('href')])
 
         # Go to next page
         next_page_btn = driver.find_element(By.CSS_SELECTOR, 'a[aria-label="Go to next page"]')
@@ -1350,7 +1350,7 @@ def webscrape(targetNumWeek=1):
 
     print(f'scraping weeks: {targetNumWeek}')
 
-    # scrapeAcademyBinance(targetNumWeek)
+    scrapeAcademyBinance(targetNumWeek)
     # scrapeChainlink(targetNumWeek)
     # scrapeOpenAI(targetNumWeek)
     # scrapeGoogleBlogAI(targetNumWeek)
@@ -1369,9 +1369,9 @@ def webscrape(targetNumWeek=1):
     # scrapeBankless(targetNumWeek)
     # scrapeCoin98(targetNumWeek)
     # scrapeVitalik(targetNumWeek)
-    scrapeHakResearch2(targetNumWeek)
-    scrapeHakResearchKienThuc(targetNumWeek)
-    scrapeHakResearchHeSinhThai(targetNumWeek)
+    # scrapeHakResearch2(targetNumWeek)
+    # scrapeHakResearchKienThuc(targetNumWeek)
+    # scrapeHakResearchHeSinhThai(targetNumWeek)
     print('** done')
 
 
