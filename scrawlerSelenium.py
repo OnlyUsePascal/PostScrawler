@@ -642,8 +642,18 @@ def scrapeHakResearchKienThuc(targetNumWeek):
         scrapePhanTichChuyenSau()
         break
 
-    # Write data into file
-    writeScrapedData('Hakresearch: Kien thuc Crypto', fileName, blogs_list, targetNumWeek)
+    # write scrape data
+    with open(fileName, 'a', encoding='UTF8') as file:
+        writer = csv.writer(file)
+
+        writer.writerow(['>>> Kien thuc Crypto'])
+        if len(blogs_list) == 0:
+            writer.writerow([f'No articles/blogs were found within {targetNumWeek} weeks'])
+        else:
+            for data in blogs_list:
+                writer.writerow(data)
+        writer.writerow([])
+    # writeScrapedData('Hakresearch: Kien thuc Crypto', fileName, blogs_list, targetNumWeek)
     print('Scraping Hakresearch: Kien thuc Crypto Finished')
     driver.quit()
 
@@ -691,7 +701,17 @@ def scrapeHakResearchHeSinhThai(targetNumWeek):
         curPage += 1
 
     # Write data into file
-    writeScrapedData('Hakresearch: He sinh thai', fileName, blogs_list, targetNumWeek)
+    # writeScrapedData('Hakresearch: He sinh thai', fileName, blogs_list, targetNumWeek)
+    with open(fileName, 'a', encoding='UTF8') as file:
+        writer = csv.writer(file)
+
+        writer.writerow(['>>> He Sinh Thai'])
+        if len(blogs_list) == 0:
+            writer.writerow([f'No articles/blogs were found within {targetNumWeek} weeks'])
+        else:
+            for data in blogs_list:
+                writer.writerow(data)
+        writer.writerow([])
     print('Scraping Hakresearch: He sinh thai Finished')
     driver.quit()
 
@@ -1244,7 +1264,7 @@ def scrapeHakResearch2(targetNumWeek):
     # write title
     with open(fileName, 'a', encoding='UTF8') as file:
         writer = csv.writer(file)
-        writer.writerow(['=== Hak Research 2 ==='])
+        writer.writerow(['=== Hak Research ==='])
 
     for pageUrlEnd in pageUrlEnds:
         # write subtitle
@@ -1339,9 +1359,6 @@ def webscrape(targetNumWeek=1):
     # scrapeDecrypt(targetNumWeek)
     # scrapeCointelegraph(targetNumWeek)
     # scrapeCoinDesk(targetNumWeek)
-    scrapeHakResearchKienThuc(targetNumWeek)
-    # scrapeHakResearchHeSinhThai(targetNumWeek)
-
 
     # scrapeZkblab(targetNumWeek)
     # scrapeGoogleLab(targetNumWeek)
@@ -1352,12 +1369,14 @@ def webscrape(targetNumWeek=1):
     # scrapeBankless(targetNumWeek)
     # scrapeCoin98(targetNumWeek)
     # scrapeVitalik(targetNumWeek)
-    # scrapeHakResearch2(targetNumWeek)
+    scrapeHakResearch2(targetNumWeek)
+    scrapeHakResearchKienThuc(targetNumWeek)
+    scrapeHakResearchHeSinhThai(targetNumWeek)
     print('** done')
 
 
 # start scraping
-inputWeek = 2
+inputWeek = 1
 
 if (len(sys.argv) > 1):
     inputWeek = int(sys.argv[1])
