@@ -6,7 +6,6 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException, StaleElementReferenceException, WebDriverException, NoSuchElementException
 from datetime import datetime, timedelta
-# from xvfbwrapper import Xvfb
 import sys
 import time
 import csv
@@ -14,8 +13,7 @@ import csv
 fileName = 'test.csv'
 outputDateFormat = '%Y-%m-%d'
 
-
-# Prevent Selenium from opening browser
+# Ultilities funtion
 # Selenium driver options
 options = Options()
 options.add_argument('--headless=new')  # No window opened
@@ -24,7 +22,6 @@ options.add_argument("--log-level=3")
 options.page_load_strategy = 'eager'
 
 
-# Ultilities funtion
 # check time correctness
 def correctTimeOffset(inputDate, dateFormat, targetNumWeek):
     publishedTime = datetime.strptime(inputDate, dateFormat)
@@ -35,11 +32,14 @@ def correctTimeOffset(inputDate, dateFormat, targetNumWeek):
 
 # write to list
 def writeScrapedData(data_title: str, file, data_list: list, target_weeks):
+    # print(data_list)
+    # print(data_title)
+
     with open(file, 'a', encoding="utf-8") as file:
         writer = csv.writer(file)
 
         writer.writerow([f'=== {data_title} ==='])
-        if not data_list:
+        if not data_list or len(data_list) == 0:
             writer.writerow([f'No articles/blogs were found within {target_weeks} weeks'])
             # return
         else:
@@ -648,35 +648,47 @@ def scrapeHakResearchKienThuc(targetNumWeek):
     driver.quit()
 
 
-# @handle_scrape_errors
+@handle_scrape_errors
 def scrapeHakResearchHeSinhThai(targetNumWeek):
     print('Starting scraping Hakresearch: He sinh thai...')
-    pageUrl = 'https://hakresearch.com/he-sinh-thai/'
+    pageUrlBase = 'https://hakresearch.com/he-sinh-thai/page/'
     isWithinSearchWeek = True
+    curPage = 1
+    stopSign = 'Page Not Found!'
+    
     options.page_load_strategy = 'eager'
     driver = webdriver.Chrome(options=options)
-    if not open_with_retries(driver, pageUrl):
-        return
+    # driver = webdriver.Chrome()
+    
     blogs_list = []
-
-    while (isWithinSearchWeek):
-        # Wait until all blogs are presented on the web
-        try:
-            blogs = WebDriverWait(driver, 5).until(EC.presence_of_all_elements_located((By.CSS_SELECTOR, 'div.loop-grid-base.loop-grid article div.content')))
-        except TimeoutException:
-            print('Loading take too long')
+    
+    while True:
+        pageUrl = pageUrlBase + str(curPage)
+        driver.get(pageUrl)
+        time.sleep(2)
+        
+        # terminate
+        if (stopSign in driver.find_element(By.TAG_NAME, 'body').text):
+            print("* the end reached")
             break
-        for blog in blogs:
-            title = blog.find_element(By.CSS_SELECTOR, 'h2.post-title a').get_attribute('textContent')
+        
+        for blog in driver.find_elements(By.CSS_SELECTOR, 'div.loop-grid-base.loop-grid article div.content'):
             date = datetime.strptime(blog.find_element(By.CSS_SELECTOR, 'span.date span.date-link').get_attribute('textContent'), '%B %d, %Y')
+            title = blog.find_element(By.CSS_SELECTOR, 'h2.post-title a').get_attribute('textContent')
             link = blog.find_element(By.CSS_SELECTOR, 'h2.post-title a').get_attribute('href')
+            
             if (datetime.now() - date) > timedelta(weeks=targetNumWeek):
                 isWithinSearchWeek = False
                 break
+            
             blogs_list.append([date.strftime(outputDateFormat), title, link])
-
-        next_page_btn = driver.find_element(By.CSS_SELECTOR, 'nav a.next.page-numbers')
-        next_page_btn.send_keys(Keys.ENTER)
+        
+        if not isWithinSearchWeek:
+            print('* enough post')
+            break
+            
+        print('* next page')
+        curPage += 1
 
     # Write data into file
     writeScrapedData('Hakresearch: He sinh thai', fileName, blogs_list, targetNumWeek)
@@ -735,13 +747,14 @@ def scrapeZkblab(targetNumWeek):
         page += 1
 
     # write to file
-    with open(fileName, 'a', encoding='UTF8') as file:
-        writer = csv.writer(file)
+    writeScrapedData('ZKP Lab', fileName, dataList, targetNumWeek)
+    # with open(fileName, 'a', encoding='UTF8') as file:
+    #     writer = csv.writer(file)
 
-        writer.writerow(['=== ZKP LAB ==='])
-        for data in dataList:
-            writer.writerow(data)
-        writer.writerow([])
+    #     writer.writerow(['=== ZKP LAB ==='])
+    #     for data in dataList:
+    #         writer.writerow(data)
+    #     writer.writerow([])
 
     print('> done')
     driver.quit()
@@ -778,7 +791,7 @@ def scrapeGoogleLab(targetNumWeek):
                 title = post.find_element(By.TAG_NAME, 'h3').text
                 url = post.find_element(By.TAG_NAME, 'a').get_attribute('href')
 
-                dataRow = [date,title,url]
+                dataRow = [date, title, url]
 
                 status = correctTimeOffset(str(date), dateFormat, targetNumWeek)
                 if (not status):
@@ -797,13 +810,14 @@ def scrapeGoogleLab(targetNumWeek):
             driver.execute_script("arguments[0].click();", btn)
             time.sleep(delay)
 
-        with open(fileName, 'a', encoding='UTF8') as  file:
-            writer = csv.writer(file)
+        writeScrapedData('Ali Abdaal', fileName, dataList, targetNumWeek)
+        # with open(fileName, 'a', encoding='UTF8') as  file:
+        #     writer = csv.writer(file)
 
-            writer.writerow(['=== GoogleLab ==='])
-            for data in dataList:
-                writer.writerow(data)
-            writer.writerow([])
+        #     writer.writerow(['=== GoogleLab ==='])
+        #     for data in dataList:
+        #         writer.writerow(data)
+        #     writer.writerow([])
 
     except Exception as err:
         print(err)
@@ -855,13 +869,14 @@ def scrapeApple(targetNumWeek):
         print('* keep searching')
         page += 1
 
-    with open(fileName, 'a', encoding='UTF8') as file:
-        writer = csv.writer(file)
+    writeScrapedData('Apple', fileName, dataList, targetNumWeek)
+    # with open(fileName, 'a', encoding='UTF8') as file:
+    #     writer = csv.writer(file)
 
-        writer.writerow(['=== Apple ==='])
-        for data in dataList:
-            writer.writerow(data)
-        writer.writerow([])
+    #     writer.writerow(['=== Apple ==='])
+    #     for data in dataList:
+    #         writer.writerow(data)
+    #     writer.writerow([])
 
     print('> done')
     driver.quit()
@@ -920,14 +935,7 @@ def scrapeForteLab(targetNumWeek):
         print('* keep searching')
         page += 1
 
-    with open(fileName, 'a', encoding='UTF8') as  file:
-        writer = csv.writer(file)
-
-        writer.writerow(['=== ForteLab ==='])
-        for data in dataList:
-            writer.writerow(data)
-        writer.writerow([])
-
+    writeScrapedData('Forte Lab', fileName, dataList, targetNumWeek)
     print('> done')
     driver.quit()
 
@@ -945,7 +953,6 @@ def scrapeAliAbdaal(targetNumWeek):
     # driver = webdriver.Chrome()
     options.page_load_strategy = 'eager'
     driver = webdriver.Chrome(options=options)
-
 
     dataList = []
     while page <= 3:
@@ -975,15 +982,9 @@ def scrapeAliAbdaal(targetNumWeek):
         page += 1
         print('* still searching')
 
-    with open(fileName, 'a', encoding='UTF8') as file:
-        writer = csv.writer(file)
-
-        writer.writerow(['=== Ali Abdaal ==='])
-        for data in dataList:
-            writer.writerow(data)
-        writer.writerow([])
-
+    writeScrapedData('Ali Abdaal', fileName, dataList, targetNumWeek)
     print('> done')
+    driver.quit()
 
 
 def scrapeGfi(targetNumWeek):
@@ -997,7 +998,6 @@ def scrapeGfi(targetNumWeek):
     # driver = webdriver.Chrome()
     options.page_load_strategy = 'eager'
     driver = webdriver.Chrome(options=options)
-    
     driver.get(url)
 
     body = driver.find_element(By.TAG_NAME, "body")
@@ -1034,13 +1034,7 @@ def scrapeGfi(targetNumWeek):
 
         if (isEnough):
             # start listing
-            with open(fileName, 'a', encoding='UTF8') as file:
-                writer = csv.writer(file)
-
-                writer.writerow(['=== GFI ==='])
-                for data in dataList:
-                    writer.writerow(data)
-                writer.writerow([])
+            writeScrapedData('GFI', fileName, dataList, targetNumWeek)
             break
 
         body.send_keys(Keys.PAGE_DOWN)
@@ -1084,7 +1078,7 @@ def scrapeBankless(targetNumWeek):
             if len(postDate[1]) == 2:
                 postDate[1] = '0' + postDate[1]
             postDate = ' '.join(postDate)
-            
+
             # print(dataRow)
 
             if not correctTimeOffset(postDate, dateFormat, targetNumWeek):
@@ -1096,13 +1090,13 @@ def scrapeBankless(targetNumWeek):
             dataRow = [postDate, postTitle, postUrl]
             dataList.append(dataRow)
 
-            # close tab + switch to base 
+            # close tab + switch to base
             driver.close()
             driver.switch_to.window(driver.window_handles[0])
 
         if (isEnough):
             break
-        
+
         print("* still searching")
 
         # load more btn
@@ -1111,14 +1105,7 @@ def scrapeBankless(targetNumWeek):
         driver.execute_script("arguments[0].click();", btn)
         time.sleep(2)
 
-    with open(fileName, 'a', encoding='UTF8') as file:
-        writer = csv.writer(file)
-
-        writer.writerow(['=== Bankless ==='])
-        for data in dataList:
-            writer.writerow(data)
-        writer.writerow([])
-
+    writeScrapedData('Bankless', fileName, dataList, targetNumWeek)
     print('> done')
     driver.quit()
 
@@ -1127,11 +1114,12 @@ def scrapeCoin98(targetNumWeek):
     print('@Coin98')
     pageUrlBase = 'https://coin98.net/posts/title/'
     pageUrlEnds = [
-        'buidl'
-        ,'research'
-        ,'invest']
-        # ,'he-sinh-thai'
-        # ,'regulation']
+        'buidl',
+        'research',
+        'invest',
+        'he-sinh-thai',
+        'regulation'
+    ]
     dateFormat = '%d %b, %Y'
 
     postPath = 'div.style_cardInsight__F9av_'
@@ -1165,7 +1153,7 @@ def scrapeCoin98(targetNumWeek):
 
                 # ignore very recent post
                 # print(postDate)
-                if ('ago' in postDate): 
+                if ('ago' in postDate):
                     continue
 
                 if not correctTimeOffset(postDate, dateFormat, targetNumWeek):
@@ -1176,7 +1164,7 @@ def scrapeCoin98(targetNumWeek):
                 postDate = datetime.strftime(datetime.strptime(postDate, dateFormat), outputDateFormat)
                 dataRow = [postDate, postTitle, postUrl]
                 dataList.append(dataRow)
-        
+
             if (isEnough):
                 break
 
@@ -1188,8 +1176,11 @@ def scrapeCoin98(targetNumWeek):
             writer = csv.writer(file)
 
             writer.writerow([f'> {pageUrlEnd}'])
-            for data in dataList:
-                writer.writerow(data)
+            if len(dataList) == 0:
+                writer.writerow([f'No articles/blogs were found within {targetNumWeek} weeks'])
+            else:
+                for data in dataList:
+                    writer.writerow(data)
             writer.writerow([])
 
     print('> done')
@@ -1221,15 +1212,114 @@ def scrapeVitalik(targetNumWeek):
         dataRow = [postDate, postTitle, postUrl]
         # print(dataRow)
         dataList.append(dataRow)
+        
+    writeScrapedData('Vitalik', fileName, dataList, targetNumWeek)
+    print('> done')
+    driver.quit()
+
+
+def scrapeHakResearch2(targetNumWeek):
+    # targetNumWeek = 20
+    print('@Hak Research')
+    pageUrlBase = 'https://hakresearch.com/'
+    pageUrlEnds = [
+        'series', 
+        'kiem-tien',
+    ]
     
+    boardPath = 'div[class="elementor-widget-container"]'
+    boardTitlePath = 'h4'
+    postPath = 'article'
+    postTitlePath = 'h2'
+    postDatePath = 'span[class="date-link"]'
+    postUrlPath = 'a'
+    boardPageListPath = 'a[class="page-numbers"]'
+
+    dateFormat = '%B %d, %Y'
+    
+    options.page_load_strategy = 'eager'
+    driver = webdriver.Chrome(options=options)
+    # driver = webdriver.Chrome()
+
+    # write title
     with open(fileName, 'a', encoding='UTF8') as file:
         writer = csv.writer(file)
+        writer.writerow(['=== Hak Research 2 ==='])
 
-        writer.writerow(['=== vitalik ==='])
-        for data in dataList:
-            writer.writerow(data)
-        writer.writerow([])
-    dataList = []
+    for pageUrlEnd in pageUrlEnds:
+        # write subtitle
+        with open(fileName, 'a', encoding='UTF8') as file:
+            writer = csv.writer(file)
+            writer.writerow([f'>>> {pageUrlEnd}'])
+            
+        print(f'>>> {pageUrlEnd}')
+        pageUrl = pageUrlBase + pageUrlEnd
+        driver.get(pageUrl)
+        
+        # scroll before scrape
+        print('* little scroll')
+        for _ in range (3):
+            driver.find_element(By.TAG_NAME, 'body').send_keys(Keys.PAGE_DOWN)
+            time.sleep(1)
+        
+        for board in driver.find_elements(By.CSS_SELECTOR, boardPath):
+            boardTitle = board.find_element(By.CSS_SELECTOR, boardTitlePath).text
+            isEnough = False
+            dataList = []
+            
+            boardLastPage = int(board.find_elements(By.CSS_SELECTOR, boardPageListPath)[-1].text)
+            boardCurPage = 1
+            
+            print(f'> {boardTitle}')
+
+            # surfing each page for each board
+            while boardCurPage <= boardLastPage:
+                # each post in page of board
+                for post in board.find_elements(By.CSS_SELECTOR, postPath):
+                    postTitle = post.find_element(By.CSS_SELECTOR, postTitlePath).text
+                    postUrl = post.find_element(By.CSS_SELECTOR, postUrlPath).get_attribute('href')
+                    
+                    # proceeed post date
+                    postDate = post.find_element(By.CSS_SELECTOR, postDatePath).text.split(' ')
+                    if len(postDate[1]) == 2:
+                        postDate[1] = '0' + postDate[1]
+                    postDate = ' '.join(postDate)
+                    
+                    # verify post date here
+                    if not correctTimeOffset(postDate, dateFormat, targetNumWeek):
+                        print('* enough post')
+                        isEnough = True
+                        break
+                        
+                    postDate = datetime.strftime(datetime.strptime(postDate, dateFormat), outputDateFormat)
+                    data = [postDate, postTitle, postUrl]
+                    dataList.append(data)                    
+                                
+                if (boardCurPage == boardLastPage or isEnough):
+                    break
+                
+                print('* more page')
+                boardCurPage += 1
+                boardPageBtnList = board.find_elements(By.CSS_SELECTOR, boardPageListPath)
+                boardPageBtn = next(x for x in boardPageBtnList if int(x.text) == boardCurPage)
+                driver.execute_script("arguments[0].click();", boardPageBtn)
+                time.sleep(2)
+            
+            # write scrape data
+            with open(fileName, 'a', encoding='UTF8') as file:
+                writer = csv.writer(file)
+
+                writer.writerow([f'> {boardTitle}'])
+                if len(dataList) == 0:
+                    writer.writerow([f'No articles/blogs were found within {targetNumWeek} weeks'])
+                else:
+                    for data in dataList:
+                        writer.writerow(data)
+                writer.writerow([])
+            # writeScrapedData(f'{boardTitle}', fileName, dataList, targetNumWeek)
+        
+    print('> done')
+    driver.quit()
 
 
 # everything start here
@@ -1252,6 +1342,7 @@ def webscrape(targetNumWeek=1):
     scrapeHakResearchKienThuc(targetNumWeek)
     # scrapeHakResearchHeSinhThai(targetNumWeek)
 
+
     # scrapeZkblab(targetNumWeek)
     # scrapeGoogleLab(targetNumWeek)
     # scrapeApple(targetNumWeek)
@@ -1261,18 +1352,14 @@ def webscrape(targetNumWeek=1):
     # scrapeBankless(targetNumWeek)
     # scrapeCoin98(targetNumWeek)
     # scrapeVitalik(targetNumWeek)
+    # scrapeHakResearch2(targetNumWeek)
     print('** done')
 
 
-# virtual desktop to prevent opening sites
-# display = Xvfb()
-# display.start()
-
 # start scraping
 inputWeek = 2
+
 if (len(sys.argv) > 1):
     inputWeek = int(sys.argv[1])
 
 webscrape(inputWeek)
-
-# display.stop()
