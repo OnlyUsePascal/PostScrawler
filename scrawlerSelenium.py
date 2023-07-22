@@ -554,13 +554,15 @@ def scrapeCoinDesk(targetNumWeek):
 
 
 # @handle_scrape_errors
-def scrapeHakResearchKienThuc(targetNumWeek):
-    print('Starting scraping Hakresearch: Kien thuc Crypto...')
-    pageUrls = ['https://hakresearch.com/kien-thuc-2/danh-gia-du-an/',
-                'https://hakresearch.com/kien-thuc-2/phan-tich-chuyen-sau/',
-                'https://hakresearch.com/kien-thuc-2/co-che-hoat-dong/',
-                'https://hakresearch.com/kien-thuc-2/xu-huong-thi-truong/',
-                'https://hakresearch.com/kien-thuc-2/layer-2-kien-thuc-2/']
+def scrapeHakResearch1(targetNumWeek):
+    print('Starting scraping Hakresearch: Kien thuc and He sinh thai...')
+    kien_thuc_Urls = ['https://hakresearch.com/kien-thuc-2/danh-gia-du-an/',
+                      'https://hakresearch.com/kien-thuc-2/phan-tich-chuyen-sau/',
+                      'https://hakresearch.com/kien-thuc-2/co-che-hoat-dong/',
+                      'https://hakresearch.com/kien-thuc-2/xu-huong-thi-truong/',
+                      'https://hakresearch.com/kien-thuc-2/layer-2-kien-thuc-2/']
+    he_sinh_thai_url = 'https://hakresearch.com/he-sinh-thai/'
+
     options.page_load_strategy = 'eager'
     driver = webdriver.Chrome(options=options)
     blogs_list = []
@@ -572,7 +574,6 @@ def scrapeHakResearchKienThuc(targetNumWeek):
             return
         # Wait until all blogs are presented on the web
         while True:
-            # print('PAGE')
             try:
                 blogs = WebDriverWait(driver, 5).until(EC.presence_of_all_elements_located((By.CSS_SELECTOR, 'div.loop-grid-base.loop-grid article div.content')))
             except TimeoutException:
@@ -596,8 +597,13 @@ def scrapeHakResearchKienThuc(targetNumWeek):
                 # No more page to scroll over
                 return
 
-    for url in pageUrls:
+    # Scrape Kien thuc section
+    for url in kien_thuc_Urls:
         scrapeHakResearchPage(url)
+    
+    # Scrape He sinh thai section
+    scrapeHakResearchPage(he_sinh_thai_url)
+
     driver.quit()
 
     # Write data into file
@@ -605,52 +611,52 @@ def scrapeHakResearchKienThuc(targetNumWeek):
     print('Scraping Hakresearch: Kien thuc Crypto Finished')
 
 
-@handle_scrape_errors
-def scrapeHakResearchHeSinhThai(targetNumWeek):
-    print('Starting scraping Hakresearch: He sinh thai...')
-    pageUrlBase = 'https://hakresearch.com/he-sinh-thai/page/'
-    isWithinSearchWeek = True
-    curPage = 1
-    stopSign = 'Page Not Found!'
+# @handle_scrape_errors
+# def scrapeHakResearchHeSinhThai(targetNumWeek):
+#     print('Starting scraping Hakresearch: He sinh thai...')
+#     pageUrlBase = 'https://hakresearch.com/he-sinh-thai/page/'
+#     isWithinSearchWeek = True
+#     curPage = 1
+#     stopSign = 'Page Not Found!'
 
-    options.page_load_strategy = 'eager'
-    driver = webdriver.Chrome(options=options)
-    # driver = webdriver.Chrome()
+#     options.page_load_strategy = 'eager'
+#     driver = webdriver.Chrome(options=options)
+#     # driver = webdriver.Chrome()
 
-    blogs_list = []
+#     blogs_list = []
 
-    while True:
-        pageUrl = pageUrlBase + str(curPage)
-        driver.get(pageUrl)
-        time.sleep(2)
+#     while True:
+#         pageUrl = pageUrlBase + str(curPage)
+#         driver.get(pageUrl)
+#         time.sleep(2)
 
-        # terminate
-        if (stopSign in driver.find_element(By.TAG_NAME, 'body').text):
-            print("* the end reached")
-            break
+#         # terminate
+#         if (stopSign in driver.find_element(By.TAG_NAME, 'body').text):
+#             print("* the end reached")
+#             break
 
-        for blog in driver.find_elements(By.CSS_SELECTOR, 'div.loop-grid-base.loop-grid article div.content'):
-            date = datetime.strptime(blog.find_element(By.CSS_SELECTOR, 'span.date span.date-link').get_attribute('textContent'), '%B %d, %Y')
-            title = blog.find_element(By.CSS_SELECTOR, 'h2.post-title a').get_attribute('textContent')
-            link = blog.find_element(By.CSS_SELECTOR, 'h2.post-title a').get_attribute('href')
+#         for blog in driver.find_elements(By.CSS_SELECTOR, 'div.loop-grid-base.loop-grid article div.content'):
+#             date = datetime.strptime(blog.find_element(By.CSS_SELECTOR, 'span.date span.date-link').get_attribute('textContent'), '%B %d, %Y')
+#             title = blog.find_element(By.CSS_SELECTOR, 'h2.post-title a').get_attribute('textContent')
+#             link = blog.find_element(By.CSS_SELECTOR, 'h2.post-title a').get_attribute('href')
 
-            if (datetime.now() - date) > timedelta(weeks=targetNumWeek):
-                isWithinSearchWeek = False
-                break
+#             if (datetime.now() - date) > timedelta(weeks=targetNumWeek):
+#                 isWithinSearchWeek = False
+#                 break
 
-            blogs_list.append([date.strftime(outputDateFormat), title, link])
+#             blogs_list.append([date.strftime(outputDateFormat), title, link])
 
-        if not isWithinSearchWeek:
-            print('* enough post')
-            break
+#         if not isWithinSearchWeek:
+#             print('* enough post')
+#             break
 
-        print('* next page')
-        curPage += 1
+#         print('* next page')
+#         curPage += 1
 
-    # Write data into file
-    writeScrapedData('Hakresearch: He sinh thai', fileName, blogs_list, targetNumWeek)
-    print('Scraping Hakresearch: He sinh thai Finished')
-    driver.quit()
+#     # Write data into file
+#     writeScrapedData('Hakresearch: He sinh thai', fileName, blogs_list, targetNumWeek)
+#     print('Scraping Hakresearch: He sinh thai Finished')
+#     driver.quit()
 
 
 def scrapeZkblab(targetNumWeek):
@@ -1296,8 +1302,7 @@ def webscrape(targetNumWeek=1):
     # scrapeDecrypt(targetNumWeek)
     # scrapeCointelegraph(targetNumWeek)
     # scrapeCoinDesk(targetNumWeek)
-    scrapeHakResearchKienThuc(targetNumWeek)
-    # scrapeHakResearchHeSinhThai(targetNumWeek)
+    scrapeHakResearch1(targetNumWeek)
 
     # scrapeZkblab(targetNumWeek)
     # scrapeGoogleLab(targetNumWeek)
