@@ -4,7 +4,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import TimeoutException, StaleElementReferenceException, WebDriverException, NoSuchElementException
+from selenium.common.exceptions import TimeoutException, StaleElementReferenceException, WebDriverException
 from datetime import datetime, timedelta
 import sys
 import time
@@ -75,8 +75,8 @@ def open_with_retries(driver, url, max_retries=10):
         try:
             driver.get(url)
             return driver
-        except WebDriverException as e:
-            print(f'An error occured while opening the website: {e}')
+        except WebDriverException:
+            print('An error occured while opening the website')
             retries_count += 1
             print(f'Retrying... Attempt {retries_count}')
 
@@ -553,99 +553,56 @@ def scrapeCoinDesk(targetNumWeek):
     driver.quit()
 
 
-@handle_scrape_errors
+# @handle_scrape_errors
 def scrapeHakResearchKienThuc(targetNumWeek):
     print('Starting scraping Hakresearch: Kien thuc Crypto...')
-    pageUrl = 'https://hakresearch.com/kien-thuc-crypto/'
-    isWithinSearchWeek = True
+    pageUrls = ['https://hakresearch.com/kien-thuc-2/danh-gia-du-an/',
+                'https://hakresearch.com/kien-thuc-2/phan-tich-chuyen-sau/',
+                'https://hakresearch.com/kien-thuc-2/co-che-hoat-dong/',
+                'https://hakresearch.com/kien-thuc-2/xu-huong-thi-truong/',
+                'https://hakresearch.com/kien-thuc-2/layer-2-kien-thuc-2/']
     options.page_load_strategy = 'eager'
     driver = webdriver.Chrome(options=options)
-    if not open_with_retries(driver, pageUrl):
-        return
     blogs_list = []
-    time.sleep(10)
-
-    while (isWithinSearchWeek):
-        # Danh Gia Du An Crypto
-        def scrapeDanhGiaDuAn():
-            # Wait until all blogs are presented on the web
+    
+    def scrapeHakResearchPage(url):
+        print(f'working on: {url}')
+        if not open_with_retries(driver, url):
+            print(f'{url} not avaiable')
+            return
+        # Wait until all blogs are presented on the web
+        while True:
+            # print('PAGE')
             try:
-                blogs = WebDriverWait(driver, 5).until(EC.presence_of_all_elements_located((By.CSS_SELECTOR, 'section[data-id="5c805d7c"] div.block-content:not(.loading) article div.content')))
+                blogs = WebDriverWait(driver, 5).until(EC.presence_of_all_elements_located((By.CSS_SELECTOR, 'div.loop-grid-base.loop-grid article div.content')))
             except TimeoutException:
-                print('Danh gia du an not avaiable')
+                print('Session take too long to load')
                 return
             for blog in blogs:
-                # print(blog.get_attribute('innerHTML'))
                 title = blog.find_element(By.CSS_SELECTOR, 'h2.post-title a').get_attribute('textContent')
-                date = datetime.strptime(blog.find_element(By.CSS_SELECTOR, 'div.post-meta-items > span.meta-item.date').get_attribute('textContent'), '%B %d, %Y')
+                date = datetime.strptime(blog.find_element(By.CSS_SELECTOR, 'span.date span.date-link').get_attribute('textContent'), '%B %d, %Y')
                 link = blog.find_element(By.CSS_SELECTOR, 'h2.post-title a').get_attribute('href')
+
                 if (datetime.now() - date) > timedelta(weeks=targetNumWeek):
                     return
+
                 blogs_list.append([date.strftime(outputDateFormat), title, link])
-
-            next_page_btn = driver.find_element(By.CSS_SELECTOR, 'a.next.page-numbers')
-            next_page_btn.send_keys(Keys.ENTER)
-
-        scrapeDanhGiaDuAn()
-
-        # Xu huong thi truong
-        def scrapeXuHuongThiTruong():
-            # Wait until all blogs are presented on the web
+            
             try:
-                blog_links = WebDriverWait(driver, 5).until(EC.presence_of_all_elements_located((By.CSS_SELECTOR, 'section[data-id="48073389"] section.block-grid div.block-content:not(.loading) article div.content h2 a')))
-            except TimeoutException:
-                print('Xu huong thi truong not avaiable')
+                # Try if there is still more page to scrape
+                next_page_btn = driver.find_element(By.CSS_SELECTOR, 'nav.pagination-numbers > a.next.page-numbers')
+                next_page_btn.send_keys(Keys.ENTER)
+            except Exception:
+                # No more page to scroll over
                 return
-            for blog_link in blog_links:
-                # Open link in new tab
-                driver.execute_script(f'window.open("{blog_link.get_attribute("href")}","_blank");')
-                driver.switch_to.window(driver.window_handles[1])
 
-                title = driver.find_element(By.CSS_SELECTOR, 'h1.is-title.post-title').get_attribute('textContent')
-                link = driver.current_url
-                try:
-                    date = driver.find_element(By.CSS_SELECTOR, 'span.date-modified time.post-date').get_attribute('textContent')
-                    date = datetime.strptime(date, '%B %d, %Y')
-                    if (datetime.now() - date) > timedelta(weeks=targetNumWeek):
-                        # Close tab after done scraping
-                        driver.close()
-                        driver.switch_to.window(driver.window_handles[0])
-                        return
-                    blogs_list.append([date.strftime(outputDateFormat), title, link])
-
-                except NoSuchElementException:
-                    date = 'No date provided'
-                    blogs_list.append([date, title, link])
-
-                # Close tab after done scraping
-                driver.close()
-                driver.switch_to.window(driver.window_handles[0])
-
-        scrapeXuHuongThiTruong()
-
-        # Phan tich chuyen sau Crypto
-        def scrapePhanTichChuyenSau():
-            # Wait until all blogs are presented on the web
-            try:
-                blogs = WebDriverWait(driver, 8).until(EC.presence_of_all_elements_located((By.CSS_SELECTOR, 'section[data-id="48073389"] section.block-highlights div.block-content:not(.loading) article div.content')))
-            except TimeoutException:
-                print('Phan tich chuyen sau not avaiable')
-                return
-            for blog in blogs:
-                title = blog.find_element(By.CSS_SELECTOR, '.is-title.post-title a').get_attribute('textContent')
-                date = datetime.strptime(blog.find_element(By.CSS_SELECTOR, 'div.post-meta-items > span.meta-item.date').get_attribute('textContent'), '%B %d, %Y')
-                link = blog.find_element(By.CSS_SELECTOR, '.is-title.post-title a').get_attribute('href')
-                if (datetime.now() - date) > timedelta(weeks=targetNumWeek):
-                    return
-                blogs_list.append([date.strftime(outputDateFormat), title, link])
-
-        scrapePhanTichChuyenSau()
-        break
+    for url in pageUrls:
+        scrapeHakResearchPage(url)
+    driver.quit()
 
     # Write data into file
     writeScrapedData('Hakresearch: Kien thuc Crypto', fileName, blogs_list, targetNumWeek)
     print('Scraping Hakresearch: Kien thuc Crypto Finished')
-    driver.quit()
 
 
 @handle_scrape_errors
@@ -655,38 +612,38 @@ def scrapeHakResearchHeSinhThai(targetNumWeek):
     isWithinSearchWeek = True
     curPage = 1
     stopSign = 'Page Not Found!'
-    
+
     options.page_load_strategy = 'eager'
     driver = webdriver.Chrome(options=options)
     # driver = webdriver.Chrome()
-    
+
     blogs_list = []
-    
+
     while True:
         pageUrl = pageUrlBase + str(curPage)
         driver.get(pageUrl)
         time.sleep(2)
-        
+
         # terminate
         if (stopSign in driver.find_element(By.TAG_NAME, 'body').text):
             print("* the end reached")
             break
-        
+
         for blog in driver.find_elements(By.CSS_SELECTOR, 'div.loop-grid-base.loop-grid article div.content'):
             date = datetime.strptime(blog.find_element(By.CSS_SELECTOR, 'span.date span.date-link').get_attribute('textContent'), '%B %d, %Y')
             title = blog.find_element(By.CSS_SELECTOR, 'h2.post-title a').get_attribute('textContent')
             link = blog.find_element(By.CSS_SELECTOR, 'h2.post-title a').get_attribute('href')
-            
+
             if (datetime.now() - date) > timedelta(weeks=targetNumWeek):
                 isWithinSearchWeek = False
                 break
-            
+
             blogs_list.append([date.strftime(outputDateFormat), title, link])
-        
+
         if not isWithinSearchWeek:
             print('* enough post')
             break
-            
+
         print('* next page')
         curPage += 1
 
@@ -1342,7 +1299,6 @@ def webscrape(targetNumWeek=1):
     scrapeHakResearchKienThuc(targetNumWeek)
     # scrapeHakResearchHeSinhThai(targetNumWeek)
 
-
     # scrapeZkblab(targetNumWeek)
     # scrapeGoogleLab(targetNumWeek)
     # scrapeApple(targetNumWeek)
@@ -1357,7 +1313,7 @@ def webscrape(targetNumWeek=1):
 
 
 # start scraping
-inputWeek = 2
+inputWeek = 1
 
 if (len(sys.argv) > 1):
     inputWeek = int(sys.argv[1])
