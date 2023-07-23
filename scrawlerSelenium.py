@@ -578,102 +578,73 @@ def scrapeHakResearch1(targetNumWeek):
                       'https://hakresearch.com/kien-thuc-2/co-che-hoat-dong/',
                       'https://hakresearch.com/kien-thuc-2/xu-huong-thi-truong/',
                       'https://hakresearch.com/kien-thuc-2/layer-2-kien-thuc-2/']
-    he_sinh_thai_url = 'https://hakresearch.com/he-sinh-thai/'
+    he_sinh_thai_urls = [
+        'https://hakresearch.com/he-sinh-thai/layer-1',
+        'https://hakresearch.com/he-sinh-thai/layer-2',
+        'https://hakresearch.com/he-sinh-thai/he-sinh-thai-giao-thuc/',
+    ]
 
     options.page_load_strategy = 'eager'
     driver = webdriver.Chrome(options=options)
-    blogs_list = []
     
-    def scrapeHakResearchPage(url):
+    def scrapeByEndpoints(url):
         print(f'working on: {url}')
+        writeFileTitle(f"> {url}")
+        
+        blogs_list = []
+        
         if not open_with_retries(driver, url):
             print(f'{url} not avaiable')
+            writeFileData([], targetNumWeek)
             return
+        
         # Wait until all blogs are presented on the web
+        isEnough = False
         while True:
             try:
                 blogs = WebDriverWait(driver, 5).until(EC.presence_of_all_elements_located((By.CSS_SELECTOR, 'div.loop-grid-base.loop-grid article div.content')))
             except TimeoutException:
                 print('Session take too long to load')
-                return
+                break
+            
             for blog in blogs:
                 title = blog.find_element(By.CSS_SELECTOR, 'h2.post-title a').get_attribute('textContent')
                 date = datetime.strptime(blog.find_element(By.CSS_SELECTOR, 'span.date span.date-link').get_attribute('textContent'), '%B %d, %Y')
                 link = blog.find_element(By.CSS_SELECTOR, 'h2.post-title a').get_attribute('href')
 
                 if (datetime.now() - date) > timedelta(weeks=targetNumWeek):
-                    return
+                    isEnough = True
+                    break
 
                 blogs_list.append([date.strftime(outputDateFormat), title, link])
             
+            # enough post
+            if isEnough:
+                print("* enough post")
+                break
+            
+            # Try if there is still more page to scrape
             try:
-                # Try if there is still more page to scrape
                 next_page_btn = driver.find_element(By.CSS_SELECTOR, 'nav.pagination-numbers > a.next.page-numbers')
                 next_page_btn.send_keys(Keys.ENTER)
             except Exception:
-                # No more page to scroll over
                 return
-
-    # Scrape Kien thuc section
+        
+        writeFileData(blogs_list, targetNumWeek)
+                            
+    # scrape by sections
+    print(">>> Kien thuc")
+    writeFileTitle(">>> Kien thuc")
     for url in kien_thuc_Urls:
-        scrapeHakResearchPage(url)
+        scrapeByEndpoints(url)
     
-    # Scrape He sinh thai section
-    scrapeHakResearchPage(he_sinh_thai_url)
-
-    driver.quit()
-
-    # Write data into file
-    writeScrapedData('Hakresearch: Kien thuc Crypto', fileName, blogs_list, targetNumWeek)
+    print(">>> He sinh thai")
+    writeFileTitle(">>> He sinh thai")
+    for url in he_sinh_thai_urls:
+        scrapeByEndpoints(url)
+    
     print('Scraping Hakresearch: Kien thuc Crypto Finished')
-
-
-# @handle_scrape_errors
-# def scrapeHakResearchHeSinhThai(targetNumWeek):
-#     print('Starting scraping Hakresearch: He sinh thai...')
-#     pageUrlBase = 'https://hakresearch.com/he-sinh-thai/page/'
-#     isWithinSearchWeek = True
-#     curPage = 1
-#     stopSign = 'Page Not Found!'
-
-#     options.page_load_strategy = 'eager'
-#     driver = webdriver.Chrome(options=options)
-#     # driver = webdriver.Chrome()
-
-#     blogs_list = []
-
-#     while True:
-#         pageUrl = pageUrlBase + str(curPage)
-#         driver.get(pageUrl)
-#         time.sleep(2)
-
-#         # terminate
-#         if (stopSign in driver.find_element(By.TAG_NAME, 'body').text):
-#             print("* the end reached")
-#             break
-
-#         for blog in driver.find_elements(By.CSS_SELECTOR, 'div.loop-grid-base.loop-grid article div.content'):
-#             date = datetime.strptime(blog.find_element(By.CSS_SELECTOR, 'span.date span.date-link').get_attribute('textContent'), '%B %d, %Y')
-#             title = blog.find_element(By.CSS_SELECTOR, 'h2.post-title a').get_attribute('textContent')
-#             link = blog.find_element(By.CSS_SELECTOR, 'h2.post-title a').get_attribute('href')
-#             if (datetime.now() - date) > timedelta(weeks=targetNumWeek):
-#                 isWithinSearchWeek = False
-#                 break
-
-#             blogs_list.append([date.strftime(outputDateFormat), title, link])
-
-#         if not isWithinSearchWeek:
-#             print('* enough post')
-#             break
-
-#         print('* next page')
-#         curPage += 1
-
-#     # Write data into file
-#     writeScrapedData('Hakresearch: He sinh thai', fileName, blogs_list, targetNumWeek)
-#     print('Scraping Hakresearch: He sinh thai Finished')
-#     driver.quit()
-
+    driver.quit()
 
 
 def scrapeZkblab(targetNumWeek):
@@ -1198,6 +1169,7 @@ def scrapeVitalik(targetNumWeek):
     driver.quit()
 
 def scrapeHakResearch(targetNumWeek):
+    writeFileTitle("=== Hak Research ===")
     print("@Hak Research")
     pageUrlBase = 'https://hakresearch.com/'
     
@@ -1311,8 +1283,6 @@ def webscrape(targetNumWeek=1):
     # scrapeDecrypt(targetNumWeek)
     # scrapeCointelegraph(targetNumWeek)
     # scrapeCoinDesk(targetNumWeek)
-    scrapeHakResearch1(targetNumWeek)
-
 
     # scrapeZkblab(targetNumWeek)
     # scrapeGoogleLab(targetNumWeek)
@@ -1324,6 +1294,8 @@ def webscrape(targetNumWeek=1):
     # scrapeCoin98(targetNumWeek)
     # scrapeVitalik(targetNumWeek)
     scrapeHakResearch(targetNumWeek)
+    scrapeHakResearch1(targetNumWeek
+                       )
     print('** done')
 
 
