@@ -1,0 +1,40 @@
+# write to list
+import csv
+
+
+def writeFileTitle(data_title: str, file):
+    with open(file, 'a', encoding="utf-8") as file:
+        writer = csv.writer(file)
+        writer.writerow([f'{data_title}'])
+
+
+def writeFileData(data_list: list, targetNumWeek: int, file):
+    with open(file, 'a', encoding="utf-8") as file:
+        writer = csv.writer(file)
+
+        if not data_list or len(data_list) == 0:
+            writer.writerow([f'No articles/blogs were found within {targetNumWeek} weeks'])
+        else:
+            for data in data_list:
+                writer.writerow(data)
+
+        # blank separator
+        writer.writerow([])
+
+
+def writeScrapedData(data_title: str, file, data_list: list, target_weeks):
+    # print(data_list)
+    # print(data_title)
+
+    with open(file, 'a', encoding="utf-8") as file:
+        writer = csv.writer(file)
+
+        writer.writerow([f'=== {data_title} ==='])
+        if not data_list or len(data_list) == 0:
+            writer.writerow([f'No articles/blogs were found within {target_weeks} weeks'])
+        else:
+            for data in data_list:
+                writer.writerow(data)
+
+        # blank separator
+        writer.writerow([])
