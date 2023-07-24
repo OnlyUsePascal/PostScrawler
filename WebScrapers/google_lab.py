@@ -5,6 +5,7 @@ from Utils.driver_options import create_option
 from Utils.write_to_list import writeScrapedData
 from Utils.correct_time_offset import correctTimeOffset
 from globals import fileName
+import time
 
 
 def scrapeGoogleLab(targetNumWeek):

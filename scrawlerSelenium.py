@@ -20,7 +20,6 @@ def webscrape(targetNumWeek=1):
     # decrypt.scrapeDecrypt(targetNumWeek)
     # cointelegraph.scrapeCointelegraph(targetNumWeek)
     # coin_desk.scrapeCoinDesk(targetNumWeek)
-    # hak_research.scrapeHakResearch1(targetNumWeek)
 
     # zkblab.scrapeZkblab(targetNumWeek)
     # google_lab.scrapeGoogleLab(targetNumWeek)
@@ -32,6 +31,7 @@ def webscrape(targetNumWeek=1):
     # coin98.scrapeCoin98(targetNumWeek)
     # vitalik.scrapeVitalik(targetNumWeek)
     # hak_research.scrapeHakResearch(targetNumWeek)
+    # hak_research.scrapeHakResearch1(targetNumWeek)
     print('** done')
 
 

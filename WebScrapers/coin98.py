@@ -1,7 +1,8 @@
+import time
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
-from datetime import datetime, time
+from datetime import datetime
 from Utils.driver_options import create_option
 # from Utils.write_to_list import writeScrapedData
 from Utils.correct_time_offset import correctTimeOffset
