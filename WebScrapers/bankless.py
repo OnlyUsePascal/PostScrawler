@@ -38,17 +38,17 @@ def scrapeBankless(targetNumWeek):
                 driver.switch_to.window(driver.window_handles[1])
                 time.sleep(4)
 
-                # process post date
                 postTitle = driver.find_element(By.CSS_SELECTOR, postTitlePath).text
                 postDate = driver.find_elements(By.CSS_SELECTOR, postDatePath)[1].text.split(' ')
                 if len(postDate[1]) == 2:
                     postDate[1] = '0' + postDate[1]
                 postDate = ' '.join(postDate)
 
-
                 if not correctTimeOffset(postDate, dateFormat, targetNumWeek):
                     print("* enough posts")
                     isEnough = True
+                    driver.close()
+                    driver.switch_to.window(driver.window_handles[0])
                     break
 
                 postDate = datetime.strftime(datetime.strptime(postDate, dateFormat), outputDateFormat)
