@@ -33,7 +33,8 @@ def webscrape(targetNumWeek=1):
     # vitalik.scrapeVitalik(targetNumWeek)
     # hak_research.scrapeHakResearch(targetNumWeek)
     # hak_research.scrapeHakResearch1(targetNumWeek)
-    webflow.scrapeWebflow(targetNumWeek)
+    # webflow.scrapeWebflow(targetNumWeek)
+    hackerrank.scrapeHackerrank(targetNumWeek)
     print('** done')
 
 
