@@ -10,7 +10,7 @@ def create_option(headless: bool = True, page_load_strategy: str = 'eager') -> O
         page_load_strategy (str, optional): The way selenium load website, prefer more to the documentation. Defaults to 'eager'.
 
     Returns:
-        Options:
+        Options: A Selenium's webdriver option (can be furthermore customized if needed)
     """
     # Selenium driver options
     options = Options()

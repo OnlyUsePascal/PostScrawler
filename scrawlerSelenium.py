@@ -1,4 +1,4 @@
-from WebScrapers import academy_binance, chain_link, open_ai, google_blog_ai, developer_archives, alchemy_blog, decrypt, cointelegraph, coin_desk, hak_research, zkblab, google_lab, apple, forte_lab, ali_abdaal, gfi, bankless, coin98, vitalik
+from WebScrapers import academy_binance, chain_link, open_ai, google_blog_ai, developer_archives, alchemy_blog, decrypt, cointelegraph, coin_desk, hak_research, ibm, vng, hugging_face, zkblab, google_lab, apple, forte_lab, ali_abdaal, gfi, bankless, coin98, vitalik
 from globals import fileName
 import sys
 
@@ -11,16 +11,19 @@ def webscrape(targetNumWeek=1):
 
     print(f'scraping weeks: {targetNumWeek}')
 
-    academy_binance.scrapeAcademyBinance(targetNumWeek)
-    chain_link.scrapeChainlink(targetNumWeek)
-    open_ai.scrapeOpenAI(targetNumWeek)
-    google_blog_ai.scrapeGoogleBlogAI(targetNumWeek)
-    developer_archives.scrapeDevelopersArchives(targetNumWeek)
-    alchemy_blog.scrapeAlchemyBlog(targetNumWeek)
-    decrypt.scrapeDecrypt(targetNumWeek)
-    cointelegraph.scrapeCointelegraph(targetNumWeek)
-    coin_desk.scrapeCoinDesk(targetNumWeek)
+    # academy_binance.scrapeAcademyBinance(targetNumWeek)
+    # chain_link.scrapeChainlink(targetNumWeek)
+    # open_ai.scrapeOpenAI(targetNumWeek)
+    # google_blog_ai.scrapeGoogleBlogAI(targetNumWeek)
+    # developer_archives.scrapeDevelopersArchives(targetNumWeek)
+    # alchemy_blog.scrapeAlchemyBlog(targetNumWeek)
+    # decrypt.scrapeDecrypt(targetNumWeek)
+    # cointelegraph.scrapeCointelegraph(targetNumWeek)
+    # coin_desk.scrapeCoinDesk(targetNumWeek)
     # hak_research.scrapeHakResearch1(targetNumWeek)
+    # ibm.scrapeIBM(targetNumWeek)
+    # vng.scrapeVNG(targetNumWeek)
+    hugging_face.scrapeHuggingFace(targetNumWeek)
 
     # zkblab.scrapeZkblab(targetNumWeek)
     # google_lab.scrapeGoogleLab(targetNumWeek)
@@ -37,7 +40,7 @@ def webscrape(targetNumWeek=1):
 
 # start scraping
 if __name__ == '__main__':
-    inputWeek = 1
+    inputWeek = 6
 
     if (len(sys.argv) > 1):
         inputWeek = int(sys.argv[1])
