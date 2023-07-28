@@ -45,40 +45,37 @@ def scrapeHackerrank(targetNumWeek):
         board = driver.find_element(By.CSS_SELECTOR, boardPath)
         
         # for each post
-        while True:
-            for postDiv in board.find_elements(By.CSS_SELECTOR, postDivPath):
-                postUrl = postDiv.find_element(By.CSS_SELECTOR, postUrlPath).get_attribute('href')
-                
-                # new tab
-                driver.execute_script(f'window.open("{postUrl}","_blank");')
-                time.sleep(2)
-                driver.switch_to.window(driver.window_handles[1])
-                
-                #get title + date
-                postTitle = driver.find_element(By.CSS_SELECTOR, postTitlePath).text
-                postDate = driver.find_element(By.CSS_SELECTOR, postDatePath).text.split(' | ')[-1].split(' ')
-                if len(postDate[1]) == 2:
-                    postDate[1] = '0' + postDate[1]
-                postDate = ' '.join(postDate)
-                
-                
-                if not correctTimeOffset(postDate, dateFormat, targetNumWeek):
-                    print("* enough posts")
-                    isEnough = True
-                    driver.close()
-                    driver.switch_to.window(driver.window_handles[0])
-                    break
-                
-                postDate = datetime.strftime(datetime.strptime(postDate, dateFormat), outputDateFormat)
-                dataRow = [postDate, postTitle, postUrl]
-                print(dataRow)
-                
-                dataList.append(dataRow)
-                
-                # close tab 
+        for postDiv in board.find_elements(By.CSS_SELECTOR, postDivPath):
+            postUrl = postDiv.find_element(By.CSS_SELECTOR, postUrlPath).get_attribute('href')
+            
+            # new tab
+            driver.execute_script(f'window.open("{postUrl}","_blank");')
+            time.sleep(2)
+            driver.switch_to.window(driver.window_handles[1])
+            
+            #get title + date
+            postTitle = driver.find_element(By.CSS_SELECTOR, postTitlePath).text
+            postDate = driver.find_element(By.CSS_SELECTOR, postDatePath).text.split(' | ')[-1].split(' ')
+            if len(postDate[1]) == 2:
+                postDate[1] = '0' + postDate[1]
+            postDate = ' '.join(postDate)
+            
+            if not correctTimeOffset(postDate, dateFormat, targetNumWeek):
+                print("* enough posts")
+                isEnough = True
                 driver.close()
                 driver.switch_to.window(driver.window_handles[0])
-            break
+                break
+            
+            postDate = datetime.strftime(datetime.strptime(postDate, dateFormat), outputDateFormat)
+            dataRow = [postDate, postTitle, postUrl]
+            # print(dataRow)
+            
+            dataList.append(dataRow)
+            
+            # close tab 
+            driver.close()
+            driver.switch_to.window(driver.window_handles[0])
     
         # if not enough, move next page
         if isEnough:
