@@ -1,4 +1,4 @@
-from WebScrapers import academy_binance, chain_link, open_ai, google_blog_ai, developer_archives, alchemy_blog, decrypt, cointelegraph, coin_desk, hak_research, ibm, vng, hugging_face, zkblab, google_lab, apple, forte_lab, ali_abdaal, gfi, bankless, coin98, vitalik
+from WebScrapers import academy_binance, chain_link, open_ai, google_blog_ai, developer_archives, alchemy_blog, decrypt, cointelegraph, coin_desk, hak_research, ibm, vng, hugging_face, yc, zkblab, google_lab, apple, forte_lab, ali_abdaal, gfi, bankless, coin98, vitalik
 from globals import fileName
 import sys
 
@@ -23,7 +23,8 @@ def webscrape(targetNumWeek=1):
     # hak_research.scrapeHakResearch1(targetNumWeek)
     # ibm.scrapeIBM(targetNumWeek)
     # vng.scrapeVNG(targetNumWeek)
-    hugging_face.scrapeHuggingFace(targetNumWeek)
+    # hugging_face.scrapeHuggingFace(targetNumWeek)
+    yc.scrapeYC(targetNumWeek)
 
     # zkblab.scrapeZkblab(targetNumWeek)
     # google_lab.scrapeGoogleLab(targetNumWeek)

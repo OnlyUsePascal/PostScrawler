@@ -29,8 +29,6 @@ def scrapeHuggingFace(targetNumWeek):
             print('Loading take too long')
             break
 
-        # print(blogs[0].get_attribute('innerText'))
-        # return
         for blog in blogs:
             title = blog.find_element(By.CSS_SELECTOR, 'div:nth-child(2) > h2').get_attribute('textContent').replace('\n', '').strip()
             date = datetime.strptime(blog.find_element(By.CSS_SELECTOR, 'div:nth-child(2) > p span:nth-child(3)').get_attribute('textContent'), '%B %d, %Y')
@@ -42,8 +40,11 @@ def scrapeHuggingFace(targetNumWeek):
                 continue
             blogs_list.append([date.strftime(outputDateFormat), title, link])
 
-        next_page_btn = driver.find_element(By.CSS_SELECTOR, 'main > div:nth-child(1) > div:nth-child(1) > nav:nth-of-type(1) ul li:last-child > a')
-        next_page_btn.send_keys(Keys.ENTER)
+        try:
+            next_page_btn = driver.find_element(By.CSS_SELECTOR, 'main > div:nth-child(1) > div:nth-child(1) > nav:nth-of-type(1) ul li:last-child > a')
+            next_page_btn.send_keys(Keys.ENTER)
+        except Exception:
+            break
 
     # Write data into file
     writeScrapedData(web_name, fileName, blogs_list, targetNumWeek)
