@@ -1,10 +1,14 @@
+import time
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from datetime import datetime, time
+from datetime import datetime
 from Utils.driver_options import create_option
 from Utils.write_to_list import writeScrapedData
 from Utils.correct_time_offset import correctTimeOffset
 from globals import fileName, outputDateFormat
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.common.exceptions import TimeoutException
+from selenium.webdriver.support import expected_conditions as EC
 
 
 def scrapeBankless(targetNumWeek):
@@ -23,49 +27,52 @@ def scrapeBankless(targetNumWeek):
 
     dataList = []
     isEnough = False
-    while True:
-        posts = driver.find_elements(By.XPATH, postPath)
-        for post in posts:
-            postUrl = post.get_attribute('href')
+    try:
+        while True:
+            posts = driver.find_elements(By.XPATH, postPath)
+            for post in posts:
+                postUrl = post.get_attribute('href')
 
-            # open in new tab
-            driver.execute_script(f'window.open("{postUrl}","_blank");')
-            driver.switch_to.window(driver.window_handles[1])
-            time.sleep(3)
+                # open in new tab
+                driver.execute_script(f'window.open("{postUrl}","_blank");')
+                driver.switch_to.window(driver.window_handles[1])
+                time.sleep(4)
 
-            # process post date
-            postTitle = driver.find_element(By.CSS_SELECTOR, postTitlePath).text
-            postDate = driver.find_elements(By.CSS_SELECTOR, postDatePath)[1].text.split(' ')
-            if len(postDate[1]) == 2:
-                postDate[1] = '0' + postDate[1]
-            postDate = ' '.join(postDate)
+                postTitle = driver.find_element(By.CSS_SELECTOR, postTitlePath).text
+                postDate = driver.find_elements(By.CSS_SELECTOR, postDatePath)[1].text.split(' ')
+                if len(postDate[1]) == 2:
+                    postDate[1] = '0' + postDate[1]
+                postDate = ' '.join(postDate)
 
-            # print(dataRow)
+                if not correctTimeOffset(postDate, dateFormat, targetNumWeek):
+                    print("* enough posts")
+                    isEnough = True
+                    driver.close()
+                    driver.switch_to.window(driver.window_handles[0])
+                    break
 
-            if not correctTimeOffset(postDate, dateFormat, targetNumWeek):
-                print("* enough posts")
-                isEnough = True
+                postDate = datetime.strftime(datetime.strptime(postDate, dateFormat), outputDateFormat)
+                dataRow = [postDate, postTitle, postUrl]
+                print(dataRow)
+                dataList.append(dataRow)
+
+                # close tab + switch to base
+                driver.close()
+                driver.switch_to.window(driver.window_handles[0])
+
+            if (isEnough):
                 break
 
-            postDate = datetime.strftime(datetime.strptime(postDate, dateFormat), outputDateFormat)
-            dataRow = [postDate, postTitle, postUrl]
-            dataList.append(dataRow)
+            print("* still searching")
 
-            # close tab + switch to base
-            driver.close()
-            driver.switch_to.window(driver.window_handles[0])
-
-        if (isEnough):
-            break
-
-        print("* still searching")
-
-        # load more btn
-        btnPath = "a[class='loadMoreFilterBtn']"
-        btn = driver.find_element(By.CSS_SELECTOR, btnPath)
-        driver.execute_script("arguments[0].click();", btn)
-        time.sleep(2)
-
+            # load more btn
+            btnPath = "a[class='loadMoreFilterBtn']"
+            btn = driver.find_element(By.CSS_SELECTOR, btnPath)
+            driver.execute_script("arguments[0].click();", btn)
+            time.sleep(2)
+    except Exception as err:
+        print(err)
+    
     writeScrapedData('Bankless', fileName, dataList, targetNumWeek)
     print('> done')
     driver.quit()

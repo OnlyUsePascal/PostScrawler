@@ -1,15 +1,17 @@
 # write to list
 import csv
+import sys
+from globals import fileName
 
 
-def writeFileTitle(data_title: str, file):
-    with open(file, 'a', encoding="utf-8") as file:
+def writeFileTitle(data_title: str):
+    with open(fileName, 'a', encoding="utf-8") as file:
         writer = csv.writer(file)
         writer.writerow([f'{data_title}'])
 
 
-def writeFileData(data_list: list, targetNumWeek: int, file):
-    with open(file, 'a', encoding="utf-8") as file:
+def writeFileData(data_list: list, targetNumWeek: int):
+    with open(fileName, 'a', encoding="utf-8") as file:
         writer = csv.writer(file)
 
         if not data_list or len(data_list) == 0:
