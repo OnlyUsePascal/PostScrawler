@@ -17,10 +17,6 @@ def scrapeHackerrank(targetNumWeek):
     
     pageUrlBase = 'https://www.hackerrank.com/blog/page/'
     curPage = 1
-    # pageUrlEnds = [
-    #     'entrepreneurship',
-    #     'tools-resources',
-    # ]
 
     dateFormat = '%B %d, %Y'
     boardPath = 'div[class="blog_listing-list"]'

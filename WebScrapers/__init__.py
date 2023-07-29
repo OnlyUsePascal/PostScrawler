@@ -22,4 +22,5 @@ __all__ = [
   "webflow",
   "hackerrank",
   'atlassian',
+  'cognizant',
   ]

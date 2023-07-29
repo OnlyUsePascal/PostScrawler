@@ -34,8 +34,9 @@ def webscrape(targetNumWeek=1):
     # hak_research.scrapeHakResearch(targetNumWeek)
     # hak_research.scrapeHakResearch1(targetNumWeek)
     # webflow.scrapeWebflow(targetNumWeek)
-    hackerrank.scrapeHackerrank(targetNumWeek)
+    # hackerrank.scrapeHackerrank(targetNumWeek)
     # atlassian.scrapeAtlassian(targetNumWeek)
+    cognizant.scrapeCognizant(targetNumWeek)
     print('** done')
 
 
