@@ -12,6 +12,7 @@ IBM: https://www.ibm.com/blog/
 VNG: https://www.vngcloud.vn/en/blog
 Hugging Face: https://huggingface.co/blog
 Y Combinator: https://www.ycombinator.com/blog/
+Accenture: https://www.accenture.com/us-en/blogs/
 
 Zkblab: https://zkplabs.network/blog
 GoogleLab: https://blog.google/technology/developers/
