@@ -9,22 +9,27 @@ from Utils.error_handler import handle_scrape_errors
 from Utils.driver_options import create_option
 from Utils.write_to_list import writeScrapedData
 from globals import fileName, outputDateFormat
-
+from Utils import write_to_list
 
 # @handle_scrape_errors
 def scrapeAccenture(targetNumWeek):
     web_name = 'Accenture'
     print(f'Starting scraping {web_name}...')
+    write_to_list.writeFileTitle('=== Accenture ===')
+
     pageUrls = ['https://www.accenture.com/us-en/blogs/high-tech',
                 'https://www.accenture.com/us-en/blogs/cloud-computing',
                 'https://www.accenture.com/us-en/blogs/software-engineering-blog']
-    driver = webdriver.Chrome(options=create_option(headless=False))
-    blogs_list = []
+    driver = webdriver.Chrome(options=create_option())
 
     def scrapeSection(url):
         print(f'working on: {url}')
+        write_to_list.writeFileTitle(f'> {url}')
+        blogs_list = []
+        
         driver.get(url)
-
+        time.sleep(2)
+        
         def getFeaturedPost():
             # Wait until featured post is presented on the web
             try:
@@ -82,11 +87,13 @@ def scrapeAccenture(targetNumWeek):
         getFeaturedPost()
         getMorePosts()
         getRecentPosts()
+        
+        write_to_list.writeFileData(blogs_list, targetNumWeek)
 
     for url in pageUrls:
         scrapeSection(url)
 
     # Write data into file
-    writeScrapedData(web_name, fileName, blogs_list, targetNumWeek)
+    # writeScrapedData(web_name, fileName, blogs_list, targetNumWeek)
     print(f'Scraping {web_name} Finished')
     driver.quit()

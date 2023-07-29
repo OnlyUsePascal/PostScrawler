@@ -10,10 +10,11 @@ from Utils.error_handler import handle_scrape_errors
 from Utils.driver_options import create_option
 from Utils.write_to_list import writeScrapedData
 from globals import fileName, outputDateFormat
-
+from Utils import write_to_list
 
 @handle_scrape_errors
 def scrapeIBM(targetNumWeek):
+    write_to_list.writeFileTitle('=== IBM ===')
     web_name = 'IBM'
     print(f'Starting scraping {web_name}...')
     pageUrls = ['https://www.ibm.com/blog/category/artificial-intelligence/',
@@ -21,9 +22,10 @@ def scrapeIBM(targetNumWeek):
                 'https://www.ibm.com/blog/category/business-transformation/']
     isWithinSearchWeek = True
     driver = webdriver.Chrome(options=create_option())
-    blogs_list = []
 
     def scrapeSection(url):
+        write_to_list.writeFileTitle(f'> {url}')
+        blogs_list = []
         print(f'working on: {url}')
         driver.get(url)
 
@@ -71,10 +73,12 @@ def scrapeIBM(targetNumWeek):
                     driver.find_element(By.TAG_NAME, 'body').send_keys(Keys.PAGE_UP)
                     tries -= 1
 
+        write_to_list.writeFileData(blogs_list, targetNumWeek)
+            
     for url in pageUrls:
         scrapeSection(url)
 
     # Write data into file
-    writeScrapedData(web_name, fileName, blogs_list, targetNumWeek)
+    # writeScrapedData(web_name, fileName, blogs_list, targetNumWeek)
     print(f'Scraping {web_name} Finished')
     driver.quit()

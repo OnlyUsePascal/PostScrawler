@@ -1,5 +1,5 @@
-AcademyBinance
-Chainlink
+AcademyBinance - https://academy.binance.com/en/articles?page=1
+Chainlink -
 OpenAI
 GoogleBlogAI
 DevelopersArchives
@@ -24,3 +24,10 @@ HakResearch
 
 Webflow
 HackerRank
+Atlassian
+Cognizant
+Accenture
+Hugging Face
+IBM
+YC
+VNG

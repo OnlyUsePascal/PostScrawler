@@ -9,7 +9,7 @@ from Utils.error_handler import handle_scrape_errors
 from Utils.driver_options import create_option
 from Utils.write_to_list import writeScrapedData
 from globals import fileName, outputDateFormat
-
+import time
 
 @handle_scrape_errors
 def scrapeHuggingFace(targetNumWeek):
@@ -17,9 +17,11 @@ def scrapeHuggingFace(targetNumWeek):
     print(f'Starting scraping {web_name}...')
     pageUrl = 'https://huggingface.co/blog'
     isWithinSearchWeek = True
-    driver = webdriver.Chrome(options=create_option(headless=False))
-    driver.get(pageUrl)
     blogs_list = []
+    
+    driver = webdriver.Chrome(options=create_option())
+    driver.get(pageUrl)
+    time.sleep(3)
 
     while (isWithinSearchWeek):
         # Wait until all blogs are presented on the web
@@ -41,8 +43,10 @@ def scrapeHuggingFace(targetNumWeek):
             blogs_list.append([date.strftime(outputDateFormat), title, link])
 
         try:
+            print('* next page')
             next_page_btn = driver.find_element(By.CSS_SELECTOR, 'main > div:nth-child(1) > div:nth-child(1) > nav:nth-of-type(1) ul li:last-child > a')
             next_page_btn.send_keys(Keys.ENTER)
+            time.sleep(2)
         except Exception:
             break
 

@@ -18,9 +18,16 @@ __all__ = [
   "bankless", 
   "coin98", 
   "vitalik",
+
+  'ibm', 
+  'vng',
+  'hugging_face',
+  'yc',
+  'accenture',
   
   "webflow",
   "hackerrank",
   'atlassian',
   'cognizant',
+  
   ]
