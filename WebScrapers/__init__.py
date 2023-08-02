@@ -24,6 +24,7 @@ __all__ = [
   'hugging_face',
   'yc',
   'accenture',
+  'mygreatlearning',
   
   "webflow",
   "hackerrank",

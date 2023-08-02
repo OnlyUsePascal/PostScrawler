@@ -22,11 +22,11 @@ def webscrape(targetNumWeek=1):
     # cointelegraph.scrapeCointelegraph(targetNumWeek)
     # coin_desk.scrapeCoinDesk(targetNumWeek)
     # hak_research.scrapeHakResearch1(targetNumWeek)
-    ibm.scrapeIBM(targetNumWeek)
-    vng.scrapeVNG(targetNumWeek)
-    hugging_face.scrapeHuggingFace(targetNumWeek)
-    yc.scrapeYC(targetNumWeek)
-    accenture.scrapeAccenture(targetNumWeek)
+    # ibm.scrapeIBM(targetNumWeek)
+    # vng.scrapeVNG(targetNumWeek)
+    # hugging_face.scrapeHuggingFace(targetNumWeek)
+    # yc.scrapeYC(targetNumWeek)
+    # accenture.scrapeAccenture(targetNumWeek)
 
     # zkblab.scrapeZkblab(targetNumWeek)
     # google_lab.scrapeGoogleLab(targetNumWeek)
@@ -43,6 +43,7 @@ def webscrape(targetNumWeek=1):
     # hackerrank.scrapeHackerrank(targetNumWeek)
     # atlassian.scrapeAtlassian(targetNumWeek)
     # cognizant.scrapeCognizant(targetNumWeek)
+    mygreatlearning.scrapeMygreatlearning(targetNumWeek)
     print('** done')
 
 
