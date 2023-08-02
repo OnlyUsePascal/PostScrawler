@@ -43,7 +43,8 @@ def webscrape(targetNumWeek=1):
     # hackerrank.scrapeHackerrank(targetNumWeek)
     # atlassian.scrapeAtlassian(targetNumWeek)
     # cognizant.scrapeCognizant(targetNumWeek)
-    mygreatlearning.scrapeMygreatlearning(targetNumWeek)
+    # mygreatlearning.scrapeMygreatlearning(targetNumWeek)
+    kdnugget.scrapeKdnugget(targetNumWeek)
     print('** done')
 
 
