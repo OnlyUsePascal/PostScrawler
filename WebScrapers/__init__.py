@@ -26,6 +26,7 @@ __all__ = [
   'accenture',
   'mygreatlearning',
   'kdnugget',
+  'analytic_vidhya',
   
   "webflow",
   "hackerrank",

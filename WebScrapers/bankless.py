@@ -53,7 +53,7 @@ def scrapeBankless(targetNumWeek):
 
                 postDate = datetime.strftime(datetime.strptime(postDate, dateFormat), outputDateFormat)
                 dataRow = [postDate, postTitle, postUrl]
-                print(dataRow)
+                # print(dataRow)
                 dataList.append(dataRow)
 
                 # close tab + switch to base
