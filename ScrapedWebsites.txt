@@ -23,3 +23,11 @@ Gfi: https://gfiblockchain.com/bai-viet-moi-nhat-tu-gfs.html
 Bankless: https://www.bankless.com/read
 Coin98: https://coin98.net/posts/title/
 Vitalik: https://vitalik.ca/
+Webflow: https://webflow.com/category/
+HackerRank: https://www.hackerrank.com/blog/page/
+Atlassian: https://www.atlassian.com/blog/
+Cognizant: https://digitally.cognizant.com/home
+My Great Learning: https://www.mygreatlearning.com/blog/
+Kdnugget: https://www.kdnuggets.com/
+Analytics Vidhya : https://www.analyticsvidhya.com/blog-archive/page/
+Hub Spot: https://blog.hubspot.com/
