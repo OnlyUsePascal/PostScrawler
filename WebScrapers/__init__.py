@@ -24,13 +24,14 @@ __all__ = [
   'hugging_face',
   'yc',
   'accenture',
-  'mygreatlearning',
-  'kdnugget',
-  'analytic_vidhya',
   
   "webflow",
   "hackerrank",
   'atlassian',
   'cognizant',
   
+  'mygreatlearning',
+  'kdnugget',
+  'analytic_vidhya',
+  'hubspot', 
   ]

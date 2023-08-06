@@ -44,8 +44,9 @@ def webscrape(targetNumWeek=1):
     # atlassian.scrapeAtlassian(targetNumWeek)
     # cognizant.scrapeCognizant(targetNumWeek)
     # mygreatlearning.scrapeMygreatlearning(targetNumWeek)
-    # kdnugget.scrapeKdnugget(targetNumWeek)
+    kdnugget.scrapeKdnugget(targetNumWeek)
     analytic_vidhya.scrapeAnalytic_Vidhya(targetNumWeek)
+    hubspot.scrapeHubspot(targetNumWeek)
     print('** done')
 
 

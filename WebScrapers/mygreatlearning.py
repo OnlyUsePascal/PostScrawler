@@ -12,18 +12,20 @@ from selenium.webdriver.support import expected_conditions as EC
 from Utils import write_to_list
 
 def scrapeMygreatlearning(targetNumWeek):
+    # FUTURE ME: URL STRUCTURE TO PAGE INSTEAD OF LOADING
     print('@My Great Learning')
     write_to_list.writeFileTitle("=== My Great Learning ===")
     
     pageUrlBase = 'https://www.mygreatlearning.com/blog/'
     pageUrlEndpoints = [
+        # 'career/',
+        # 'data-science/', 
+        # 'cybersecurity/',
+        
         'artificial-intelligence/', 
-        'data-science/', 
         'software/', 
         'digital-marketing/',
         'businessmanagement/',
-        'career/',
-        'cybersecurity/',
         'cloud-computing/',
         'interview-questions/',
         'study-abroad/',
