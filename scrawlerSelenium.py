@@ -25,9 +25,6 @@ def webscrape(targetNumWeek=1):
     # ibm.scrapeIBM(targetNumWeek)
     # vng.scrapeVNG(targetNumWeek)
     # hugging_face.scrapeHuggingFace(targetNumWeek)
-    # yc.scrapeYC(targetNumWeek)
-    # accenture.scrapeAccenture(targetNumWeek)
-
     # zkblab.scrapeZkblab(targetNumWeek)
     # google_lab.scrapeGoogleLab(targetNumWeek)
     # apple.scrapeApple(targetNumWeek)
@@ -39,15 +36,19 @@ def webscrape(targetNumWeek=1):
     # vitalik.scrapeVitalik(targetNumWeek)
     # hak_research.scrapeHakResearch(targetNumWeek)
     # hak_research.scrapeHakResearch1(targetNumWeek)
+    
     # webflow.scrapeWebflow(targetNumWeek)
     # hackerrank.scrapeHackerrank(targetNumWeek)
     # atlassian.scrapeAtlassian(targetNumWeek)
     # cognizant.scrapeCognizant(targetNumWeek)
-    # mygreatlearning.scrapeMygreatlearning(targetNumWeek)
+    # yc.scrapeYC(targetNumWeek)
+    # accenture.scrapeAccenture(targetNumWeek)
+    
+    mygreatlearning.scrapeMygreatlearning(targetNumWeek)
     kdnugget.scrapeKdnugget(targetNumWeek)
     analytic_vidhya.scrapeAnalytic_Vidhya(targetNumWeek)
     hubspot.scrapeHubspot(targetNumWeek)
-    print('** done')
+    print('** Done **')
 
 
 # start scraping

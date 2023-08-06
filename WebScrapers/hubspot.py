@@ -61,7 +61,7 @@ def scrapeHubspot(targetNumWeek):
 
                     # validate 
                     if not correctTimeOffset(postDate, dateFormat, targetNumWeek):
-                        print("* enough posts")
+                        # print("* enough posts")
                         isEnough = True
                         driver.close()
                         driver.switch_to.window(driver.window_handles[0])
@@ -82,7 +82,7 @@ def scrapeHubspot(targetNumWeek):
             if isEnough:
                 break            
             
-            print('* next page')
+            # print('* next page')
             curPage += 1 
     
         write_to_list.writeFileData(dataList,targetNumWeek)

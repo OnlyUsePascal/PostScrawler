@@ -46,7 +46,7 @@ def scrapeAnalytic_Vidhya(targetNumWeek):
             postDate = ' '.join(postDate)
                         
             if not correctTimeOffset(postDate, dateFormat, targetNumWeek):
-                print("* enough posts")
+                # print("* enough posts")
                 isEnough = True
                 break
             
@@ -60,7 +60,7 @@ def scrapeAnalytic_Vidhya(targetNumWeek):
             break
         
         # more page
-        print('* next page')
+        # print('* next page')
         curPg += 1
         
     write_to_list.writeFileData(dataList, targetNumWeek)
