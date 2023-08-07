@@ -29,7 +29,7 @@ def webscrape(targetNumWeek=1):
     # google_lab.scrapeGoogleLab(targetNumWeek)
     # apple.scrapeApple(targetNumWeek)
     # forte_lab.scrapeForteLab(targetNumWeek)
-    # ali_abdaal.scrapeAliAbdaal(targetNumWeek)
+    ali_abdaal.scrapeAliAbdaal(targetNumWeek)
     # gfi.scrapeGfi(targetNumWeek)
     # bankless.scrapeBankless(targetNumWeek)
     # coin98.scrapeCoin98(targetNumWeek)
@@ -44,10 +44,10 @@ def webscrape(targetNumWeek=1):
     # yc.scrapeYC(targetNumWeek)
     # accenture.scrapeAccenture(targetNumWeek)
     
-    mygreatlearning.scrapeMygreatlearning(targetNumWeek)
-    kdnugget.scrapeKdnugget(targetNumWeek)
-    analytic_vidhya.scrapeAnalytic_Vidhya(targetNumWeek)
-    hubspot.scrapeHubspot(targetNumWeek)
+    # mygreatlearning.scrapeMygreatlearning(targetNumWeek)
+    # kdnugget.scrapeKdnugget(targetNumWeek)
+    # analytic_vidhya.scrapeAnalytic_Vidhya(targetNumWeek)
+    # hubspot.scrapeHubspot(targetNumWeek)
     print('** Done **')
 
 
