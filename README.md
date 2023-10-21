@@ -1,5 +1,8 @@
-# Web Scraper
+# PostScrawler
 ## About project
+
+A Python script for scraping blogs from Blockchain-related websites.
+
 Tools: Python + Selenium
 
 ### Structure
