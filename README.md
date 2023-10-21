@@ -2,7 +2,7 @@
 ## About project
 Tools: Python + Selenium
 
-## Structure
+### Structure
 ```
 .
 ├── scrawlerSelenium.py (main)
@@ -13,7 +13,6 @@ Tools: Python + Selenium
 │   ├── correct_time_offset.py
 │   ├── driver_options.py
 │   ├── error_handler.py
-│   ├── __pycache__
 │   └── write_to_list.py
 └── WebScrapers
     ├── [site to scrape].py
@@ -50,7 +49,7 @@ output file is named `test.csv`
 ...
 ```
 
-### Customize
+## Customize
 Toggle scraping site by comment/ uncomment function call in `scrawlerSelenium.py` 
 
 ```python
@@ -66,3 +65,9 @@ def webscrape(targetNumWeek=1):
     scrapeGoogleBlogAI(targetNumWeek)
     ...
 ```
+
+## Contribution
+<a href="https://github.com/OnlyUsePascal/PostScrawler/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=OnlyUsePascal/PostScrawler" />
+</a>
+
