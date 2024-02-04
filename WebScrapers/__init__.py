@@ -33,4 +33,5 @@ __all__ = [
   'hubspot', 
   
   'theBlock1',
+  'blockWork',
   ]

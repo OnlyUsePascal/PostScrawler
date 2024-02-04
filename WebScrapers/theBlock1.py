@@ -11,7 +11,7 @@ import time
 
 def startScrape(targetNumWeek):
     siteTitle = 'The Block 1'
-    print(siteTitle)
+    print('--> ' + siteTitle)
     
     url = "https://www.theblock.co/reports?start="
     curPg = 0
@@ -66,5 +66,5 @@ def startScrape(targetNumWeek):
         print('* still searching')
 
     writeScrapedData(siteTitle, fileName, dataList, targetNumWeek)
-    print('> done')
+    print('> done\n')
     driver.quit()

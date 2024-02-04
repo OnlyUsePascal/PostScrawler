@@ -50,6 +50,7 @@ def webscrape(targetNumWeek=1):
     # hubspot.scrapeHubspot(targetNumWeek)
     
     theBlock1.startScrape(targetNumWeek)
+    blockWork.startScrape(targetNumWeek)
     print('** Done **')
 
 
