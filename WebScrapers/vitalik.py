@@ -5,16 +5,18 @@ from datetime import datetime
 from Utils.driver_options import create_option
 from Utils.write_to_list import writeScrapedData
 from Utils.correct_time_offset import correctTimeOffset
+from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.chrome.service import Service
 from globals import fileName, outputDateFormat
 
 
 def scrapeVitalik(targetNumWeek):
     print('@Vitalik')
-    pageUrl = 'https://vitalik.ca/'
+    pageUrl = 'https://vitalik.eth.limo/'
     dateFormat = '%Y %b %d'
 
     # driver = webdriver.Chrome()
-    driver = webdriver.Chrome(options=create_option())
+    driver = webdriver.Chrome(options=create_option(), service=Service(ChromeDriverManager().install()))
     driver.get(pageUrl)
 
     posts = driver.find_elements(By.TAG_NAME, 'li')
