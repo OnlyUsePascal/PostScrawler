@@ -19,5 +19,6 @@ def create_option(headless: bool = True, page_load_strategy: str = 'eager') -> O
         options.add_argument('--headless=new')  # No window opened
     options.add_experimental_option("excludeSwitches", ["enable-logging"])  # Disable logging
     options.add_argument("--log-level=3")  # Disable logging
+    options.add_argument("window-size=1920,1080")
     options.page_load_strategy = page_load_strategy
     return options

@@ -49,8 +49,9 @@ def webscrape(targetNumWeek=1):
     # analytic_vidhya.scrapeAnalytic_Vidhya(targetNumWeek)
     # hubspot.scrapeHubspot(targetNumWeek)
     
-    theBlock1.startScrape(targetNumWeek)
-    blockWork.startScrape(targetNumWeek)
+    # theBlock1.startScrape(targetNumWeek)
+    # blockWork.startScrape(targetNumWeek)
+    okx.startScrape(targetNumWeek)
     print('** Done **')
 
 
