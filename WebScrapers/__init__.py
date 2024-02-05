@@ -37,4 +37,5 @@ __all__ = [
   'okx',
   'applePodcast',
   'coinbase1',
+  'decrypt2',
   ]

@@ -31,21 +31,25 @@ def startScrape(targetNumWeek):
   
   service = Service(ChromeDriverManager().install())
   options = create_option(headless=True)
-  # options.add_argument("window-size=1920,1080")
   driver = webdriver.Chrome(options=options, service=service)
 
   driver.get(url)
+  isAdClosed = False
+  
   while True: 
-    time.sleep(delay)    
-    
-    try: 
-      WebDriverWait(driver, delay).until(EC.element_to_be_clickable((By.CSS_SELECTOR, closeBtnPath))).click()
-    except Exception as err: 
-      print('some error happened?')
-      # print(err)
+    if (not isAdClosed):
+      try: 
+        WebDriverWait(driver, delay).until(EC.element_to_be_clickable((By.CSS_SELECTOR, closeBtnPath))).click()
+        time.sleep(2)
+        print('ad close btn found :)')
+        isAdClosed = True
+      except Exception as err: 
+        print('ad close btn not found')
+        # print(err)
     
     dataList = []
-    for post in driver.find_elements(By.CSS_SELECTOR, postPath):
+    posts = driver.find_elements(By.CSS_SELECTOR, postPath)
+    for post in posts:
       postTitle = post.find_element(By.CSS_SELECTOR, postTitlePath).text
       postUrl = post.find_element(By.TAG_NAME, postUrlPath).get_attribute('href')
       postDate = post.find_element(By.CSS_SELECTOR, postDatePath).text
@@ -78,3 +82,4 @@ def startScrape(targetNumWeek):
       break
     print('* still searching')
     driver.execute_script("window.scrollTo(0, document.body.clientHeight-100);")
+    time.sleep(delay)    

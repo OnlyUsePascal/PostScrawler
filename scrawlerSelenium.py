@@ -50,11 +50,12 @@ def webscrape(targetNumWeek=1):
     # analytic_vidhya.scrapeAnalytic_Vidhya(targetNumWeek)
     # hubspot.scrapeHubspot(targetNumWeek)
     
-    # theBlock1.startScrape(targetNumWeek)
-    # okx.startScrape(targetNumWeek)
-    # applePodcast.startScrape(targetNumWeek)
-    # blockWork.startScrape(targetNumWeek)
-    coinbase1.startScrape(targetNumWeek)
+    theBlock1.startScrape(targetNumWeek)
+    okx.startScrape(targetNumWeek)
+    applePodcast.startScrape(targetNumWeek)
+    decrypt2.startScrape(targetNumWeek)
+    coinbase1.startScrape(targetNumWeek) #web browser on
+    blockWork.startScrape(targetNumWeek) #should be run alone
     print('** Done **')
 
 
