@@ -1,5 +1,6 @@
 from WebScrapers import *
 from WebScrapers import *
+from WebScrapers import coinbase1
 from globals import fileName
 import sys
 
@@ -49,10 +50,12 @@ def webscrape(targetNumWeek=1):
     # analytic_vidhya.scrapeAnalytic_Vidhya(targetNumWeek)
     # hubspot.scrapeHubspot(targetNumWeek)
     
-    # theBlock1.startScrape(targetNumWeek)
-    # okx.startScrape(targetNumWeek)
-    # applePodcast.startScrape(targetNumWeek)
-    # blockWork.startScrape(targetNumWeek)
+    theBlock1.startScrape(targetNumWeek)
+    okx.startScrape(targetNumWeek)
+    applePodcast.startScrape(targetNumWeek)
+    decrypt2.startScrape(targetNumWeek)
+    coinbase1.startScrape(targetNumWeek) #web browser on
+    blockWork.startScrape(targetNumWeek) #should be run alone
     print('** Done **')
 
 
