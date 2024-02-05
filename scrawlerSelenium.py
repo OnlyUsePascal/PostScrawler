@@ -1,4 +1,4 @@
-# from WebScrapers import *
+from WebScrapers import *
 from WebScrapers import *
 from globals import fileName
 import sys
@@ -50,8 +50,9 @@ def webscrape(targetNumWeek=1):
     # hubspot.scrapeHubspot(targetNumWeek)
     
     # theBlock1.startScrape(targetNumWeek)
+    # okx.startScrape(targetNumWeek)
+    # applePodcast.startScrape(targetNumWeek)
     # blockWork.startScrape(targetNumWeek)
-    okx.startScrape(targetNumWeek)
     print('** Done **')
 
 

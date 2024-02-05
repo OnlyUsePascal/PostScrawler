@@ -31,7 +31,7 @@ def startScrape(targetNumWeek):
   
   service = Service(ChromeDriverManager().install())
   options = create_option(headless=True)
-  options.add_argument("window-size=1920,1080")
+  # options.add_argument("window-size=1920,1080")
   driver = webdriver.Chrome(options=options, service=service)
 
   driver.get(url)
