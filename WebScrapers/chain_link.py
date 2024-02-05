@@ -1,3 +1,4 @@
+from click import option
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
@@ -9,6 +10,9 @@ from Utils.error_handler import handle_scrape_errors
 from Utils.driver_options import create_option
 from Utils.write_to_list import writeScrapedData
 from globals import fileName, outputDateFormat
+from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
+
 
 
 @handle_scrape_errors
@@ -16,7 +20,10 @@ def scrapeChainlink(targetNumWeek):
     print('Starting scraping Chainlink...')
     pageUrl = 'https://blog.chain.link/'
     isWithinSearchWeek = True
-    driver = webdriver.Chrome(options=create_option(page_load_strategy='none'))
+    # options = create_option(page_load_strategy='none')
+    options = create_option(headless=True)
+    service = Service(ChromeDriverManager().install())
+    driver = webdriver.Chrome(options=options, service=service)
     driver.get(pageUrl)
     blogs_list = []
 
