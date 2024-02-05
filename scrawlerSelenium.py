@@ -1,5 +1,6 @@
 from WebScrapers import *
 from WebScrapers import *
+from WebScrapers import coinbase1
 from globals import fileName
 import sys
 
@@ -53,6 +54,7 @@ def webscrape(targetNumWeek=1):
     # okx.startScrape(targetNumWeek)
     # applePodcast.startScrape(targetNumWeek)
     # blockWork.startScrape(targetNumWeek)
+    coinbase1.startScrape(targetNumWeek)
     print('** Done **')
 
 
