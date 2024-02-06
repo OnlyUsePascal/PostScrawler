@@ -1,10 +1,10 @@
-Academy Binance: https://academy.binance.com/en/articles
-Chainlink: https://blog.chain.link/
+Academy Binance: https://academy.binance.com/en/articles (Recheck)
+Chainlink: https://blog.chain.link/ (Recheck)
 OpenAI: https://openai.com/blog
 Google Blog AI: https://www.blog.google/technology/ai/
 Developers Archives: https://pages.near.org/blog/category/developers/
 Alchemy Blog: https://www.alchemy.com/blog
-Decrypt: https://decrypt.co/news/technology
+Decrypt: https://decrypt.co/news/technology (Add more sites)
 Cointelegraph: https://cointelegraph.com/
 CoinDesk: https://www.coindesk.com/tech/
 HakResearch: https://hakresearch.com/
@@ -13,6 +13,9 @@ VNG: https://www.vngcloud.vn/en/blog
 Hugging Face: https://huggingface.co/blog
 Y Combinator: https://www.ycombinator.com/blog/
 Accenture: https://www.accenture.com/us-en/blogs/
+Binance: https://www.binance.com
+The Block: https://www.theblock.co
+(1 - Done, 2 - Done, 4, 5, 6)
 
 Zkblab: https://zkplabs.network/blog
 GoogleLab: https://blog.google/technology/developers/
@@ -22,7 +25,7 @@ AliAbdaal: https://aliabdaal.com/articles/page/
 Gfi: https://gfiblockchain.com/bai-viet-moi-nhat-tu-gfs.html
 Bankless: https://www.bankless.com/read
 Coin98: https://coin98.net/posts/title/
-Vitalik: https://vitalik.ca/
+Vitalik: https://vitalik.ca/ (Recheck)
 Webflow: https://webflow.com/category/
 HackerRank: https://www.hackerrank.com/blog/page/
 Atlassian: https://www.atlassian.com/blog/

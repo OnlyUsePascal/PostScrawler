@@ -1,5 +1,4 @@
 from WebScrapers import *
-from WebScrapers import *
 from WebScrapers import coinbase1
 from globals import fileName
 import sys
@@ -51,7 +50,10 @@ def webscrape(targetNumWeek=1):
     # chain_link.scrapeChainlink(targetNumWeek)
     # vitalik.scrapeVitalik(targetNumWeek)
     
-    # theBlock1.startScrape(targetNumWeek)
+    # binance.scrapeBinance(targetNumWeek)
+    theBlock.scrapeLatest(targetNumWeek)
+
+    # theBlock.startScrapeReport(targetNumWeek)
     # okx.startScrape(targetNumWeek)
     # applePodcast.startScrape(targetNumWeek)
     # decrypt2.startScrape(targetNumWeek)
@@ -62,7 +64,7 @@ def webscrape(targetNumWeek=1):
 
 # start scraping
 if __name__ == '__main__':
-    inputWeek = 1
+    inputWeek = 5
 
     if (len(sys.argv) > 1):
         inputWeek = int(sys.argv[1])
