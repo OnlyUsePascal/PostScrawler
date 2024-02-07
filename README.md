@@ -31,6 +31,8 @@ $ git clone https://github.com/OnlyUsePascal/PostScrawler.git
 
 $ cd PostScrawler/
 
+$ pip install -r requirements.txt
+
 # scrape default 1 week
 $ python scrawlerSelenium.py
 

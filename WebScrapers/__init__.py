@@ -30,9 +30,11 @@ __all__ = [
   'mygreatlearning',
   'kdnugget',
   'analytic_vidhya',
-  'hubspot', 
+  'hubspot',
   
-  'theBlock1',
+  'binance',
+  
+  'theBlock',
   'blockWork',
   'okx',
   'applePodcast',
