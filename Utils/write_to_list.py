@@ -7,7 +7,7 @@ from globals import fileName
 def writeFileTitle(data_title: str):
     with open(fileName, 'a', encoding="utf-8") as file:
         writer = csv.writer(file)
-        writer.writerow([f'{data_title}'])
+        writer.writerow([f'=== {data_title} ==='])
 
 
 def writeFileData(data_list: list, targetNumWeek: int):

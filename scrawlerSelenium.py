@@ -51,7 +51,8 @@ def webscrape(targetNumWeek=1):
     # vitalik.scrapeVitalik(targetNumWeek)
     
     # binance.scrapeBinance(targetNumWeek)
-    theBlock.scrapeLatest(targetNumWeek)
+    # theBlock.scrapeLatest(targetNumWeek)
+    decrypt.scrapeNewsExplorer(targetNumWeek)
 
     # theBlock.startScrapeReport(targetNumWeek)
     # okx.startScrape(targetNumWeek)
@@ -64,7 +65,7 @@ def webscrape(targetNumWeek=1):
 
 # start scraping
 if __name__ == '__main__':
-    inputWeek = 5
+    inputWeek = 2
 
     if (len(sys.argv) > 1):
         inputWeek = int(sys.argv[1])
