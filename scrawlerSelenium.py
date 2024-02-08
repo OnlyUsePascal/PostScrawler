@@ -52,8 +52,8 @@ def webscrape(targetNumWeek=1):
     
     # binance.scrapeBinance(targetNumWeek)
     # theBlock.scrapeLatest(targetNumWeek)
-    decrypt.scrapeNewsExplorer(targetNumWeek)
-    nextrope.scrapeArticles(targetNumWeek)
+    # decrypt.scrapeNewsExplorer(targetNumWeek)
+    # nextrope.scrapeArticles(targetNumWeek)
 
     # theBlock.startScrapeReport(targetNumWeek)
     # okx.startScrape(targetNumWeek)
