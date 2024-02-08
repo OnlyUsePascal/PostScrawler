@@ -33,6 +33,7 @@ __all__ = [
   'hubspot',
   
   'binance',
+  'nextrope',
   
   'theBlock',
   'blockWork',

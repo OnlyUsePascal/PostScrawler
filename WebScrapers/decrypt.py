@@ -2,18 +2,14 @@ import time
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import TimeoutException
 from datetime import datetime, timedelta
 from Utils.error_handler import handle_scrape_errors
 from Utils.driver_options import create_option
 from Utils.write_to_list import writeScrapedData, writeFileTitle, writeFileData
 from Utils.SectionScrape.scrape_section import WebSection
-from globals import fileName, outputDateFormat
 
 
-# @handle_scrape_errors
+@handle_scrape_errors
 def scrapeDecrypt(targetNumWeek):
     print('Starting scraping Decrypt...')
     pageUrl = ['https://decrypt.co/news/technology',
@@ -105,7 +101,7 @@ def scrapeNewsExplorer(targetNumWeek):
     writeFileTitle('News Explorer')
     
     def format_post_date(date):
-            # Feb 7, 6:58 pm
+            # Article format: Feb 7, 6:58 pm
             date = date.split(',')[0]
             date = datetime.strptime(date, '%b %d')
             date = date.replace(year = datetime.now().year)

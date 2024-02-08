@@ -53,6 +53,7 @@ def webscrape(targetNumWeek=1):
     # binance.scrapeBinance(targetNumWeek)
     # theBlock.scrapeLatest(targetNumWeek)
     decrypt.scrapeNewsExplorer(targetNumWeek)
+    nextrope.scrapeArticles(targetNumWeek)
 
     # theBlock.startScrapeReport(targetNumWeek)
     # okx.startScrape(targetNumWeek)
@@ -65,7 +66,7 @@ def webscrape(targetNumWeek=1):
 
 # start scraping
 if __name__ == '__main__':
-    inputWeek = 2
+    inputWeek = 3
 
     if (len(sys.argv) > 1):
         inputWeek = int(sys.argv[1])
