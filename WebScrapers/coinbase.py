@@ -11,8 +11,8 @@ from Utils.write_to_list import writeFileTitle, writeFileData
 
 
 def scrapeArticles(targetNumWeek):
-    print('Starting scraping Nextrope...')
-    pageUrl = ['https://nextrope.com/blog/']
+    print('Starting scraping Coinbase...')
+    pageUrl = ['https://www.coinbase.com/bytes/archive']
     
     service = Service(ChromeDriverManager().install())
     options = create_option(headless=True)
@@ -21,7 +21,7 @@ def scrapeArticles(targetNumWeek):
     
     delay = 2
 
-    writeFileTitle('Nextrope')
+    writeFileTitle('Coinbase')
 
 
     def scrapeSection(url):

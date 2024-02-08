@@ -54,6 +54,7 @@ def webscrape(targetNumWeek=1):
     # theBlock.scrapeLatest(targetNumWeek)
     # decrypt.scrapeNewsExplorer(targetNumWeek)
     # nextrope.scrapeArticles(targetNumWeek)
+    coinbase.scrapeArticles(targetNumWeek)
 
     # theBlock.startScrapeReport(targetNumWeek)
     # okx.startScrape(targetNumWeek)

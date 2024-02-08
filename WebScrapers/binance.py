@@ -5,6 +5,8 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
 from datetime import datetime, timedelta
+from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
 from Utils.error_handler import handle_scrape_errors
 from Utils.driver_options import create_option
 from Utils.write_to_list import writeFileTitle, writeFileData, writeScrapedData
@@ -14,15 +16,18 @@ from globals import fileName, outputDateFormat
 def scrapeBinance(targetNumWeek):
     web_name = 'Binance'
     print(f'Starting scraping {web_name}...')
-    writeFileTitle(f'=== {web_name} ===')
+    writeFileTitle(f'{web_name}')
 
     pageUrls = ['https://www.binance.com/en/research/analysis ',
                 'https://www.binance.com/en/research/projects']
-    driver = webdriver.Chrome(options=create_option())
+
+    service = Service(ChromeDriverManager().install())
+    options = create_option(headless=True)
+    driver = webdriver.Chrome(options=options, service=service)
 
     def scrapeSection(url):
         print(f'working on: {url}')
-        writeFileTitle(f'> {url}')
+        writeFileTitle(f'> {url}', no_decoration=True)
         blogs_list = []
 
         driver.get(url)

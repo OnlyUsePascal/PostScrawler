@@ -34,6 +34,7 @@ __all__ = [
   
   'binance',
   'nextrope',
+  'coinbase',
   
   'theBlock',
   'blockWork',

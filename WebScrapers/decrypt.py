@@ -3,6 +3,8 @@ from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from datetime import datetime, timedelta
+from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
 from Utils.error_handler import handle_scrape_errors
 from Utils.driver_options import create_option
 from Utils.write_to_list import writeScrapedData, writeFileTitle, writeFileData
@@ -13,9 +15,12 @@ from Utils.SectionScrape.scrape_section import WebSection
 def scrapeDecrypt(targetNumWeek):
     print('Starting scraping Decrypt...')
     pageUrl = ['https://decrypt.co/news/technology',
-               #'https://decrypt.co/news',
+               'https://decrypt.co/news',
                'https://decrypt.co/deep-dives']
-    driver = webdriver.Chrome(options=create_option())
+
+    service = Service(ChromeDriverManager().install())
+    options = create_option(headless=True)
+    driver = webdriver.Chrome(options=options, service=service)
     blogs_list = []
     
     delay = 2
@@ -24,6 +29,7 @@ def scrapeDecrypt(targetNumWeek):
 
     def scrapeSection(url):
         print(f'working on: {url}')
+        writeFileTitle(f'> {url}', no_decoration=True)
         driver.get(url)
         time.sleep(delay)
 
@@ -93,7 +99,10 @@ def scrapeDecrypt(targetNumWeek):
 def scrapeNewsExplorer(targetNumWeek):
     print('Starting scraping News Explorer...')
     pageUrl = ['https://decrypt.co/news-explorer']
-    driver = webdriver.Chrome(options=create_option())
+
+    service = Service(ChromeDriverManager().install())
+    options = create_option(headless=True)
+    driver = webdriver.Chrome(options=options, service=service)
     blogs_list = []
     
     delay = 2
@@ -109,6 +118,7 @@ def scrapeNewsExplorer(targetNumWeek):
 
     def scrapeSection(url):
         print(f'working on: {url}')
+        writeFileTitle(f'> {url}', no_decoration=True)
         driver.get(url)
         time.sleep(delay)
 
