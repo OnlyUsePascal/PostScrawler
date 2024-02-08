@@ -1,9 +1,80 @@
-=== The Block Latest ===
-2024-01-31,What are crypto points?,https://www.theblock.co/learn/274899/what-are-crypto-points
-2024-01-28,What happened at the Ethereum upgrade 'The Merge?',https://www.theblock.co/learn/271531/what-happened-at-ethereum-upgrade-the-merge
-2024-01-27,How to mine cryptocurrencies?,https://www.theblock.co/learn/271530/how-to-mine-cryptocurrencies
-2024-01-27,What is an Ethereum Improvement Proposal (EIP)?,https://www.theblock.co/learn/271534/what-is-an-ethereum-improvement-proposal-eip
-2024-01-18,What is a short bitcoin ETF?,https://www.theblock.co/learn/270240/what-is-a-short-bitcoin-etf
-2024-01-17,What is a spot bitcoin ETF?,https://www.theblock.co/learn/272940/what-is-a-spot-bitcoin-etf
-2024-01-08,What is a bitcoin futures ETF?,https://www.theblock.co/learn/270441/what-is-a-bitcoin-futures-etf
+=== News Explorer ===
+2024-02-07,Ethereum's Dencun Upgrade Deployed on Holesky Testnet,https://www.theblock.co/post/276421/ethereum-dencun-upgrade-holesky-testnet
+2024-02-07,Bitsonic CEO Sentenced to 7 Years for Stealing $7.5M in Customer Deposits,https://protos.com/bitsonic-chief-sentenced-to-7-years-for-crypto-theft-in-south-korea/
+2024-02-07,"B2C2 Gets VASP License, Will Offer OTC Spot Crypto Services for Institutions in Luxembourg",https://www.coindesk.com/markets/2024/02/07/b2c2-gains-luxembourg-virtual-asset-license-as-eus-crypto-rules-set-to-kick-in/
+2024-02-07,"3AC and BlockFi Deal Approved, But Details Are Under Seal",https://www.theblock.co/post/276370/judge-approves-blockfi-and-3ac-settlement
+2024-02-07,Eigenlayer's TVL Doubled After Removing Caps on Tokens,https://decrypt.co/216203/eigenlayer-total-value-locked-doubles-to-3-billion-in-one-day/
+2024-02-07,"‘Heroes of Mavia’ Launches MAVIA Token and Conducts Airdrop to 100,000 Players",https://decrypt.co/216178/heroes-of-mavia-token-airdrop-ethereum-video-game/
+2024-02-07,The SEC Has Delayed Its Decision on Approving An Ethereum ETF From Invesco and Galaxy Digital,https://decrypt.co/216171/sec-ethereum-spot-etf-application-invesco-galaxy-digital/
+2024-02-07,Dymension's Launch Included a $390 Million Airdrop of DYM Tokens to Early Users,https://decrypt.co/216169/dymension-airdrop-390-million-dym-solana-ethereum/
+2024-02-07,"MicroStrategy Continues to Grow Its Bitcoin Holdings, Now Owning 190,000 BTC Worth $8.2 Billion",https://decrypt.co/216164/microstrategy-buys-37-2m-more-btc-ahead-of-bitcoin-halving/
+2024-02-06,"Solana Network Temporarily Halted Due to Performance Degradation, Say Validators",https://www.coindesk.com/markets/2024/02/06/solana-network-suffers-brief-outage-sol-steady/
+2024-02-06,South Korean Authorities Arrest Crypto Execs for Allegedly Stealing $828 Million,https://www.coindesk.com/policy/2024/02/06/haru-invest-execs-arrested-in-south-korea-for-allegedly-stealing-828m-worth-of-crypto-report/
+2024-02-06,Hedge Funds Cash In On Price Deviations of Grayscale's Bitcoin Trust,https://www.dlnews.com/articles/markets/kentucky-fund-wins-big-on-grayscale-discount-bitcoin-trade/
+2024-02-05,"Sam Lee, HyperVerse Founder Charged With Fraud, Was Promoting a New Crypto Project Hours Later",https://protos.com/hyperverse-founder-shills-new-crypto-project-hours-after-1-7b-fraud-charge/
+2024-02-05,Hong Kong Regulator: Crypto Exchanges Must Apply for a License or Shut Down by May 31,https://www.dlnews.com/articles/regulation/hong-kong-crypto-exchanges-must-apply-for-a-licence-or-shut-down/
+2024-02-05,Former Terraform Labs CFO Extradited to South Korea,https://www.dlnews.com/articles/regulation/han-chang-joon-has-been-extradited-to-south-korea/
+2024-02-05,"Bitcoin Hovers Around $42,000, Analysts Predict Big Potential for  Ethereum in the Year of the Dragon",https://www.coindesk.com/markets/2024/02/05/bitcoin-flat-as-traders-look-forward-to-the-year-of-the-dragon/
+2024-02-05,South Korea Considers Rules to Require Regulator Vetting of Crypto Company Executives,https://www.theblock.co/post/275940/south-korea-proposes-vetting-process-for-crypto-executives
+2024-02-05,"Binance Denies Claims of Data Breach, Says User Assets Are Safe",https://unchainedcrypto.com/binance-says-there-was-no-leak-from-systems-after-alleged-data-breach/
+2024-02-05,Bankrupt Crypto Lender Genesis Seeks Approval to Sell $1.4 Billion Worth of GBTC Shares,https://unchainedcrypto.com/genesis-seeks-approval-to-sell-nearly-1-4-billion-gbtc-shares/
+2024-02-03,Binance Gets Its Leaked Data Taken Down From GitHub,https://decrypt.co/215438/binance-data-leak-code-security-passwords-on-github/
+2024-02-03,"The ""Bitcoin Power Law"" Model Claims to Accurately Forecast Bitcoin's Long-Term Price Appreciation",https://decrypt.co/215484/bitcoin-power-law-predicts-1-million-btc-price-2033-heres-how-it-works/
+2024-01-31,"Binance Code, Internal Passwords Leaked on GitHub",https://www.404media.co/binance-internal-code-and-passwords-exposed-on-github-for-months/
+2024-02-02,Binance Freezes $4.2 Million Worth of XRP Tokens Tied to Recent Exploit,https://www.coindesk.com/markets/2024/02/02/binance-freezes-42m-in-xrp-tokens-stolen-from-ripple-executives-wallet/
+2024-02-02,Venture Smart Financial Holdings to Apply for a Spot Ethereum ETF in Hong Kong,https://www.theblock.co/post/275718/hong-kong-finance-firm-vsfg-targets-to-apply-for-spot-ethereum-etf-in-q2
+2024-02-02,Three Charged In $400 Million Hack Tied to Failed Crypto Exchange FTX,https://decrypt.co/215367/grand-jury-indicts-hackers-linked-to-400-million-stolen-from-ftx/
+2024-02-02,"Pixelmon, Backed by Prominent Investors, Has Raised $8 Million",https://decrypt.co/215348/from-nft-punchline-8-million-raise-pixelmon-preps-mon-token-launch/
+2024-02-02,OPNX Exchange for Those Affected by Crypto Crises Is Shutting Down,https://decrypt.co/215346/opnx-the-crypto-exchange-from-bankrupt-three-arrows-capital-is-shutting-down/
+2024-02-02,"Meta Revenue Up 25%, Cites Progress in Advancing AI and the Metaverse",https://deadline.com/2024/02/meta-earnings-fourth-quarter-1235811550/
+2024-02-02,"Meow, Founder of Jupiter, Defends the JUP Airdrop on Solana",https://decrypt.co/215295/jupiter-founder-solana-airdrop-backlash-response/
+2024-02-01,'Serum City' Game Launches—How to Claim an Ethereum NFT Pass,https://decrypt.co/215245/mutant-ape-game-serum-city-launches-how-claim-ethereum-nft-pass/
+2024-02-01,'Parallel' Card Game Plots Open Beta as New Ethereum NFT Cards Launch,https://decrypt.co/215233/parallel-teases-open-beta-plans-new-ethereum-nft-cards-launch/
+2024-02-01,Binance Launches Bitcoin Ordinals In-App Marketplace for BRC-20 Tokens,https://decrypt.co/215204/binance-launches-in-app-bitcoin-inscriptions-marketplace-brc-20-tokens/
+2024-02-01,India's Finance Minister Keeps Controversial Crypto Tax Policy in Interim Budget Proposal,https://www.coindesk.com/policy/2024/02/01/india-keeps-stiff-taxes-on-crypto-as-interim-budget-is-revealed-in-election-year/
+2024-02-01,The Bollinger Bandwidth Pattern on Bitcoin's Monthly Chart Resembles Previous Rallies,https://www.coindesk.com/markets/2024/02/01/it-may-be-time-for-bitcoin-traders-to-focus-on-john-bollingers-price-bands-again/
+2024-02-01,Celsius Starts Repaying Creditors With $3 Billion in Cryptocurrency and Fiat,https://unchainedcrypto.com/celsius-starts-distributing-over-3-billion-in-crypto-and-fiat-to-creditors/
+2024-02-01,"""Solana Hunger Games"" Catches Fire on Crypto Twitter, Attracting Over 100,000 Followers That Crashed Their Website",https://decrypt.co/215156/gg-zip-crypto-ar-solana-hunger-games/
+2024-02-01,"GameStop-Themed Meme Coin on Solana, GME, Doubles In a Day",https://decrypt.co/215138/gme-2-0-gamestop-meme-coin-solana-keeps-pumping/
+2024-02-01,"With Economic Development and Democratic Reforms Topping the Agenda, Argentina Drops Proposed Cryptocurrency Taxes",https://decrypt.co/215122/argentina-president-javier-milei-drops-crypto-tax-plan/
+2024-01-31,Former UK Chancellor George Osborne Joins Coinbase Advisory Council,https://www.cnbc.com/2024/01/31/george-osborne-ex-uk-finance-minister-joins-coinbase-crypto-exchange.html
+2024-01-31,"SEC Plans to Dismiss Debt Box Lawsuit, but Might Face Sanctions for Misleading Court",https://unchainedcrypto.com/sec-seeks-to-dismiss-lawsuit-against-debt-box-after-misleading-allegations/
+2024-01-31,Solana's Price Has Risen by 25% As Its Network Activity Has Surpassed Ethereum,https://decrypt.co/214902/solana-network-activity-surges-crypto-traders-turn-bullish-sol/
+2024-01-31,Why Is the Spanish Embassy in Bosnia Engaging With Crypto Projects on Twitter?,https://decrypt.co/214864/strange-crypto-tweets-from-spanish-government-account-stirs-speculation/
+2024-01-31,"Xai, Built on Arbitrum, Launches XAI Token and Partners With Laguna Games to Bring Games to the Network",https://decrypt.co/214858/whats-next-arbitrums-gaming-network-after-xai-token-launch/
+2024-01-31,Jupiter Is Launching Its JUP Token Airdrop Tomorrow—Here's Everything You Need to Know,https://decrypt.co/214841/jupiter-airdrop-what-you-need-know-about-solana-jup-token-launch/
+2024-01-31,Bitcoin Is Losing Ground in El Salvador Despite Government Embrace As Legal Tender,https://decrypt.co/214834/sharp-decline-in-crypto-payments-puts-el-salvadors-bitcoin-adoption-in-question/
+2024-01-31,"Standard Chartered Projects Ethereum ETF Approval by May 2024, Potentially Boosting ETH's Value to $4,000",https://decrypt.co/214824/ethereum-double-in-price-spot-etf-approval-may-2024/
+2024-01-31,"Rounding the First Turn, BlackRock and Fidelity Bitcoin Spot ETFs Are Outpacing Grayscale",https://www.theblock.co/post/275240/blackrock-and-fidelity-spot-bitcoin-etfs-are-on-track-to-outpace-grayscale-in-daily-trading-volume-for-first-time
+2024-01-31,Animoca Brands Collaborates With LightLink to Integrate Gasless Transactions Into Its Games,https://decrypt.co/214803/gas-free-ethereum-games-animoca-brands-layer-2-lightlink-team-up/
+2024-01-31,"Vitalik Buterin, Ethereum Creator, Sees Potential for AI in Crypto Games",https://decrypt.co/214798/ethereum-founder-vitalik-buterin-says-ai-like-player-game-crypto/
+2024-01-30,Crypto Exchange Bitpanda to Pull Out of Dutch Market,https://www.coindesk.com/policy/2024/01/30/bitpanda-crypto-exchange-to-withdraw-from-netherlands/
+2024-01-30,Spot Bitcoin ETFs Scoop Up $6.5B in BTC as GBTC Market Share Slips,https://www.theblock.co/post/275068/new-spot-bitcoin-etf-gbtc-market-share
+2024-01-30,"Abracadabra Finance Hit By $6.4M Exploit, MIM Stablecoin Loses Dollar Peg",https://www.theblock.co/post/275072/abracadabra-finance-drained-of-estimated-6-4-million-in-apparent-security-attack
+2024-01-30,Floki Blocks Hong Kong Users From Accessing Staking Programs,https://decrypt.co/214713/floki-halts-staking-program-in-hong-kong-after-regulator-warning/
+2024-01-30,Floki Devs Addressing Concerns Raised by Hong Kong's Regulator About Staking Program,https://www.coindesk.com/policy/2024/01/30/floki-team-responds-to-hong-kong-regulator-warning/
+2024-01-30,"$2.6 Billion Lost to Hacks in 2023, but $675 Million Was Recovered: PeckShield",https://unchainedcrypto.com/674-million-of-stolen-crypto-recovered-in-2023-peckshield/
+2024-01-30,DYdX Foundation Asks DAO for $30 Million Budget,https://www.coindesk.com/markets/2024/01/30/dydx-foundation-requests-30m-budget-pledges-to-issue-annual-spending-report/
+2024-01-30,U.S. Department of Justice Charges Three Individuals for $1.9 Billion Cryptocurrency Scam Using DeFi Platform HyperFund,https://decrypt.co/214682/doj-charges-three-people-in-1-9-billion-crypto-scam/
+2024-01-30,First Spot Bitcoin ETF Application in Hong Kong Comes from Harvest Global,https://forkast.news/hong-kong-sees-first-spot-bitcoin-etf-application/
+2024-01-30,"Chris Dixon of a16a Says It Doesn't Sell Tokens, But Projects It Backs Do",https://protos.com/chris-dixon-says-a16z-doesnt-sell-its-crypto-tokens-portfolio-disagrees/
+2024-01-30,Magic Eden Launches Multi-Chain Wallet to Manage NFTs Across Blockchains,https://www.theblock.co/post/274852/magic-eden-multi-chain-wallet-solana-polygon-bitcoin-ethereum
+2024-01-30,Solana-Based Decentralized Exchanges Saw More Trading Volume than Ethereum—Briefly,https://decrypt.co/214622/solana-flips-ethereum-defi-trading-jupiter-airdrop-nears/
+2024-01-29,WEN Tokens Remain Unclaimed as Airdrop Nears End,https://decrypt.co/214546/wen-airdrop-41-of-solana-meme-coin-still-unclaimed-as-deadline-looms/
+2024-01-29,Crypto Whales Accumulated $3 Billion More Bitcoin in January,https://www.coindesk.com/markets/2024/01/29/bitcoin-whales-boosted-coin-stash-by-3b-in-january-data-show/
+2024-01-29,Harvest Fund Applies for Spot Bitcoin ETF in Hong Kong,https://www.theblock.co/post/274776/harvest-fund-files-spot-bitcoin-etf-application-in-hong-kong-report
+2024-01-29,Bankrupt FTX Increases Cash to $4.4 Billion After Selling Crypto,https://unchainedcrypto.com/ftx-cash-reserves-rise-to-4-4-billion-after-exchange-unloads-crypto-stash/
+2024-01-29,Solana User Base Soars on Success of WEN Meme Coin,https://www.theblock.co/post/274760/solana-signups-surge-to-record-highs-while-wen-token-airdrop-nears-close
+2024-01-27,"Struggling NFT Marketplace OpenSea, Open to Acquisition: Report",https://www.dlnews.com/articles/markets/opensea-ceo-open-to-suitors-acquiring-nft-marketplace/
+2024-01-27,AI Game Developer Recreates Diablo III in Nifty Island,https://decrypt.co/214465/someone-recreated-diablo-3-nft-game-nifty-island-amid-airdrop-campaign/
+2024-01-27,New Solana Meme Coin WEN Pops After Huge Airdrop,https://decrypt.co/214461/wen-token-airdrop-frenzy-solana-meme-coin-jupiter/
+2024-01-27,"Bitcoin Could Be Headed Even Lower, Says Crypto Expert Chris Burniske",https://decrypt.co/214444/bitcoin-will-crash-hard-2024-burniske/
+2024-01-27,"Crypto Thief Heather ""Razzlekhan"" Morgan to Get Movie Treatment from Amazon",https://decrypt.co/214436/razzlekhan-amazon-bitfinex-bitcoin-heist-movie/
+2024-01-26,Was Privacy Coin Monero Really Cracked by Law Enforcement?,https://decrypt.co/214367/did-law-enforcement-crack-privacy-coin-monero-its-complicated/
+2024-01-26,"Star Trek's Jonathan Frakes to Direct Adaptation of ""Deathlands"" for Web3 Production Studio",https://decrypt.co/214081/bitcoin-pioneer-jeff-garzik-star-trek-jonathan-frakes-deathlands-tv-adaptation/
+2024-01-26,ARK Invest Sold Millions of ProShares Bitcoin Trust Shares While Buying Its Own Bitcoin ETF,https://www.coindesk.com/markets/2024/01/26/ark-bought-623m-worth-of-own-etf-in-last-week-sold-427m-of-bito/
+2024-01-26,Crypto Mining Rig Maker Canaan Raises $50 Million,https://www.theblock.co/post/274602/mining-rig-maker-canaan-raises-50-million-in-preferred-shares-financing
+2024-01-26,United Kingdom Says CBDC Plans Need More Time,https://decrypt.co/214295/britcoin-cbdc-not-ready-yet-says-bank-england/
+2024-01-26,Jupiter Set to Launch WEN Solana Meme Coin on Friday,https://decrypt.co/214282/wen-token-over-million-wallets-eligible-solana-meme-coin-airdrop/
+2024-01-26,AltLayer Begins ALT Airdrop With $100 Million Worth of Tokens,https://decrypt.co/214245/altlayer-airdrop-puts-103-million-into-wallets-ethereum-users/
 
