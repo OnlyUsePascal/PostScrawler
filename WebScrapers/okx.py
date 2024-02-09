@@ -21,18 +21,18 @@ def startScrape(targetNumWeek):
   
   url = 'https://www.okx.com/learn/tag/'
   endpoints = [
+    'security',
+    'metaverse',
+    'nft',
+    'bitcoin',
+    'gamefi',
+    'altcoin',
+    'research',
     'blockchain',
     'web3',
     'layer2',
-    'security',
-    'nft',
-    'bitcoin',
-    'gamefi'
-    ,'metaverse'
-    ,'altcoin'
-    ,'research'
   ]
-  delay = 2
+  delay = 3
   dateFormat = '%b %d, %Y'
   isEnough = True
   
@@ -53,12 +53,12 @@ def startScrape(targetNumWeek):
     
     while True:
       urlAll = url + endpoint + '/page/' + str(curPg)
+      print(urlAll)
       driver.get(urlAll)
       time.sleep(delay)
       
       postNum = driver.find_element(By.CSS_SELECTOR, postNumPath).text.split(' ')[1][1:-1]
       lastPg = int(max(1, int(postNum) / 24))
-      print(urlAll)
       # print('last page = ' + str(lastPg))
       
       for post in driver.find_elements(By.CSS_SELECTOR, postPath):

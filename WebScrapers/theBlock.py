@@ -38,7 +38,7 @@ def scrapeLatest(targetNumWeek):
 
         isBlank = True
         for post in driver.find_elements(By.CSS_SELECTOR, postPath):
-            print('DEBUGTIME')
+            # print('DEBUGTIME')
             isBlank = False
             postUrl = post.find_element(By.CSS_SELECTOR, postUrlPath).get_attribute('href')
             postTitle = post.find_element(By.CSS_SELECTOR, postTitlePath).text
@@ -58,7 +58,7 @@ def scrapeLatest(targetNumWeek):
 
             postDate = datetime.strftime(datetime.strptime(postDate, dateFormat), outputDateFormat)
             dataRow = [postDate, postTitle, postUrl]
-            print(dataRow)
+            # print(dataRow)
             dataList.append(dataRow)
 
         if isEnough or isBlank:

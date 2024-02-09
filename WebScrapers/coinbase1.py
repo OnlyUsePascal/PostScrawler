@@ -19,7 +19,7 @@ from seleniumbase import SB
 
 @handle_scrape_errors
 def startScrape(targetNumWeek):
-  siteTitle = 'Coinbase 1'
+  siteTitle = 'Coinbase:blog/landing'
   print('--> ' + siteTitle)
   
   url = 'https://www.coinbase.com/blog/landing'

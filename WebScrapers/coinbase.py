@@ -8,60 +8,85 @@ from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 from Utils.driver_options import create_option
 from Utils.write_to_list import writeFileTitle, writeFileData
+from selenium.webdriver.support import expected_conditions as EC
+from Utils.write_to_list import writeScrapedData
+from globals import fileName, outputDateFormat
+from selenium.webdriver.support.ui import WebDriverWait
+from Utils.correct_time_offset import correctTimeOffset
 
 
 def scrapeArticles(targetNumWeek):
-    print('Starting scraping Coinbase...')
-    pageUrl = ['https://www.coinbase.com/bytes/archive']
+    siteTitle = 'Coinbase Archive'
+    print('-->' + siteTitle)
+    
+    url = 'https://www.coinbase.com/bytes/archive?page='
+    delay = 3
+    dateFormat = '%b %d, %Y'
+    isEnough = True
+
+    postPath = 'a[class="DesktopArchiveArticle__StyledLink-sc-1ww2hte-0 bwTULY"]'
+    postTitlePath = 'p[class="cds-typographyResets-t1xhpuq2 cds-headline-hb7l4gg cds-foreground-f1yzxzgu cds-transition-txjiwsi cds-start-s1muvu8a cds-1-_9w3lns"]'
+    # postUrlPath = 'a'
+    postDatePath = 'p[class="cds-typographyResets-t1xhpuq2 cds-label1-ln29cth cds-foregroundMuted-f1vw1sy6 cds-transition-txjiwsi cds-start-s1muvu8a cds-6-_1ts70zl"]'
+    adCloseBtnPath = 'button[class="BytesSignupModal__StyledButton-sc-1x4h11y-2 eDiIyn"]'
     
     service = Service(ChromeDriverManager().install())
-    options = create_option(headless=True)
+    options = create_option(headless=False)
     driver = webdriver.Chrome(options=options, service=service)
-    blogs_list = []
+    curPg = 1
+    isEnough = False
+    isAdClosed = False
+    dataList = []
     
-    delay = 2
-
-    writeFileTitle('Coinbase')
-
-
-    def scrapeSection(url):
-        print(f'working on: {url}')
-        writeFileTitle(f'> {url}', no_decoration=True)
-        driver.get(url)
-        time.sleep(delay)
-
-        # Articles
-        articles_section = WebSection(driver) \
-                            .useSectionPath('#blog-container > div') \
-                            .useTitlePath('h1.content_header__title:nth-child(2)') \
-                            .useDatePath('div.gap-4:nth-child(3) > div:nth-child(2) > span:nth-child(2)', in_date_format='%d %b %Y') \
-                            .useLinkPath('div:nth-child(1) > a:nth-child(1)') \
-                            .as_link(True)
-
-        while(True):
-            # Get last post's date
-            last_article_date = articles_section.scrape_last()[0]
-
-            # Check for the last post's published date, if within the target week, keep loading more contents
-            if (datetime.now() - last_article_date) > timedelta(weeks=targetNumWeek):
-                # print(f'DEBUG: Last article of {url} is within the target week')
-                articles_list, _ = articles_section.scrape_in(week=targetNumWeek)
-                blogs_list.extend(articles_list)
-
+    urlFull = url + str(curPg)
+    driver.get(urlFull)
+    driver.minimize_window()
+    time.sleep(4)
+    
+    while (curPg <= 13):
+        if not isAdClosed:
+            try: 
+                WebDriverWait(driver, 3).until(EC.element_to_be_clickable((By.CSS_SELECTOR, adCloseBtnPath))).click()
+                time.sleep(2)
+                isAdClosed = True
+                print('ad close btn found :)')
+            except Exception as err: 
+                print('ad close button not found')
+        
+        posts = driver.find_elements(By.CSS_SELECTOR, postPath)
+        for post in posts:
+            postTitle = post.find_element(By.CSS_SELECTOR, postTitlePath).text
+            postUrl = post.get_attribute('href')
+            postDate = post.find_element(By.CSS_SELECTOR, postDatePath).text
+            
+            if (postDate == ''):
+                print('> err: blank page, pls try again')
+                return
+                # continue
+            postDate = postDate.split(' ')
+            if len(postDate[1]) == 2:
+                postDate[1] = '0' + postDate[1]
+            postDate = ' '.join(postDate)
+            
+            if not correctTimeOffset(postDate, dateFormat, targetNumWeek):
+                print('> enough post')
+                isEnough = True
                 break
-            else:
-                # Load more stories
-                # print('DEBUG: Loading more stories...')
-                load_more_btn = driver.find_element(By.CSS_SELECTOR, '#load-more-posts')
-                load_more_btn.send_keys(Keys.ENTER)
-                time.sleep(delay)
-
-
-    for url in pageUrl:
-        scrapeSection(url)
-        writeFileData(blogs_list, targetNumWeek)
-        blogs_list.clear()
-    
-    # Quit driver
-    print('Scraping Decrypt Finished')
-    driver.quit()
+            
+            postDate = datetime.strftime(datetime.strptime(postDate, dateFormat), outputDateFormat)
+            dataRow = [postDate, postTitle, postUrl]
+            dataList.append(dataRow)
+            # print(dataRow)
+            
+        if isEnough:
+            print('> done\n')
+            writeScrapedData(siteTitle, fileName, dataList, targetNumWeek)
+            driver.quit()
+            break
+        
+        print('> still searching')
+        curPg += 1
+        pgBtnPath = f'a[href="/bytes/archive?page={curPg}"]'
+        driver.execute_script("arguments[0].click();", driver.find_element(By.CSS_SELECTOR, pgBtnPath))
+        time.sleep(3)
+        

@@ -4,7 +4,7 @@ import sys
 from globals import fileName
 
 
-def writeFileTitle(data_title: str, no_decoration = alse):
+def writeFileTitle(data_title: str, no_decoration = False):
     with open(fileName, 'a', encoding="utf-8") as file:
         writer = csv.writer(file)
         if no_decoration:
