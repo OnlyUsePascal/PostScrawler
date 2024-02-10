@@ -32,7 +32,7 @@ def scrapeAcademyBinance(targetNumWeek):
     list_layout_btn.send_keys(Keys.ENTER)
 
     while (isWithinSearchWeek):
-        blogs_title = driver.find_elements(By.CSS_SELECTOR, 'div.css-8qb8m4 h3.css-1ctqeuv')
+        blogs_title = driver.find_elements(By.CSS_SELECTOR, 'div.css-8qb8m4 h3.css-1ctqeuv #fuckyou')
         blogs_date = driver.find_elements(By.CSS_SELECTOR, 'div.css-fv3lde span.css-1sj28o2')
         blogs_link = driver.find_elements(By.CSS_SELECTOR, 'div.css-8qb8m4 > a')
 

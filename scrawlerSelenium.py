@@ -1,5 +1,4 @@
 from WebScrapers import *
-from WebScrapers import coinbase1
 from globals import fileName
 import sys
 
@@ -47,11 +46,11 @@ def webscrape(targetNumWeek=1):
     # hubspot.scrapeHubspot(targetNumWeek)
     
     # since Feb/2024
-    # academy_binance.scrapeAcademyBinance(targetNumWeek)
-    # chain_link.scrapeChainlink(targetNumWeek)
+    academy_binance.scrapeAcademyBinance(targetNumWeek)
+    chain_link.scrapeChainlink(targetNumWeek)
     # vitalik.scrapeVitalik(targetNumWeek)
-    
-    # binance.scrapeBinance(targetNumWeek)
+
+    binance.scrapeBinance(targetNumWeek)
     # theBlock.scrapeLatest(targetNumWeek)
     # decrypt.scrapeNewsExplorer(targetNumWeek)
     # nextrope.scrapeArticles(targetNumWeek)
@@ -63,7 +62,7 @@ def webscrape(targetNumWeek=1):
     # decrypt2.startScrape(targetNumWeek)
     # coinbase1.startScrape(targetNumWeek) #web browser on
     # blockWork.startScrape(targetNumWeek) #should be run alone
-    coin68.startScrape(targetNumWeek)
+    # coin68.startScrape(targetNumWeek)
     print('** Done **')
 
 

@@ -1,7 +1,7 @@
 # write to list
 import csv
-import sys
 from globals import fileName
+from Utils.path_utils import check_and_create_file
 
 
 def writeFileTitle(data_title: str, no_decoration = False):
@@ -27,10 +27,17 @@ def writeFileData(data_list: list, targetNumWeek: int):
         writer.writerow([])
 
 
-def writeScrapedData(data_title: str, file, data_list: list, target_weeks):
-    # print(data_list)
-    # print(data_title)
+def writeError(error: str):
+    with open(fileName, 'a', encoding="utf-8") as file:
+        writer = csv.writer(file)
 
+        writer.writerow([error])
+
+        # blank separator
+        writer.writerow([])
+
+
+def writeScrapedData(data_title: str, file, data_list: list, target_weeks):
     with open(file, 'a', encoding="utf-8") as file:
         writer = csv.writer(file)
 
@@ -43,3 +50,11 @@ def writeScrapedData(data_title: str, file, data_list: list, target_weeks):
 
         # blank separator
         writer.writerow([])
+
+# Logging
+def log(message: str, logFileName: str):
+    # Write a function to check if the file exists, if not, create it
+    check_and_create_file(logFileName)
+
+    with open(logFileName, 'a', encoding="utf-8") as file:
+        file.write(f'{message}\n\n')
