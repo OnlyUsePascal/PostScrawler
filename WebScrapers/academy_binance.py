@@ -6,6 +6,8 @@ from Utils.error_handler import handle_scrape_errors
 from Utils.driver_options import create_option
 from Utils.write_to_list import writeScrapedData
 from globals import fileName, outputDateFormat
+from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.chrome.service import Service
 import time
 
 
@@ -15,7 +17,10 @@ def scrapeAcademyBinance(targetNumWeek):
     pageUrl = 'https://academy.binance.com/en/articles?page=1'
     delay = 1
     isWithinSearchWeek = True
-    driver = webdriver.Chrome(options=create_option())
+    
+    service = Service(ChromeDriverManager().install())
+    driver = webdriver.Chrome(options=create_option(headless=True), service=service)
+    # driver = webdriver.Chrome(options=create_option())
     driver.get(pageUrl)
     blogs_list = []
 

@@ -12,7 +12,6 @@ def webscrape(targetNumWeek=1):
 
     print(f'scraping weeks: {targetNumWeek}')
 
-    # academy_binance.scrapeAcademyBinance(targetNumWeek)
     # open_ai.scrapeOpenAI(targetNumWeek)
     # google_blog_ai.scrapeGoogleBlogAI(targetNumWeek)
     # developer_archives.scrapeDevelopersArchives(targetNumWeek)
@@ -47,6 +46,8 @@ def webscrape(targetNumWeek=1):
     # analytic_vidhya.scrapeAnalytic_Vidhya(targetNumWeek)
     # hubspot.scrapeHubspot(targetNumWeek)
     
+    # since Feb/2024
+    # academy_binance.scrapeAcademyBinance(targetNumWeek)
     # chain_link.scrapeChainlink(targetNumWeek)
     # vitalik.scrapeVitalik(targetNumWeek)
     
@@ -62,6 +63,7 @@ def webscrape(targetNumWeek=1):
     # decrypt2.startScrape(targetNumWeek)
     # coinbase1.startScrape(targetNumWeek) #web browser on
     # blockWork.startScrape(targetNumWeek) #should be run alone
+    coin68.startScrape(targetNumWeek)
     print('** Done **')
 
 
