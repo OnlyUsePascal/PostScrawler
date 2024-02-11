@@ -8,6 +8,7 @@ from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 import csv
 from Utils.driver_options import create_option
+from Utils.error_handler import handle_scrape_errors
 from Utils.write_to_list import writeFileTitle, writeFileData
 from selenium.webdriver.support import expected_conditions as EC
 from Utils.write_to_list import writeScrapedData
@@ -16,6 +17,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from Utils.correct_time_offset import correctTimeOffset
 
 
+@handle_scrape_errors
 def startScrape(targetNumWeek):
     siteTitle = 'Coin68'
     print(f'=== {siteTitle} ===')

@@ -12,7 +12,7 @@ from Utils.driver_options import create_option
 from Utils.write_to_list import writeFileTitle, writeFileData, writeScrapedData
 from globals import fileName, outputDateFormat
 
-# @handle_scrape_errors
+@handle_scrape_errors
 def scrapeBinance(targetNumWeek):
     web_name = 'Binance'
     print(f'Starting scraping {web_name}...')
