@@ -14,6 +14,7 @@ Tools: Python + Selenium
 
 - recommend to use vpn (1.1.1.1)
 - Check error at the `logs` directory if any
+- Please check the [update log](./updateLog.md) for more infor
 
 ### Structure
 ```
