@@ -23,6 +23,7 @@ def startScrape(targetNumWeek):
   print('--> ' + siteTitle)
   
   url = 'https://www.coinbase.com/blog/landing'
+  print(f'> {url}')
   delay = 3
   dateFormat = '%B %d, %Y'
   isEnough = False
@@ -69,7 +70,7 @@ def startScrape(targetNumWeek):
     
     if isEnough:
       print('> done\n')
-      writeScrapedData(siteTitle, fileName, dataList, targetNumWeek)
+      writeScrapedData(siteTitle, fileName, dataList, targetNumWeek, url)
       break
     
     print('> still searching\n')
@@ -81,7 +82,7 @@ def startScrape(targetNumWeek):
       time.sleep(3)
       # WebDriverWait(driver, delay).until(EC.invisibility_of_element_located((By.CSS_SELECTOR, loadIconPath)))
     except Exception as err:
-      writeScrapedData(siteTitle, fileName, dataList, targetNumWeek)
+      writeScrapedData(siteTitle, fileName, dataList, targetNumWeek, url)
       print(err)
       break
     

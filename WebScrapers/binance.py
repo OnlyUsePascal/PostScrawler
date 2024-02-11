@@ -15,7 +15,7 @@ from globals import fileName, outputDateFormat
 @handle_scrape_errors
 def scrapeBinance(targetNumWeek):
     web_name = 'Binance'
-    print(f'Starting scraping {web_name}...')
+    print(f'---> {web_name}...')
     writeFileTitle(f'{web_name}')
 
     pageUrls = ['https://www.binance.com/en/research/analysis ',
@@ -26,7 +26,7 @@ def scrapeBinance(targetNumWeek):
     driver = webdriver.Chrome(options=options, service=service)
 
     def scrapeSection(url):
-        print(f'working on: {url}')
+        print(f'> {url}')
         writeFileTitle(f'> {url}', no_decoration=True)
         blogs_list = []
 
@@ -57,5 +57,5 @@ def scrapeBinance(targetNumWeek):
         scrapeSection(url)
 
     # Write data into file
-    print(f'Scraping {web_name} Finished')
+    print(f'> Done\n')
     driver.quit()

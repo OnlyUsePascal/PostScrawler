@@ -4,7 +4,7 @@ from selenium.webdriver.common.by import By
 from datetime import datetime, timedelta
 from Utils.error_handler import handle_scrape_errors
 from Utils.driver_options import create_option
-from Utils.write_to_list import writeScrapedData
+from Utils.write_to_list import writeMessage, writeScrapedData
 from globals import fileName, outputDateFormat
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.service import Service
@@ -13,8 +13,10 @@ import time
 
 @handle_scrape_errors
 def scrapeAcademyBinance(targetNumWeek):
-    print('Starting scraping Academy Binance...')
+    print('---> Academy Binance')
     pageUrl = 'https://academy.binance.com/en/articles?page=1'
+    print(f'> {pageUrl}')
+    # writeMessage(fileName, f'> {pageUrl}')
     delay = 1
     isWithinSearchWeek = True
     
@@ -44,11 +46,12 @@ def scrapeAcademyBinance(targetNumWeek):
             blogs_list.append([date.strftime(outputDateFormat), blogs_title[i].get_attribute('title'), blogs_link[i].get_attribute('href')])
 
         # Go to next page
+        print('+ still searching')
         next_page_btn = driver.find_element(By.CSS_SELECTOR, 'a[aria-label="Go to next page"]')
         next_page_btn.send_keys(Keys.ENTER)
         time.sleep(delay)
 
     # Write data into file
-    writeScrapedData('Academy Binance', fileName, blogs_list, targetNumWeek)
-    print('Scraping Academy Binance Finished')
+    writeScrapedData('Academy Binance', fileName, blogs_list, targetNumWeek, pageUrl)
+    print('> Done\n')
     driver.quit()

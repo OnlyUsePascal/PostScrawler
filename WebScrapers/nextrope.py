@@ -11,7 +11,7 @@ from Utils.write_to_list import writeFileTitle, writeFileData
 
 
 def scrapeArticles(targetNumWeek):
-    print('Starting scraping Nextrope...')
+    print('---> Nextrope')
     pageUrl = ['https://nextrope.com/blog/']
     
     service = Service(ChromeDriverManager().install())
@@ -25,7 +25,7 @@ def scrapeArticles(targetNumWeek):
 
 
     def scrapeSection(url):
-        print(f'working on: {url}')
+        print(f'> {url}')
         writeFileTitle(f'> {url}', no_decoration=True)
         driver.get(url)
         time.sleep(delay)
@@ -51,7 +51,7 @@ def scrapeArticles(targetNumWeek):
                 break
             else:
                 # Load more stories
-                # print('DEBUG: Loading more stories...')
+                print('+ more stories...')
                 load_more_btn = driver.find_element(By.CSS_SELECTOR, '#load-more-posts')
                 load_more_btn.send_keys(Keys.ENTER)
                 time.sleep(delay)
@@ -63,5 +63,5 @@ def scrapeArticles(targetNumWeek):
         blogs_list.clear()
     
     # Quit driver
-    print('Scraping Decrypt Finished')
+    print('> Done\n')
     driver.quit()

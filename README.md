@@ -5,6 +5,16 @@ A Python script for scraping blogs from Blockchain-related websites.
 
 Tools: Python + Selenium
 
+### Note
+- Site that are easy to break
+  - okx: recommend to reduce endpoints
+  - blockwork: have to turn off advertisement float
+  - decrypt: have to turn off advertisement float
+  - coinbase: cloudflare block
+
+- recommend to use vpn (1.1.1.1)
+- Check error at the `logs` directory if any
+
 ### Structure
 ```
 .

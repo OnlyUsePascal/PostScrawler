@@ -3,7 +3,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium import webdriver
 from Utils.error_handler import handle_scrape_errors
 from Utils.driver_options import create_option
-from Utils.write_to_list import writeScrapedData
+from Utils.write_to_list import writeFileData, writeFileTitle, writeMessage, writeScrapedData
 from globals import fileName, outputDateFormat
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.chrome.service import Service
@@ -45,7 +45,10 @@ def startScrape(targetNumWeek):
   options = create_option(headless=True)
   driver = webdriver.Chrome(options=options, service=service)
   
+  writeFileTitle(siteTitle)
   for endpoint in endpoints:
+    print(f'> {url + endpoint}')
+    writeMessage(fileName, f'> {url + endpoint}')
     curPg = 1
     lastPg = 100
     isEnough = False
@@ -53,7 +56,6 @@ def startScrape(targetNumWeek):
     
     while True:
       urlAll = url + endpoint + '/page/' + str(curPg)
-      print(urlAll)
       driver.get(urlAll)
       time.sleep(delay)
       
@@ -82,12 +84,13 @@ def startScrape(targetNumWeek):
         
       if isEnough or curPg >= lastPg:
         print('> done\n')
-        writeScrapedData(siteTitle + ':' + endpoint, fileName, dataList, targetNumWeek)
+        writeFileData(dataList, targetNumWeek)
+        # writeScrapedData(siteTitle + ':' + endpoint, fileName, dataList, targetNumWeek)
         break
       curPg += 1
       print('still searching')
       
-  driver.quit
+  driver.quit()
 
 
 

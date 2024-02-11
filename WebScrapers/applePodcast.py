@@ -11,6 +11,7 @@ from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 from Utils.correct_time_offset import correctTimeOffset
 import time
+from Utils.write_to_list import writeFileData, writeFileTitle, writeMessage, writeScrapedData
 from datetime import datetime
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -51,9 +52,11 @@ def startScrape(targetNumWeek):
   options = create_option(headless=True)
   driver = webdriver.Chrome(options=options, service=service)
   
+  writeFileTitle(siteTitle)
   for endpoint in endpoints:
     urlAll = url + endpoint
-    print(urlAll)
+    print(f'> {urlAll}')
+    writeMessage(fileName, f'> {urlAll}')
     driver.get(urlAll)
     time.sleep(delay)
     isEnough = False
@@ -83,17 +86,18 @@ def startScrape(targetNumWeek):
       
       if isEnough:
         print('> done\n')
-        writeScrapedData(siteTitle + ':' + endpoint, fileName, dataList, targetNumWeek)
+        writeFileData(dataList, targetNumWeek)
         break
       
-      print('> still searching')
+      print('+ still searching')
       try:
         driver.execute_script("window.scrollTo(0, document.body.clientHeight-100);")
         # WebDriverWait(driver, 1).until(EC.element_to_be_clickable((By.CSS_SELECTOR, btnPath))).click()
         driver.execute_script("arguments[0].click();", driver.find_element(By.CSS_SELECTOR, btnPath))
         time.sleep(delay)
       except Exception as err:
-        writeScrapedData(siteTitle + ':' + endpoint, fileName, dataList, targetNumWeek)
+        # writeScrapedData(siteTitle + ':' + endpoint, fileName, dataList, targetNumWeek)
+        writeFileData(dataList, targetNumWeek)
         print('some err happends?')
         # print(err)
         break

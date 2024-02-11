@@ -17,8 +17,9 @@ from webdriver_manager.chrome import ChromeDriverManager
 
 @handle_scrape_errors
 def scrapeChainlink(targetNumWeek):
-    print('Starting scraping Chainlink...')
+    print('---> Chainlink...')
     pageUrl = 'https://blog.chain.link/'
+    print(f'> {pageUrl}')
     isWithinSearchWeek = True
     # options = create_option(page_load_strategy='none')
     options = create_option(headless=True)
@@ -55,6 +56,6 @@ def scrapeChainlink(targetNumWeek):
         load_more_btn.send_keys(Keys.ENTER)
 
     # Write data into file
-    writeScrapedData('Chainlink', fileName, blogs_list, targetNumWeek)
-    print('Scraping Chainlink Finished')
+    writeScrapedData('Chainlink', fileName, blogs_list, targetNumWeek, pageUrl)
+    print('> Done\n')
     driver.quit()

@@ -26,6 +26,12 @@ def writeFileData(data_list: list, targetNumWeek: int):
         # blank separator
         writer.writerow([])
 
+def writeMessage(fileName: str, message: str):
+    if (len(message) == 0): 
+        return
+    with open(fileName, 'a', encoding='utf-8') as file:
+        writer = csv.writer(file)
+        writer.writerow([message])
 
 def writeError(error: str):
     with open(fileName, 'a', encoding="utf-8") as file:
@@ -37,11 +43,13 @@ def writeError(error: str):
         writer.writerow([])
 
 
-def writeScrapedData(data_title: str, file, data_list: list, target_weeks):
+def writeScrapedData(data_title: str, file, data_list: list, target_weeks, siteUrl : str = None):
     with open(file, 'a', encoding="utf-8") as file:
         writer = csv.writer(file)
 
         writer.writerow([f'=== {data_title} ==='])
+        if siteUrl != None:
+            writer.writerow([f'> {siteUrl}'])
         if not data_list or len(data_list) == 0:
             writer.writerow([f'No articles/blogs were found within {target_weeks} weeks'])
         else:

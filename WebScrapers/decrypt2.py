@@ -19,6 +19,7 @@ def startScrape(targetNumWeek):
   print('--> ' + siteTitle)
   
   url = 'https://decrypt.co/university/explainers'
+  print(f'> {url}')
   delay = 2
   dateFormat = '%b %d, %Y'
   
@@ -66,7 +67,7 @@ def startScrape(targetNumWeek):
       postDate = ' '.join(postDate)
       
       if not correctTimeOffset(postDate, dateFormat, targetNumWeek):
-        print('* enough post')
+        print('+ enough post')
         isEnough = True
         break
       
@@ -76,12 +77,12 @@ def startScrape(targetNumWeek):
       # print(dataRow)
     
     if (isEnough):
-      writeScrapedData(siteTitle, fileName, dataList, targetNumWeek)
+      writeScrapedData(siteTitle, fileName, dataList, targetNumWeek, url)
       print('> done\n')
       driver.quit()
       break
     
-    print('* still searching\n')
+    print('+ still searching')
     try:
       driver.execute_script("window.scrollTo(0, document.body.clientHeight-1500);")
       driver.find_element(By.CSS_SELECTOR, loadBtnPath).send_keys(Keys.ENTER)
@@ -89,6 +90,6 @@ def startScrape(targetNumWeek):
       # WebDriverWait(driver, delay).until(EC.element_to_be_clickable((By.CSS_SELECTOR, loadBtnPath))).click()
       time.sleep(2)
     except Exception as err:
-      writeScrapedData(siteTitle, fileName, dataList, targetNumWeek)
+      writeScrapedData(siteTitle, fileName, dataList, targetNumWeek, url)
       print(err)
       break

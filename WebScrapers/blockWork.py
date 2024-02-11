@@ -19,6 +19,7 @@ def startScrape(targetNumWeek):
   print('--> ' + siteTitle)
   
   url = 'https://blockworks.co/news'
+  print(f'> {url}')
   delay = 2
   dateFormat = '%B %d, %Y'
   isEnough = False
@@ -71,7 +72,8 @@ def startScrape(targetNumWeek):
             
             postDate = datetime.strftime(datetime.strptime(postDate, dateFormat), outputDateFormat)
           except Exception as err:
-            writeScrapedData(siteTitle, fileName, dataList, targetNumWeek)
+            # writeScrapedData(siteTitle, fileName, dataList, targetNumWeek, url)
+            print('+ some err happened')
             raise err  
           
           dataRow = [postDate, postTitle, postUrl]
@@ -79,7 +81,7 @@ def startScrape(targetNumWeek):
           # print(dataRow)
         
         if (isEnough):
-          writeScrapedData(siteTitle, fileName, dataList, targetNumWeek)
+          writeScrapedData(siteTitle, fileName, dataList, targetNumWeek, url)
           print('> done\n')
           driver.quit()
           return

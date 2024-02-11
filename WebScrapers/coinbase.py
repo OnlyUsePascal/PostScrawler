@@ -17,9 +17,10 @@ from Utils.correct_time_offset import correctTimeOffset
 
 def scrapeArticles(targetNumWeek):
     siteTitle = 'Coinbase Archive'
-    print('-->' + siteTitle)
+    print('--> ' + siteTitle)
     
     url = 'https://www.coinbase.com/bytes/archive?page='
+    print(f'> {url}')
     delay = 3
     dateFormat = '%b %d, %Y'
     isEnough = True
@@ -69,7 +70,7 @@ def scrapeArticles(targetNumWeek):
             postDate = ' '.join(postDate)
             
             if not correctTimeOffset(postDate, dateFormat, targetNumWeek):
-                print('> enough post')
+                print('+ enough post')
                 isEnough = True
                 break
             
@@ -80,11 +81,11 @@ def scrapeArticles(targetNumWeek):
             
         if isEnough:
             print('> done\n')
-            writeScrapedData(siteTitle, fileName, dataList, targetNumWeek)
+            writeScrapedData(siteTitle, fileName, dataList, targetNumWeek, url)
             driver.quit()
             break
         
-        print('> still searching')
+        print('+ still searching')
         curPg += 1
         pgBtnPath = f'a[href="/bytes/archive?page={curPg}"]'
         driver.execute_script("arguments[0].click();", driver.find_element(By.CSS_SELECTOR, pgBtnPath))

@@ -11,8 +11,9 @@ from globals import fileName, outputDateFormat
 
 
 def scrapeVitalik(targetNumWeek):
-    print('@Vitalik')
+    print('---> Vitalik')
     pageUrl = 'https://vitalik.eth.limo/'
+    print(f'> {pageUrl}')
     dateFormat = '%Y %b %d'
 
     # driver = webdriver.Chrome()
@@ -35,6 +36,6 @@ def scrapeVitalik(targetNumWeek):
         # print(dataRow)
         dataList.append(dataRow)
         
-    writeScrapedData('Vitalik', fileName, dataList, targetNumWeek)
-    print('> done')
+    writeScrapedData('Vitalik', fileName, dataList, targetNumWeek, pageUrl)
+    print('> done\n')
     driver.quit()

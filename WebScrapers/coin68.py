@@ -20,7 +20,7 @@ from Utils.correct_time_offset import correctTimeOffset
 @handle_scrape_errors
 def startScrape(targetNumWeek):
     siteTitle = 'Coin68'
-    print(f'=== {siteTitle} ===')
+    print(f'---> {siteTitle}')
     writeFileTitle(siteTitle)
     
     url = 'https://coin68.com/article/'
@@ -90,8 +90,8 @@ def startScrape(targetNumWeek):
                     isEnough = True
                     break 
                 
-                dataRow = [postDate, postTitle, postUrl]
                 postDate = datetime.strftime(datetime.strptime(postDate, dateFormat), outputDateFormat)
+                dataRow = [postDate, postTitle, postUrl]
                 dataList.append(dataRow)
                 # print(dataRow)
                 

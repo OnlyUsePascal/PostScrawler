@@ -97,9 +97,9 @@ def scrapeDecrypt(targetNumWeek):
 
 
 def scrapeNewsExplorer(targetNumWeek):
-    print('Starting scraping News Explorer...')
+    print('---> Decrypt News Explorer...')
     pageUrl = ['https://decrypt.co/news-explorer']
-
+    
     service = Service(ChromeDriverManager().install())
     options = create_option(headless=True)
     driver = webdriver.Chrome(options=options, service=service)
@@ -117,7 +117,7 @@ def scrapeNewsExplorer(targetNumWeek):
             return date
 
     def scrapeSection(url):
-        print(f'working on: {url}')
+        print(f'> {url}')
         writeFileTitle(f'> {url}', no_decoration=True)
         driver.get(url)
         time.sleep(delay)
@@ -143,7 +143,7 @@ def scrapeNewsExplorer(targetNumWeek):
                 break
             else:
                 # Load more stories
-                # print('DEBUG: Loading more stories...')
+                print('+ still searching...')
                 load_more_btn = driver.find_element(By.CSS_SELECTOR, '.my-2')
                 load_more_btn.send_keys(Keys.ENTER)
                 time.sleep(delay)
@@ -155,5 +155,5 @@ def scrapeNewsExplorer(targetNumWeek):
         blogs_list.clear()
     
     # Quit driver
-    print('Scraping Decrypt Finished')
+    print('> done\n')
     driver.quit()

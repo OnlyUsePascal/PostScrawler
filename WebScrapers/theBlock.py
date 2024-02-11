@@ -32,7 +32,7 @@ def scrapeLatest(targetNumWeek):
     while True:
 
         urlAll = url + str(curPg)
-        print(urlAll)
+        print(f'> {urlAll}')
         driver.get(urlAll)
         time.sleep(delay)
 
@@ -67,7 +67,7 @@ def scrapeLatest(targetNumWeek):
         curPg += 1
         print('* still searching')
 
-    writeScrapedData(siteTitle, fileName, dataList, targetNumWeek)
+    writeScrapedData(siteTitle, fileName, dataList, targetNumWeek, url)
     print('> done\n')
     driver.quit()
 
@@ -94,7 +94,7 @@ def startScrapeReport(targetNumWeek):
     while True:
         
         urlAll = url + str(curPg * 10)
-        print(urlAll)
+        print(f'> {urlAll}')
         driver.get(urlAll)
         time.sleep(delay)
         
@@ -128,6 +128,6 @@ def startScrapeReport(targetNumWeek):
         curPg += 1
         print('* still searching')
 
-    writeScrapedData(siteTitle, fileName, dataList, targetNumWeek)
+    writeScrapedData(siteTitle, fileName, dataList, targetNumWeek, url)
     print('> done\n')
     driver.quit()
