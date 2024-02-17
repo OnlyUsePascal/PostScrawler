@@ -29,15 +29,19 @@ def startScrape(targetNumWeek):
     'bell-curve/id1641356619',
     'blockchain-insider-podcast-by-11-fs/id1256418941',
     'blockdrops-com-maur%C3%ADcio-magaldi/id1491231344',
-    'empire/id1554930038'
-    ,'gm-from-decrypt/id1520762610'
-    ,'lightspeed/id1697548240',
+    'empire/id1554930038',
+    'gm-from-decrypt/id1520762610',
+    'lightspeed/id1697548240',
     'the-breakdown/id1438693620',
     'the-pomp-podcast/id1434060078',
-    'the-scoop/id1460134454'
-    ,'unchained/id1123922160'
-    ,'w3b-talks/id1657782594'
-    ,'whats-on-tap/id1565772450'
+    'the-scoop/id1460134454',
+    'unchained/id1123922160',
+    'w3b-talks/id1657782594',
+    'whats-on-tap/id1565772450',
+    'the-bad-crypto-podcast/id1261133600',
+    'bloomberg-crypto/id1623197303',
+    'the-money-movement-with-jeremy-allaire-leaders/id1512272543',
+    'zero-knowledge/id1326503043'
   ]
   delay = 2
   dateFormat = '%d %b %Y'
