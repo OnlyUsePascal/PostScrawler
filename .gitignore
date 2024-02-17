@@ -4,3 +4,4 @@ logs/*
 __pycache__
 **/__pycache__
 env/**/*
+test.csv
