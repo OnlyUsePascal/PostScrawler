@@ -41,7 +41,9 @@ def startScrape(targetNumWeek):
     'the-bad-crypto-podcast/id1261133600',
     'bloomberg-crypto/id1623197303',
     'the-money-movement-with-jeremy-allaire-leaders/id1512272543',
-    'zero-knowledge/id1326503043'
+    'zero-knowledge/id1326503043',
+    'the-defiant-defi-podcast/id1512654905',
+    'defi-by-design/id1523220564'
   ]
   delay = 2
   dateFormat = '%d %b %Y'
