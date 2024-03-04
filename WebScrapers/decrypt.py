@@ -109,9 +109,12 @@ def scrapeNewsExplorer(targetNumWeek):
 
     writeFileTitle('News Explorer')
     
-    def format_post_date(date):
+    def format_post_date(date: str):
             # Article format: Feb 7, 6:58 pm
             date = date.split(',')[0]
+            if 'Feb' in date:
+                date = date.replace("29", "28")
+            # print(date)
             date = datetime.strptime(date, '%b %d')
             date = date.replace(year = datetime.now().year)
             return date
@@ -126,8 +129,7 @@ def scrapeNewsExplorer(targetNumWeek):
         articles_section = WebSection(driver) \
                             .useSectionPath('.-mx-4 > div') \
                             .useTitlePath('h4') \
-                            .useDatePath('div:nth-child(1) > div:nth-child(1) > div:nth-child(1)',
-                                        custom_date_format = format_post_date) \
+                            .useDatePath('div:nth-child(1) > div:nth-child(1) > div:nth-child(1)', custom_date_format = format_post_date) \
                             .useLinkPath('div:nth-child(2) > div:nth-child(1) > a:nth-child(1)')
 
         while(True):
@@ -157,3 +159,13 @@ def scrapeNewsExplorer(targetNumWeek):
     # Quit driver
     print('> done\n')
     driver.quit()
+
+
+
+
+
+
+
+
+
+

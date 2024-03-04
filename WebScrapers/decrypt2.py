@@ -23,7 +23,7 @@ def startScrape(targetNumWeek):
   delay = 2
   dateFormat = '%b %d, %Y'
   
-  postPath = 'div[class="sc-4d03eefa-1 kTZhhE border-neutral-500 border-r-[1px] border-b-[1px]"]'
+  postPath = 'div[class="sc-4d03eefa-1 GwgAQ border-neutral-500 border-r-[1px] border-b-[1px]"]'
   postUrlPath = 'a[class="block linkbox__overlay"]'
   postDatePath = 'time'
   loadBtnPath = 'button[class="px-4 text-white border-x-0 border-y-0 bg-gradient-to-r from-course-gradient-from to-course-gradient-to degen-alley-dark:bg-degen-alley-primary degen-alley-dark:bg-none degen-alley-dark:text-black py-2.5 px-4 gap-x-1.5 font-akzidenz-grotesk font-medium text-sm leading-5 rounded-md active:ring-primary-500 inline-flex items-center justify-center border border-solid font-akzidenz-grotesk font-medium whitespace-nowrap active:ring-2 active:ring-offset-1"]'
@@ -41,6 +41,7 @@ def startScrape(targetNumWeek):
   dataList = []
   while True: 
     posts = driver.find_elements(By.CSS_SELECTOR, postPath)[-12:]
+    # print(posts)
     for post in posts:
       if (not isAdClosed):
         try: 

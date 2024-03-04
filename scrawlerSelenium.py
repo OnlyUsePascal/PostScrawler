@@ -45,23 +45,23 @@ def webscrape(targetNumWeek=1):
     # analytic_vidhya.scrapeAnalytic_Vidhya(targetNumWeek)
     # hubspot.scrapeHubspot(targetNumWeek)
     
-    # since Feb/2024
-    academy_binance.scrapeAcademyBinance(targetNumWeek)
-    binance.scrapeBinance(targetNumWeek)
-    chain_link.scrapeChainlink(targetNumWeek)
-    vitalik.scrapeVitalik(targetNumWeek)
+    # Feb/2024
+    # academy_binance.scrapeAcademyBinance(targetNumWeek)
+    # binance.scrapeBinance(targetNumWeek)
+    # chain_link.scrapeChainlink(targetNumWeek)
+    # vitalik.scrapeVitalik(targetNumWeek)
 
-    theBlock.scrapeLatest(targetNumWeek)
-    decrypt.scrapeNewsExplorer(targetNumWeek)
-    nextrope.scrapeArticles(targetNumWeek)
+    # theBlock.scrapeLatest(targetNumWeek)
+    # decrypt.scrapeNewsExplorer(targetNumWeek)
+    # nextrope.scrapeArticles(targetNumWeek)
 
-    theBlock.startScrapeReport(targetNumWeek)
-    applePodcast.startScrape(targetNumWeek)
+    # theBlock.startScrapeReport(targetNumWeek)
+    # applePodcast.startScrape(targetNumWeek)
     decrypt2.startScrape(targetNumWeek)
-    coin68.startScrape(targetNumWeek)
-    blockWork.startScrape(targetNumWeek) 
-    okx.startScrape(targetNumWeek)
-
+    # coin68.startScrape(targetNumWeek)
+    # blockWork.startScrape(targetNumWeek) 
+    # okx.startScrape(targetNumWeek)
+    
     # coinbase.scrapeArticles(targetNumWeek)
     # coinbase1.startScrape(targetNumWeek) #web browser on
     print('** Done **')
