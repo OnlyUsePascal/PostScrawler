@@ -1,4 +1,5 @@
 from WebScrapers import *
+from WebScrapers import snipd
 from globals import fileName
 import sys
 
@@ -57,13 +58,16 @@ def webscrape(targetNumWeek=1):
 
     # theBlock.startScrapeReport(targetNumWeek)
     # applePodcast.startScrape(targetNumWeek)
-    decrypt2.startScrape(targetNumWeek)
+    # decrypt2.startScrape(targetNumWeek)
     # coin68.startScrape(targetNumWeek)
     # blockWork.startScrape(targetNumWeek) 
     # okx.startScrape(targetNumWeek)
     
     # coinbase.scrapeArticles(targetNumWeek)
     # coinbase1.startScrape(targetNumWeek) #web browser on
+    
+    # Mar/2024
+    snipd.startScrape(targetNumWeek)
     print('** Done **')
 
 
