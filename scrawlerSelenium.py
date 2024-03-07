@@ -67,7 +67,8 @@ def webscrape(targetNumWeek=1):
     # coinbase1.startScrape(targetNumWeek) #web browser on
     
     # Mar/2024
-    snipd.startScrape(targetNumWeek)
+    # snipd.startScrape(targetNumWeek)
+    hak_research.startScrape(targetNumWeek)
     print('** Done **')
 
 

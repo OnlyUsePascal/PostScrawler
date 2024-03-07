@@ -88,7 +88,7 @@ def startScrape(targetNumWeek):
         dataList.append(dataRow)
         # print(dataRow)
         
-      if isEnough or curPg:
+      if isEnough:
         print('> done\n')
         writeFileData(dataList, targetNumWeek)
         # writeScrapedData(siteTitle + ':' + endpoint, fileName, dataList, targetNumWeek)

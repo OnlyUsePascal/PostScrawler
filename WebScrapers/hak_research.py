@@ -7,11 +7,17 @@ from selenium.common.exceptions import TimeoutException
 from datetime import datetime, time, timedelta
 from Utils.error_handler import handle_scrape_errors, open_with_retries
 from Utils.driver_options import create_option
-from Utils.write_to_list import writeScrapedData, writeFileTitle, writeFileData
 from Utils.correct_time_offset import correctTimeOffset
-import time
 from globals import fileName, outputDateFormat
-
+from gc import isenabled
+from pickle import FALSE
+from selenium import webdriver
+from Utils.write_to_list import writeFileData, writeFileTitle, writeMessage, writeScrapedData
+from globals import fileName, outputDateFormat
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
+import time
 
 @handle_scrape_errors
 def scrapeHakResearch1(targetNumWeek):
@@ -89,7 +95,8 @@ def scrapeHakResearch1(targetNumWeek):
     print('Scraping Hakresearch: Kien thuc Crypto Finished')
     driver.quit()
     
-
+    
+@handle_scrape_errors
 def scrapeHakResearch(targetNumWeek):
     writeFileTitle('=== Hak Research ===')
     print("@Hak Research")
@@ -185,4 +192,65 @@ def scrapeHakResearch(targetNumWeek):
     scrapeBySection(pageUrlSection, pageUrlEnds)
     
     print('> Done')
+    driver.quit()
+
+
+@handle_scrape_errors
+def startScrape(targetNumWeek : int):
+    siteTitle = 'HakResearch'
+    print('--> ' + siteTitle)
+    writeFileTitle(siteTitle)
+    
+    url = 'https://hakresearch.com/nguoi-moi-2/'
+    endpoints = [
+        'khai-niem-co-ban/',
+        'kinh-nghiem/',
+        'huong-dan-co-ban/',
+    ]
+    delay = 3
+    dateFormat = '%Y-%m-%d'
+    
+    postPath = 'article[class="l-post grid-post grid-base-post"]'
+    postTitlePath = 'h2'
+    postDatePath = 'time[class="post-date"]'
+    
+    service = Service(ChromeDriverManager().install())
+    options = create_option(headless=False)
+    driver = webdriver.Chrome(options=options, service=service)
+    
+    for endpoint in endpoints:
+        print(f'> {url + endpoint}')
+        writeMessage(fileName, f'> {url + endpoint}')
+        curPg = 1
+        isEnough = False
+        dataList = []
+        
+        while True:
+            urlAll = url + endpoint + '/page/' + str(curPg)
+            driver.get(urlAll)
+            time.sleep(delay)
+            
+            for post in driver.find_elements(By.CSS_SELECTOR, postPath):
+                postTitle = post.find_element(By.TAG_NAME, postTitlePath).text
+                postUrl = post.find_element(By.TAG_NAME, 'a').get_attribute('href')
+                postDate = post.find_element(By.CSS_SELECTOR, postDatePath).get_attribute('datetime').split('T')[0]
+                
+                if not correctTimeOffset(postDate, dateFormat, targetNumWeek):
+                    isEnough = True
+                    break
+            
+                postDate = datetime.strftime(datetime.strptime(postDate, dateFormat), outputDateFormat)
+                dataRow = [postDate, postTitle, postUrl]
+                dataList.append(dataRow)
+                print(dataRow)
+                
+            if isEnough:
+                print('> done\n')
+                writeFileData(dataList, targetNumWeek)
+                # writeScrapedData(siteTitle + ':' + endpoint, fileName, dataList, targetNumWeek)
+                break
+            
+            curPg += 1
+            print('+ still searching')
+        
     driver.quit()
